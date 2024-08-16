@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="27"/>
                 <RowDefinition Height="0.8*"/>
                 <RowDefinition Height="1.5*"/>
                 <RowDefinition/>
@@ -26,7 +26,19 @@
 
             <Border Grid.Row="0" Background="Transparent" Grid.ColumnSpan="2" MouseLeftButtonDown="Border_MouseLeftButtonDown"></Border>
 
-            <Button Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="x" Margin="0 0 20 0" FontSize="14" Background="Transparent" Foreground="White" BorderThickness="0" Click="Close_Screen"/>
+            <Button 
+                Grid.Row="0" 
+                Grid.Column="2" 
+                VerticalAlignment="Bottom" 
+                HorizontalAlignment="Right" 
+                Content="x" Margin="0 0 20 0" 
+                FontSize="14" 
+                Background="Transparent" 
+                Foreground="White" 
+                BorderThickness="0" 
+                Click="Close_Screen"
+                Cursor="Hand"
+            />
 
             <TextBlock 
                 Grid.Row="1"
@@ -44,9 +56,13 @@
                     FontSize="25"
                 />
                 <TextBox 
+                    Name="Username"
                     Height="40"
                     Background="#404045"
                     BorderBrush="#505055"
+                    Foreground="White"
+                    VerticalContentAlignment="Center"
+                    FontSize="22"
                 />
 
                 <Label 
@@ -55,9 +71,13 @@
                     FontSize="25"
                 />
                 <PasswordBox 
+                    Name="Password"
                     Height="40"
                     Background="#404045"
                     BorderBrush="#505055"
+                    Foreground="White"
+                    VerticalContentAlignment="Center"
+                    FontSize="22"
                 />
                 <TextBlock 
                     HorizontalAlignment="Right" 
@@ -66,6 +86,7 @@
                     Foreground="#99B9EA"
                     FontSize="15"
                     Cursor="Hand"
+                    MouseDown="Forgot_Password"
                 />
             </StackPanel>
 
@@ -77,6 +98,8 @@
                     Foreground="White"
                     BorderBrush="#505055"
                     FontSize="20"
+                    Cursor="Hand"
+                    Click="Log_In"
                 />
                 <TextBlock
                     HorizontalAlignment="Right"
@@ -85,6 +108,7 @@
                     Foreground="#99B9EA"
                     FontSize="15"
                     Cursor="Hand"
+                    MouseDown="Register"
                 />
             </StackPanel>
         

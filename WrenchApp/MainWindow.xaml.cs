@@ -37,5 +37,23 @@ namespace WrenchApp
                 this.DragMove();
             }
         }
+
+        private void Log_In(object sender, EventArgs e)
+        {
+            string username = Username.Text;
+            string password = Password.Password.ToString();
+
+            MessageBox.Show($"Successfully logged in\nUsername: {username}\nPassword: {password}");
+        }
+
+        private void Forgot_Password(object sender, EventArgs e)
+        {
+            MessageBox.Show("Too bad :(", "");
+        }
+
+        private void Register(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Servers down or smthn", "Error code 1-600");
+        }
     }
 }
