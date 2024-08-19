@@ -18,9 +18,9 @@ namespace WrenchApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Login : Window
     {
-        public MainWindow()
+        public Login()
         {
             InitializeComponent();
         }
@@ -53,7 +53,9 @@ namespace WrenchApp
 
         private void Register(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Servers down or smthn", "Error code 1-600");
+            Window register = new Register();
+            register.Show();
+            this.Close();
         }
     }
 }
