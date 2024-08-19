@@ -21,13 +21,13 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema);
 
-const noteSchema = new mongoose.Schema({
+const GamesSchema = new mongoose.Schema({
     name: { type: String, required: true },
     note: { type: String, default: "" },
     user: { type: String },
     version: { type: Number, default: 1 }
 })
-const Note = mongoose.model('Note', noteSchema);
+const Games = mongoose.model('Games', GamesSchema);
 
 
 // Middleware to convert username to lowercase
