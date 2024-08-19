@@ -1,0 +1,61 @@
+﻿<Page x:Class="WrenchApp.Pages.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WrenchApp.Pages"
+      mc:Ignorable="d" 
+      Height="1080"
+      Width="1920"
+      >
+
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="200 250 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Label
+                    Content="1 200 500+ apps and games of any kind"
+                    FontSize="45"
+                    Foreground="White"
+                />
+                <Label
+                    Content="Search"
+                    Foreground="White"
+                    FontSize="20"
+                />
+                <StackPanel Orientation="Horizontal">
+                    <Border CornerRadius="25" Background="White">
+                        <TextBox
+                            VerticalContentAlignment="Center"
+                            Padding="10 0 0 0"
+                            FontSize="25"
+                            Height="50"
+                            Width="400"
+                            Background="Transparent"
+                            Foreground="Black"
+                            BorderBrush="Transparent"
+                        />
+                    </Border>
+                    <Border Margin="30 0" CornerRadius="25" Background="Purple">
+                        <Button
+                            Background="Transparent"
+                            Content="Search"
+                            Foreground="White"
+                            Padding="30 0"
+                            FontSize="20"
+                            BorderBrush="Transparent"
+                        />
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -22,6 +22,7 @@ namespace WrenchApp
         public MainWindow()
         {
             InitializeComponent();
+            Mainframe.Source = new Uri("Pages/HomePage.xaml", UriKind.Relative);
         }
 
         private void Minimize_Screen(object sender, EventArgs e)
@@ -54,6 +55,19 @@ namespace WrenchApp
             }
         }
 
+        private void Home_Screen(object sender, EventArgs e)
+        {
+            Mainframe.Source = new Uri("Pages/HomePage.xaml", UriKind.Relative);
+        }
 
+        private void Categories_Screen(object sender, EventArgs e)
+        {
+            Mainframe.Source = new Uri("Pages/CategoriesPage.xaml", UriKind.Relative);
+        }
+
+        private void Library_Screen(object sender, EventArgs e)
+        {
+            Mainframe.Source = new Uri("Pages/LibraryPage.xaml", UriKind.Relative);
+        }
     }
 }

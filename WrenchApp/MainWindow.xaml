@@ -7,14 +7,10 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
-        Height="1080" Width="1920"
         Background="Transparent"
         AllowsTransparency="True">
+    
     <Grid Background="#202025">
-        <Grid.ColumnDefinitions>
-
-        </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition/>
@@ -63,7 +59,6 @@
             />
         </StackPanel>
         
-
         <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Button
                 Content="Home"
@@ -72,6 +67,7 @@
                 Foreground="White"
                 FontSize="25"
                 Padding="15"
+                Click="Home_Screen"
             />
 
             <Button
@@ -81,6 +77,7 @@
                 Foreground="White"
                 FontSize="25"
                 Padding="15"
+                Click="Categories_Screen"
             />
             <Button
                 Content="Library"
@@ -89,7 +86,15 @@
                 Foreground="White"
                 FontSize="25"
                 Padding="15"
+                Click="Library_Screen"
             />
         </StackPanel>
+
+        <Frame Name="Mainframe" 
+               Grid.Row="1" 
+               HorizontalAlignment="Stretch" 
+               VerticalAlignment="Stretch"
+               NavigationUIVisibility="Hidden"
+        />
     </Grid>
 </Window>
