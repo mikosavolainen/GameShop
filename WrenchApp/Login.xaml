@@ -21,8 +21,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="27"/>
                 <RowDefinition Height="110"/>
-                <RowDefinition Height="1.5*"/>
                 <RowDefinition/>
+                <RowDefinition Height="135"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="Transparent" Grid.ColumnSpan="2" MouseLeftButtonDown="Border_MouseLeftButtonDown"></Border>

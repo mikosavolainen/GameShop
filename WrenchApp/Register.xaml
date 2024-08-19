@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WrenchApp"
         mc:Ignorable="d"
-        Height="650" Width="720"
+        Height="660" Width="720"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
@@ -21,8 +21,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="27"/>
                 <RowDefinition Height="110"/>
-                <RowDefinition Height="3*"/>
                 <RowDefinition/>
+                <RowDefinition Height="135"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="Transparent" Grid.ColumnSpan="2" MouseLeftButtonDown="Border_MouseLeftButtonDown"></Border>
