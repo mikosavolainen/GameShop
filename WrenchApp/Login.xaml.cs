@@ -44,6 +44,10 @@ namespace WrenchApp
             string password = Password.Password.ToString();
 
             MessageBox.Show($"Successfully logged in\nUsername: {username}\nPassword: {password}");
+
+            Window mainwindow = new MainWindow();
+            mainwindow.Show();
+            this.Close();
         }
 
         private void Forgot_Password(object sender, EventArgs e)
