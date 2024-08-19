@@ -1,1 +1,1 @@
-# MushRoomShop
+# GameShop
