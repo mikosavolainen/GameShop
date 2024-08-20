@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WrenchApp"
         mc:Ignorable="d"
-        WindowState="Maximized"
+        WindowState="Normal"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True">
-    
-    <Grid Background="#202025">
+
+    <Grid Background="#252525">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Grid.Row="0" MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="Transparent"></Border>
+        <Border Grid.Row="0" MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="Transparent"/>
 
         <Label
             VerticalAlignment="Center"
@@ -25,8 +25,7 @@
             Content="Wrench"
             Foreground="White"
             FontSize="25"
-            Padding="50 0 0 0"
-        />
+            Padding="50 0 0 0"/>
 
         <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button
@@ -36,8 +35,7 @@
                 Background="Transparent"
                 BorderBrush="Transparent"
                 FontSize="25"
-                Click="Minimize_Screen"
-            />
+                Click="Minimize_Screen"/>
             
             <Button
                 Content="□"
@@ -46,8 +44,8 @@
                 Background="Transparent"
                 BorderBrush="Transparent"
                 FontSize="25"
-                Click="Resize_Screen"
-            />
+                Click="Resize_Screen"/>
+            
             <Button
                 Content="x"
                 Width="50"
@@ -55,8 +53,7 @@
                 Background="Transparent"
                 BorderBrush="Transparent"
                 FontSize="25"
-                Click="Close_Screen"
-            />
+                Click="Close_Screen"/>
         </StackPanel>
         
         <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
@@ -67,8 +64,7 @@
                 Foreground="White"
                 FontSize="25"
                 Padding="15"
-                Click="Home_Screen"
-            />
+                Click="Home_Screen"/>
 
             <Button
                 Content="Categories"
@@ -77,8 +73,8 @@
                 Foreground="White"
                 FontSize="25"
                 Padding="15"
-                Click="Categories_Screen"
-            />
+                Click="Categories_Screen"/>
+            
             <Button
                 Content="Library"
                 Background="Transparent"
@@ -86,15 +82,13 @@
                 Foreground="White"
                 FontSize="25"
                 Padding="15"
-                Click="Library_Screen"
-            />
+                Click="Library_Screen"/>
         </StackPanel>
 
         <Frame Name="Mainframe" 
-               Grid.Row="1" 
-               HorizontalAlignment="Stretch" 
-               VerticalAlignment="Stretch"
-               NavigationUIVisibility="Hidden"
-        />
+            Grid.Row="1" 
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"
+            NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
