@@ -48,8 +48,8 @@ const convertUsernameToLowerCase = (req, res, next) => {
 };
 
 // OAuth2 Konfiguraatio
-const CLIENT_ID = 'YOUR_CLIENT_ID';
-const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+const CLIENT_ID = '988104252482-cv969tab240e20b5vdflqph9bi06uk6a.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
 const REFRESH_TOKEN = 'YOUR_REFRESH_TOKEN';
 
