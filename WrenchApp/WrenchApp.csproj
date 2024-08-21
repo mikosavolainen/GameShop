@@ -183,5 +183,21 @@
   <ItemGroup>
     <Resource Include="Images\placeholder.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\adventure.png" />
+    <Resource Include="Images\Icons\arcade.png" />
+    <Resource Include="Images\Icons\puzzle.png" />
+    <Resource Include="Images\Icons\racing.png" />
+    <Resource Include="Images\Icons\rpg.png" />
+    <Resource Include="Images\Icons\simulation.png" />
+    <Resource Include="Images\Icons\sports.png" />
+    <Resource Include="Images\Icons\strategies.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\discord.png" />
+    <Resource Include="Images\Icons\facebook.png" />
+    <Resource Include="Images\Icons\instagram.png" />
+    <Resource Include="Images\Icons\youtube.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

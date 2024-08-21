@@ -5,13 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WrenchApp.Pages"
       mc:Ignorable="d" 
-
       >
 
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="540"/>
+                <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -51,60 +51,288 @@
                 </StackPanel>
             </StackPanel>
 
-            <TextBlock 
-                Grid.Row="0" 
-                Foreground="White" 
-                Text="Featured" 
-                FontSize="20" 
-                VerticalAlignment="Bottom" 
-                HorizontalAlignment="Center" 
-                Width="1200"/>
+            <StackPanel Grid.Row="1" Width="1200" Margin="0 0 0 50">
+                <TextBlock 
+                    Foreground="White" 
+                    Text="Highlighted" 
+                    FontSize="20" 
+                    HorizontalAlignment="Left" 
+                />
+                <Grid Height="500" Margin="0 0 0 150">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="1" Width="1200" Height="500" Margin="0 0 0 200">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="#303030">
+                        <Image Name="HighlightedImg1" Source="/WrenchApp;component/Images/placeholder.png" Width="600" Height="300" Stretch="UniformToFill"/>
+                        <Label Name="HighlightedTitle1" Content="Title" FontSize="30" Foreground="White" Padding="15 7 0 0"/>
+                        <TextBlock Name="HighlightedDesc1" Text="Description" Width="600" Height="110" Padding="15 10 0 0" Foreground="White" FontSize="20" TextWrapping="WrapWithOverflow"/>
+                        <TextBlock Name="HighlightedPrice1" Text="00.00€" Foreground="White" FontSize="23" Padding="15 0 0 0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030">
+                        <Image Name="HighlightedImg2" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
+                        <Label Name="HighlightedTitle2" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
+                        <TextBlock Name="HighlightedDesc2" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
+                        <TextBlock Name="HighlightedPrice2" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2" Background="#303030">
+                        <Image Name="HighlightedImg3" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
+                        <Label Name="HighlightedTitle3" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
+                        <TextBlock Name="HighlightedDesc3" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
+                        <TextBlock Name="HighlightedPrice3" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030">
+                        <Image Name="HighlightedImg4" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
+                        <Label Name="HighlightedTitle4" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
+                        <TextBlock Name="HighlightedDesc4" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
+                        <TextBlock Name="HighlightedPrice4" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="2" Background="#303030">
+                        <Image Name="HighlightedImg5" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
+                        <Label Name="HighlightedTitle5" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
+                        <TextBlock Name="HighlightedDesc5" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
+                        <TextBlock Name="HighlightedPrice5" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock 
+                    Foreground="White" 
+                    Text="Popular" 
+                    FontSize="20" 
+                    HorizontalAlignment="Left" 
+                />
+                <Grid Height="775" Margin="0 0 0 150">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Image Name="PopularImg1" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="0" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="PopularTitle1" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="PopularDesc1" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="PopularPrice1" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="PopularImg2" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="1" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="PopularTitle2" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="PopularDesc2" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="PopularPrice2" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="PopularImg3" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="2" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="PopularTitle3" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="PopularDesc3" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="PopularPrice3" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="PopularImg4" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="3" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="3" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="PopularTitle4" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="PopularDesc4" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="PopularPrice4" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="PopularImg5" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="4" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="4" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="PopularTitle5" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="PopularDesc5" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="PopularPrice5" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock 
+                    Foreground="White" 
+                    Text="Newest" 
+                    FontSize="20" 
+                    HorizontalAlignment="Left" 
+                />
+                <Grid Height="775" Margin="0 0 0 150">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Image Name="NewestImg1" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="0" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="NewestTitle1" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="NewestDesc1" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="NewestPrice1" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="NewestImg2" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="1" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="NewestTitle2" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="NewestDesc2" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="NewestPrice2" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="NewestImg3" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="2" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="NewestTitle3" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="NewestDesc3" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="NewestPrice3" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="NewestImg4" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="3" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="3" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="NewestTitle4" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="NewestDesc4" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="NewestPrice4" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+
+                    <Image Name="NewestImg5" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="4" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="4" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
+                        <TextBlock Name="NewestTitle5" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
+                        <TextBlock Name="NewestDesc5" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
+                        <TextBlock Name="NewestPrice5" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock 
+                    Foreground="White" 
+                    Text="By Categories" 
+                    FontSize="20" 
+                    HorizontalAlignment="Left" 
+                />
+                <Grid Height="350" Margin="0 0 0 150">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Grid.Column="0" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/arcade.png"/>
+                            <Label Content="Arcade" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="0" Grid.Column="1" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/rpg.png"/>
+                            <Label Content="RPG" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="0" Grid.Column="2" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/adventure.png"/>
+                            <Label Content="Adventure" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="0" Grid.Column="3" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/strategies.png"/>
+                            <Label Content="Strategies" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="0" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/sports.png"/>
+                            <Label Content="Sports" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="1" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/racing.png"/>
+                            <Label Content="Racing" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="2" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/puzzle.png"/>
+                            <Label Content="Puzzle" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="3" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Image Height="50" Source="/WrenchApp;component/Images/Icons/simulation.png"/>
+                            <Label Content="Simulation" Foreground="White" FontSize="20"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+
+            <Grid Grid.Row="2" Margin="50 50 50 75">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="#303030">
-                    <Image Source="/WrenchApp;component/Images/placeholder.png" Width="600" Height="300" Stretch="UniformToFill"/>
-                    <Label Content="Title" FontSize="30" Foreground="White" Padding="15 7 0 0"/>
-                    <TextBlock Text="Description" Width="600" Height="110" Padding="15 10 0 0" Foreground="White" FontSize="20" TextWrapping="WrapWithOverflow"/>
-                    <TextBlock Text="00.00€" Foreground="White" FontSize="23" Padding="15 0 0 0"/>
+                <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Label Content="wrench" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="© Wrench LLC 2024&#x0a;Los Angeles, Sigma street 69, apt 420F&#x0a;Ohio 696969" 
+                   Foreground="#878787" 
+                   FontSize="15"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030">
-                    <Image Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                    <Label Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                    <TextBlock Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                    <TextBlock Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 15 0">
+                    <TextBlock Text="Resources" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="Developers" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Support" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Status" Foreground="White" FontSize="20" Cursor="Hand"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="0" Grid.Column="2" Background="#303030">
-                    <Image Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                    <Label Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                    <TextBlock Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                    <TextBlock Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 0 0 0">
+                    <TextBlock Text="Legal" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="Terms of Service" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Privacy Policy" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Cookies" Foreground="White" FontSize="20" Cursor="Hand"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030">
-                    <Image Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                    <Label Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                    <TextBlock Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                    <TextBlock Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
-                </StackPanel>
-
-                <StackPanel Grid.Row="1" Grid.Column="2" Background="#303030">
-                    <Image Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                    <Label Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                    <TextBlock Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                    <TextBlock Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                <StackPanel Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15 0 0 0">
+                    <TextBlock Text="Brand" Foreground="White" FontSize="25" HorizontalAlignment="Right"/>
+                    <TextBlock Text="Inquiries" Foreground="White" FontSize="25" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                        <Image Height="30" Source="/WrenchApp;component/Images/Icons/facebook.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="30" Source="/WrenchApp;component/Images/Icons/instagram.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="30" Source="/WrenchApp;component/Images/Icons/discord.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="30" Source="/WrenchApp;component/Images/Icons/youtube.png" Cursor="Hand"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </Grid>
