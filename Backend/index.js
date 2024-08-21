@@ -47,7 +47,7 @@ const convertUsernameToLowerCase = (req, res, next) => {
 };
 
 // Sähköpostin lähettäminen
-async function sendMail(msg) {
+async function sendMail(msg, sub) {
     try {
 
         const transporter = nodemailer.createTransport({
@@ -60,9 +60,10 @@ async function sendMail(msg) {
 
         const mailOptions = {
             from: 'wrenchsmail@gmail.com',
-            to: 'konstalaurell@gmail.com, admin@oh3cyt.com',
-            subject: 'sarkasmia',
-            text: msg,
+            bcc: 'konstalaurell@gmail.com, admin@oh3cyt.com',
+            subject: sub,
+            html: msg,
+            
         };
 
         const result = await transporter.sendMail(mailOptions);
@@ -72,9 +73,60 @@ async function sendMail(msg) {
     }
 }
 
-// Sähköpostin lähetys testauksen yhteydessä
 
-sendMail("LOL");
+register = `
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekisteröinti onnistui</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        a.button {
+            padding: 1px 6px;
+            border: 1px outset buttonborder;
+            border-radius: 3px;
+            color: buttontext;
+            background-color: buttonface;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rekisteröinti onnistui!</h1>
+        <p>Hei,</p>
+        <p>Olet onnistuneesti rekisteröitynyt Wrench-pelikauppaan. Kiitos rekisteröitymisestäsi!</p>
+        <a href="https://oh3cyt.com" class="button">Kauppaaaaaaaaan</a>
+        <p>Ystävällisin terveisin,<br>Wrench-tiimi</p>
+    </div>
+</body>
+</html>`
+
+sub = "Onnistunut registeröinti"
+
+sendMail(register, sub);
 
 
 
