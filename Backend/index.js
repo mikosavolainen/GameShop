@@ -10,7 +10,6 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
 
 // Mongoose-yhteys
 mongoose.connect('mongodb://87.93.199.160:27018/Testi', {
@@ -47,37 +46,23 @@ const convertUsernameToLowerCase = (req, res, next) => {
     next();
 };
 
-// OAuth2 Konfiguraatio
-const CLIENT_ID = '988104252482-cv969tab240e20b5vdflqph9bi06uk6a.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = 'YOUR_REFRESH_TOKEN';
-
-const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-
 // Sähköpostin lähettäminen
 async function sendMail() {
     try {
-        const accessToken = await oAuth2Client.getAccessToken();
 
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                type: 'OAuth2',
                 user: 'wrenchsmail@gmail.com',
-                clientId: CLIENT_ID,
-                clientSecret: CLIENT_SECRET,
-                refreshToken: REFRESH_TOKEN,
-                accessToken: accessToken.token,
+                pass: "emxc dnqp eyme gudi"
             },
         });
 
         const mailOptions = {
             from: 'wrenchsmail@gmail.com',
-            to: 'konstalaurell@gmail.com, oh3cyt@oh3cyt.com',
-            subject: 'Sending Email using Node.js with OAuth2',
-            text: 'That was easy!',
+            to: 'konstalaurell@gmail.com, admin@oh3cyt.com',
+            subject: 'FUCK YOU IDIOT GMAIL',
+            text: 'FUCK YOU IDIOT GMAIL',
         };
 
         const result = await transporter.sendMail(mailOptions);
@@ -88,7 +73,10 @@ async function sendMail() {
 }
 
 // Sähköpostin lähetys testauksen yhteydessä
+
 sendMail();
+
+
 
 // Rekisteröintipiste
 app.post('/register', convertUsernameToLowerCase, async (req, res) => {
