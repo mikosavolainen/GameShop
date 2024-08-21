@@ -1,5 +1,5 @@
-const http = require("http")
-const express = require("express")
+const http = require("http");
+const express = require("express");
 const app = express();
 const server = require('http').createServer(app);
 const mongoose = require('mongoose');
@@ -9,9 +9,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
 
-mongoose.connect('mongodb://localhost:27017/LOL', {
+// Mongoose-yhteys
+mongoose.connect('mongodb://87.93.199.160:27018/Testi', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -25,7 +27,7 @@ db.once('open', () => {
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }],  // Reference to Note schema
+    notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }],  
 });
 const User = mongoose.model('User', userSchema);
 
@@ -34,9 +36,8 @@ const GamesSchema = new mongoose.Schema({
     note: { type: String, default: "" },
     user: { type: String },
     version: { type: Number, default: 1 }
-})
+});
 const Games = mongoose.model('Games', GamesSchema);
-
 
 // Middleware to convert username to lowercase
 const convertUsernameToLowerCase = (req, res, next) => {
@@ -45,31 +46,51 @@ const convertUsernameToLowerCase = (req, res, next) => {
     }
     next();
 };
-var transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: 'wrenchsmail@gmail.com',
-        pass: 'KissaKala2146'
-    }
-});
 
-var mailOptions = {
-    from: 'wrenchsmail@gmail.com',
-    to: 'konstalaurell@gmail.com, oh3cyt@oh3cyt.com',
-    subject: 'Sending Email using Node.js',
-    text: 'That was easy!'
-};
+// OAuth2 Konfiguraatio
+const CLIENT_ID = 'YOUR_CLIENT_ID';
+const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+const REFRESH_TOKEN = 'YOUR_REFRESH_TOKEN';
 
-transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Email sent: ' + info.response);
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+
+// Sähköpostin lähettäminen
+async function sendMail() {
+    try {
+        const accessToken = await oAuth2Client.getAccessToken();
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                type: 'OAuth2',
+                user: 'wrenchsmail@gmail.com',
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken.token,
+            },
+        });
+
+        const mailOptions = {
+            from: 'wrenchsmail@gmail.com',
+            to: 'konstalaurell@gmail.com, oh3cyt@oh3cyt.com',
+            subject: 'Sending Email using Node.js with OAuth2',
+            text: 'That was easy!',
+        };
+
+        const result = await transporter.sendMail(mailOptions);
+        console.log('Email sent:', result);
+    } catch (error) {
+        console.log('Error sending email:', error);
     }
-});
-// Registration endpoint
+}
+
+// Sähköpostin lähetys testauksen yhteydessä
+sendMail();
+
+// Rekisteröintipiste
 app.post('/register', convertUsernameToLowerCase, async (req, res) => {
     const { username, password } = req.body;
     const existingUser = await User.findOne({ username });
@@ -83,7 +104,7 @@ app.post('/register', convertUsernameToLowerCase, async (req, res) => {
     res.status(201).json({ token });
 });
 
-// Login endpoint
+// Kirjautumispiste
 app.post('/login', convertUsernameToLowerCase, async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
@@ -96,7 +117,7 @@ app.post('/login', convertUsernameToLowerCase, async (req, res) => {
 
 app.post("/upload", async (req, res) => {
     if (req.file) {
-
+        // Upload logic here
     }
 });
 
