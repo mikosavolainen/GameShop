@@ -5,12 +5,20 @@ const server = require('http').createServer(app);
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-console.log("LOL")
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
+var nodemailer = require('nodemailer');
+
 mongoose.connect('mongodb://localhost:27017/LOL', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.once('open', () => {
+    console.log('Connected to MongoDB');
 });
 
 // User Schema
@@ -37,8 +45,30 @@ const convertUsernameToLowerCase = (req, res, next) => {
     }
     next();
 };
+var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'wrenchsmail@gmail.com',
+        pass: 'KissaKala2146'
+    }
+});
 
+var mailOptions = {
+    from: 'wrenchsmail@gmail.com',
+    to: 'konstalaurell@gmail.com, oh3cyt@oh3cyt.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+};
 
+transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+});
 // Registration endpoint
 app.post('/register', convertUsernameToLowerCase, async (req, res) => {
     const { username, password } = req.body;
@@ -64,11 +94,10 @@ app.post('/login', convertUsernameToLowerCase, async (req, res) => {
     res.json({ token });
 });
 
+app.post("/upload", async (req, res) => {
+    if (req.file) {
 
-
-const db = mongoose.connection;
-db.once('open', () => {
-    console.log('Connected to MongoDB');
+    }
 });
 
 const PORT = process.env.PORT || 5000;
