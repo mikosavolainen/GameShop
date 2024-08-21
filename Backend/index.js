@@ -47,7 +47,7 @@ const convertUsernameToLowerCase = (req, res, next) => {
 };
 
 // Sähköpostin lähettäminen
-async function sendMail() {
+async function sendMail(msg) {
     try {
 
         const transporter = nodemailer.createTransport({
@@ -61,8 +61,8 @@ async function sendMail() {
         const mailOptions = {
             from: 'wrenchsmail@gmail.com',
             to: 'konstalaurell@gmail.com, admin@oh3cyt.com',
-            subject: 'FUCK YOU IDIOT GMAIL',
-            text: 'FUCK YOU IDIOT GMAIL',
+            subject: 'sarkasmia',
+            text: msg,
         };
 
         const result = await transporter.sendMail(mailOptions);
@@ -74,7 +74,7 @@ async function sendMail() {
 
 // Sähköpostin lähetys testauksen yhteydessä
 
-sendMail();
+sendMail("LOL");
 
 
 
