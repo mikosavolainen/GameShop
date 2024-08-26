@@ -25,16 +25,21 @@ db.once('open', () => {
 // User Schema
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }],  
+    confirmedemail: {type: Boolean, default: false},
+    notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }],
 });
 const User = mongoose.model('User', userSchema);
 
 const GamesSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    note: { type: String, default: "" },
-    user: { type: String },
-    version: { type: Number, default: 1 }
+    desc: { type: String },
+    gamefileloc: { type: String },
+    authow: { type: String },
+    category: { type: Array },
+    price: { type: Number },
+    rating: { type: Array }
 });
 const Games = mongoose.model('Games', GamesSchema);
 
@@ -60,8 +65,8 @@ async function sendMail(msg) {
 
         const mailOptions = {
             from: 'wrenchsmail@gmail.com',
-            to: 'konstalaurell@gmail.com, admin@oh3cyt.com',
-            subject: 'sarkasmia',
+            to: 'konstalaurell@gmail.com',
+            subject: 'Confirm email',
             text: msg,
         };
 
@@ -72,21 +77,26 @@ async function sendMail(msg) {
     }
 }
 
-// Sähköpostin lähetys testauksen yhteydessä
-
-sendMail("LOL");
-
+app.get("/confirm", (req,res)=>{
+    var jwts = req.query.confirm
+    if (jwts){
+        var {username} = jwt.verify(jwts,"dontplsquessthisLOL")
+        User.findOneAndUpdate(username,{confirmedemail: true})
+    }
+})
 
 
 // Rekisteröintipiste
 app.post('/register', convertUsernameToLowerCase, async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     const existingUser = await User.findOne({ username });
     if (existingUser) {
         return res.status(409).send('Username already exists');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
+    const newUser = new User({ username, password: hashedPassword, email });
+    const confirm = jwt.sign(username,"dontplsquessthisLOL")
+    sendMail(`localhost:5000/confirm?confirm=${confirm}`)
     await newUser.save();
     const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
     res.status(201).json({ token });
