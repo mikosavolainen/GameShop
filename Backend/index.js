@@ -52,7 +52,7 @@ const convertUsernameToLowerCase = (req, res, next) => {
 };
 
 // Sähköpostin lähettäminen
-async function sendMail(msg) {
+async function sendMail(msg, sub) {
     try {
 
         const transporter = nodemailer.createTransport({
