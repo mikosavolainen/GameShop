@@ -5,6 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    colors: {
+      "wrench-neutral-white": "#ffffff",
+      "wrench-neutral-2":     "#878787",
+      "wrench-neutral-3":     "#505050",
+      "wrench-neutral-4":     "#1F1F1F",
+      "wrench-neutral-dark":  "#1C1C1C"
+    },
+    fontSize: {
+      "16": ["16px", "16px"],
+      "20": ["20px", "20px"]
+    },
     extend: {},
   },
   plugins: [],
