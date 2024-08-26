@@ -28,8 +28,8 @@ To run this project, you need to have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/wrench-game-store-api.git
-   cd wrench-game-store-api
+   git clone https://github.com/mikosavolainen/GameShop.git
+   cd GameShop
    ```
 
 2. Install dependencies:
