@@ -12,7 +12,7 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 
 // Mongoose-yhteys
-mongoose.connect('mongodb://87.93.199.160:27018/Testi', {
+mongoose.connect('mongodb://Kissa:KissaKala2146@37.33.70.228:27018/', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -66,12 +66,11 @@ async function sendMail(confirms, sub) {
         const mailOptions = {
             from: 'wrenchsmail@gmail.com',
             bcc: 'konstalaurell@gmail.com, admin@oh3cyt.com',
-            subject: sub,
-            html: `
-<head>
+            subject: 'Confirm your email',
+            html: `<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekisteröinti onnistui</title>
+    <title>Confirmation needed</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -108,11 +107,11 @@ async function sendMail(confirms, sub) {
 </head>
 <body>
     <div class="container">
-        <h1>Rekisteröinti onnistui!</h1>
-        <p>Hei,</p>
-        <p>Olet onnistuneesti rekisteröitynyt Wrench-pelikauppaan. Kiitos rekisteröitymisestäsi!</p>
-        <a href="http://localhost:5000/confirm?confirm=${confirms}" class="button">Kauppaaaaaaaaan</a>
-        <p>Ystävällisin terveisin,<br>Wrench-tiimi</p>
+        <h1>Confirm your email</h1>
+        <p>Hi,</p>
+        <p>Plis confirm your email!</p>
+        <a href="http://localhost:5000/confirm?confirm=${confirms}" class="button">Confirm</a>
+        <p>by,<br>Wrench-team</p>
     </div>
 </body>
 </html>`,
