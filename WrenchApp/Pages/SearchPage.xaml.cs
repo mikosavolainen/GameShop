@@ -16,13 +16,18 @@ using System.Windows.Shapes;
 namespace WrenchApp.Pages
 {
     /// <summary>
-    /// Interaction logic for CategoriesPage.xaml
+    /// Interaction logic for SearchPage.xaml
     /// </summary>
-    public partial class CategoriesPage : Page
+    public partial class SearchPage : Page
     {
-        public CategoriesPage()
+        public SearchPage()
         {
             InitializeComponent();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

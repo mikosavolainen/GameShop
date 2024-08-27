@@ -24,5 +24,15 @@ namespace WrenchApp.Pages
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new SearchPage());
+        }
     }
 }

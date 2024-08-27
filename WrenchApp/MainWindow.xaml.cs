@@ -62,7 +62,7 @@ namespace WrenchApp
 
         private void Categories_Screen(object sender, EventArgs e)
         {
-            Mainframe.Source = new Uri("Pages/CategoriesPage.xaml", UriKind.Relative);
+            Mainframe.Source = new Uri("Pages/SearchPage.xaml", UriKind.Relative);
         }
 
         private void Library_Screen(object sender, EventArgs e)
