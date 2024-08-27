@@ -50,18 +50,18 @@ const convertUsernameToLowerCase = (req, res, next) => {
     }
     next();
 };
-
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'wrenchsmail@gmail.com',
+        pass: "emxc dnqp eyme gudi"
+    },
+});
 // Sähköpostin lähettäminen
 async function sendMail(confirms, sub) {
     try {
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'wrenchsmail@gmail.com',
-                pass: "emxc dnqp eyme gudi"
-            },
-        });
+
 
         const mailOptions = {
             from: 'wrenchsmail@gmail.com',
