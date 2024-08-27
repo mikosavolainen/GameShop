@@ -1,27 +1,129 @@
-# GameShop
-Pahoittelen, tässä ovat linkit oikein muotoiltuina:
+# Wrench Game Store API
 
-1. **Sovelluksen salasanan luominen**: [Google Support - Sovelluksen salasanat](https://support.google.com/accounts/answer/185833)
-2. **Vähemmän turvallisten sovellusten käyttö**: [Google Account - Less Secure Apps](https://myaccount.google.com/lesssecureapps)
+This project is an API built using Node.js, Express, and MongoDB for managing users and games for a game store. It supports user registration, login, email confirmation, and game uploading.
 
+## Features
 
+- **User Registration & Login:** 
+  - New users can register and confirm their email.
+  - Users can log in using a username and password.
+  
+- **Email Confirmation:** 
+  - After registration, an email is sent to the user for email verification.
+  
+- **Game Management:** 
+  - Games can be added to the database with metadata like name, description, file location, category, price, and rating.
+  
+- **Password Encryption:** 
+  - User passwords are hashed using `bcryptjs` for security.
 
-Jos saat viestin "the setting you are looking for is not available for your account" yrittäessäsi sallia vähemmän turvallisten sovellusten käytön, syynä on todennäköisesti seuraavat:
+## Prerequisites
 
-1. **Vähemmän turvallisten sovellusten käytön poistaminen**: Google on hiljattain kiristänyt tietoturvakäytäntöjään, eikä vähemmän turvallisten sovellusten käyttöä enää tueta kaikilla tileillä. Tämä asetus on poistettu käytöstä useimmille käyttäjille.
+To run this project, you need to have the following installed:
 
-2. **Kaksivaiheinen tunnistautuminen**: Jos olet ottanut käyttöön kaksivaiheisen tunnistautumisen, sinun täytyy käyttää sovelluksen salasanaa tavallisen salasanan sijaan, koska vähemmän turvallisten sovellusten asetus ei ole käytettävissä.
+- [Node.js](https://nodejs.org/) v12 or later
+- [MongoDB](https://www.mongodb.com/) instance
 
-### Ratkaisut
+## Installation
 
-1. **Käytä Sovelluksen Salasanaa**:
-   - Jos tililläsi on kaksivaiheinen tunnistautuminen, luo ja käytä sovelluksen salasanaa tavallisen salasanasi sijaan.
-   - Luo sovelluksen salasana seuraavasti:
-     - Siirry Google-tilisi [Sovelluksen salasanat](https://support.google.com/accounts/answer/185833) -sivulle.
-     - Valitse "Mail" sovellukseksi ja "Windows Computer" laitteeksi.
-     - Käytä saatua salasanaa `nodemailer`-konfiguraatiossasi.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mikosavolainen/GameShop.git
+   cd GameShop
+   ```
 
-2. **OAuth2 Autentikointi**:
-   - Voit käyttää OAuth2-autentikointia, joka on turvallisempi ja modernimpi tapa autentikoida Google-tilin kautta. Tämä vaatii kuitenkin hieman enemmän asennustyötä, mutta tarjoaa hyvän turvallisuuden.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Jos sovelluksen salasanan käyttö ei ole mahdollista tai haluat lisätietoa OAuth2:n käyttämisestä, voin auttaa siinäkin.
+3. Create a `.env` file with the following configuration:
+   ```bash
+   PORT=5000
+   MONGO_URI=mongodb://Kissa:KissaKala2146@37.33.70.228:27018/
+   JWT_SECRET=dontplsquessthisLOL
+   EMAIL_USER=wrenchsmail@gmail.com
+   EMAIL_PASS=your-email-password
+   ```
+
+4. Start the server:
+   ```bash
+   npm start
+   ```
+
+## API Endpoints
+
+### Register a New User
+- **Endpoint:** `POST /register`
+- **Description:** Registers a new user and sends a confirmation email.
+- **Request Body:**
+  ```json
+  {
+    "username": "testuser",
+    "email": "testuser@example.com",
+    "password": "password123"
+  }
+  ```
+
+### Confirm Email
+- **Endpoint:** `GET /confirm`
+- **Description:** Confirms the user's email address using a token sent via email.
+- **Query Parameters:** 
+  - `confirm`: The JWT token sent via email.
+
+### Login
+- **Endpoint:** `POST /login`
+- **Description:** Logs in the user and returns a JWT token.
+- **Request Body:**
+  ```json
+  {
+    "username": "testuser",
+    "password": "password123"
+  }
+  ```
+
+### Upload a Game
+- **Endpoint:** `POST /upload`
+- **Description:** Uploads a game to the store (Upload logic is still under development).
+
+## MongoDB Schema
+
+### User Schema
+```js
+{
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  confirmedemail: { type: Boolean, default: false },
+  notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }]
+}
+```
+
+### Game Schema
+```js
+{
+  name: { type: String, required: true },
+  desc: { type: String },
+  gamefileloc: { type: String },
+  authow: { type: String },
+  category: { type: Array },
+  price: { type: Number },
+  rating: { type: Array }
+}
+```
+
+## Email Functionality
+
+The email service is set up using `nodemailer` and Gmail. Once the user registers, an email is sent with a confirmation link. Users must confirm their email to activate their account.
+
+To set up the email service, ensure to replace `EMAIL_USER` and `EMAIL_PASS` in your `.env` file with valid Gmail credentials.
+
+## Security Notes
+
+- **Password Hashing:** Passwords are hashed using `bcryptjs` before saving to the database.
+- **JWT Authentication:** Tokens are generated using `jsonwebtoken` and should be stored securely on the client side.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
