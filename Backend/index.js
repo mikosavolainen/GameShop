@@ -187,8 +187,7 @@ app.get("/confirm", (req, res) => {
         User.findOneAndUpdate(username, { confirmedemail: true })
     }
 })
-    const confirm = jwt.sign("username", "dontplsquessthisLOL")
-    sendMail(confirm, sub)
+
 
 // Rekisteröintipiste
 app.post('/register', convertUsernameToLowerCase, async (req, res) => {
