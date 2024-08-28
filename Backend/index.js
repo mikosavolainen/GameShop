@@ -188,7 +188,7 @@ app.get("/confirm", (req, res) => {
     }
 })
 
-
+ 
 // Rekisteröintipiste
 app.post('/register', convertUsernameToLowerCase, async (req, res) => {
     const { username, password, email } = req.body;
