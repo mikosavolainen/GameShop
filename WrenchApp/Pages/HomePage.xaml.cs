@@ -30,9 +30,19 @@ namespace WrenchApp.Pages
 
         }
 
+        private void Search_Tag(object sender, RoutedEventArgs e)
+        {
+            Border clickedBorder = sender as Border;
+
+            string tagToSearch = clickedBorder.Tag as String;
+
+            this.NavigationService.Navigate(new SearchPage(tag: tagToSearch));
+        }
+
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new SearchPage());
+            string searchedGame = Searchbox.Text;
+            this.NavigationService.Navigate(new SearchPage(search: searchedGame));
         }
     }
 }

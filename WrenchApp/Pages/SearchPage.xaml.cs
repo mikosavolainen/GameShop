@@ -20,9 +20,47 @@ namespace WrenchApp.Pages
     /// </summary>
     public partial class SearchPage : Page
     {
-        public SearchPage()
+        public SearchPage() : this("", "")
+        {
+        }
+
+        public SearchPage(string tag = "", string search = "")
         {
             InitializeComponent();
+
+            if (tag != "") {
+                switch (tag)
+                {
+                    case "arc":
+                        arcadeCb.IsChecked = true;
+                        break;
+                    case "rpg":
+                        rpgCb.IsChecked = true;
+                        break;
+                    case "adv":
+                        adventureCb.IsChecked = true;
+                        break;
+                    case "str":
+                        strategyCb.IsChecked = true;
+                        break;
+                    case "spo":
+                        sportsCb.IsChecked = true;
+                        break;
+                    case "rac":
+                        racingCb.IsChecked = true;
+                        break;
+                    case "puz":
+                        puzzleCb.IsChecked = true;
+                        break;
+                    case "sim":
+                        simulationCb.IsChecked = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        
+            Searchbox.Text = search;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

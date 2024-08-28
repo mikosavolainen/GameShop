@@ -8,7 +8,10 @@
         WindowState="Maximized"
         WindowStyle="None"
         Background="Transparent"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        Width="1920"
+        Height="1080"
+        >
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Cursor" Value="Hand"/>
@@ -132,6 +135,12 @@
                 Padding="15"
                 Click="Library_Screen"/>
         </StackPanel>
+
+        <Border CornerRadius="100" Height="50" Width="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 30 0" Cursor="Hand" MouseDown="Profile_Screen">
+            <Border.Background>
+                <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
+            </Border.Background>
+        </Border>
 
         <Frame Name="Mainframe" 
             Grid.Row="1" 

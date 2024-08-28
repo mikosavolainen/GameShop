@@ -208,5 +208,11 @@
     <Resource Include="Images\Icons\ascending.png" />
     <Resource Include="Images\Icons\gridView.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\filtericon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\placeholderpfp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,17 +16,6 @@
                             <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -69,6 +58,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Border CornerRadius="25" Background="White">
                         <TextBox
+                            Name="Searchbox"
                             VerticalContentAlignment="Center"
                             Padding="10 0 0 0"
                             FontSize="25"
@@ -277,56 +267,56 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" Grid.Column="0" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="0" Grid.Column="0" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="arc">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/arcade.png"/>
                             <Label Content="Arcade" Foreground="White" FontSize="20"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Row="0" Grid.Column="1" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="0" Grid.Column="1" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="rpg">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/rpg.png"/>
                             <Label Content="RPG" Foreground="White" FontSize="20"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Row="0" Grid.Column="2" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="0" Grid.Column="2" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="adv">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/adventure.png"/>
                             <Label Content="Adventure" Foreground="White" FontSize="20"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Row="0" Grid.Column="3" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="0" Grid.Column="3" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="str">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/strategies.png"/>
                             <Label Content="Strategies" Foreground="White" FontSize="20"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Row="1" Grid.Column="0" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="1" Grid.Column="0" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="spo">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/sports.png"/>
                             <Label Content="Sports" Foreground="White" FontSize="20"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Row="1" Grid.Column="1" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="1" Grid.Column="1" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="rac">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/racing.png"/>
                             <Label Content="Racing" Foreground="White" FontSize="20"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Row="1" Grid.Column="2" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="1" Grid.Column="2" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="puz">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/puzzle.png"/>
                             <Label Content="Puzzle" Foreground="White" FontSize="20"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Row="1" Grid.Column="3" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand">
+                    <Border Grid.Row="1" Grid.Column="3" Background="#1F1F1F" BorderBrush="#303030" BorderThickness="1" CornerRadius="20" Margin="5" Cursor="Hand" MouseDown="Search_Tag" Tag="sim">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Image Height="50" Source="/WrenchApp;component/Images/Icons/simulation.png"/>
                             <Label Content="Simulation" Foreground="White" FontSize="20"/>

@@ -69,5 +69,10 @@ namespace WrenchApp
         {
             Mainframe.Source = new Uri("Pages/LibraryPage.xaml", UriKind.Relative);
         }
+
+        private void Profile_Screen(object sender, EventArgs e)
+        {
+            Mainframe.Source = new Uri("Pages/ProfilePage.xaml", UriKind.Relative);
+        }
     }
 }

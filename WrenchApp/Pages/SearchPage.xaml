@@ -8,6 +8,11 @@
       Title="SearchPage"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Page.Resources>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -399,7 +404,7 @@
             <StackPanel Grid.Column="0" Margin="15">
                 <TextBlock Text="Search" Foreground="white" FontSize="20" Margin="0 0 0 5"/>
                 <Border CornerRadius="20" Background="White">
-                    <TextBox Height="40" Background="Transparent" BorderBrush="Transparent" VerticalContentAlignment="Center"/>
+                    <TextBox Name="Searchbox" Height="40" FontSize="20" Background="Transparent" BorderBrush="Transparent" VerticalContentAlignment="Center" Margin="10 0 0 0"/>
                 </Border>
 
                 <Border Background="#303030" BorderBrush="#404040" BorderThickness="2" Margin="0 10 0 0" CornerRadius="20">
@@ -413,6 +418,36 @@
                             <ComboBoxItem Content="Sort by price"/>
                             <ComboBoxItem Content="Sort by date"/>
                         </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#303030" BorderBrush="#404040" BorderThickness="2" Margin="0 10 0 0" CornerRadius="20">
+                    <StackPanel Margin="30 0 0 0">
+                        <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                            <Image Source="/WrenchApp;component/Images/Icons/filtericon.png"/>
+                            <TextBlock Text="Filters" Foreground="White" FontSize="20" Margin="10 0 0 0"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Categories" Foreground="White" FontSize="20" Margin="0 25 0 10"/>
+                        <ScrollViewer Height="225">
+                            <StackPanel>
+                                <CheckBox Name="arcadeCb" Content="Arcade"/>
+                                <CheckBox Name="rpgCb" Content="RPG"/>
+                                <CheckBox Name="adventureCb" Content="Adventure"/>
+                                <CheckBox Name="strategyCb" Content="Strategy"/>
+                                <CheckBox Name="sportsCb" Content="Sports"/>
+                                <CheckBox Name="racingCb" Content="Racing"/>
+                                <CheckBox Name="puzzleCb" Content="Puzzle"/>
+                                <CheckBox Name="simulationCb" Content="Simulation"/>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <TextBlock Text="Price" Foreground="White" FontSize="20" Margin="0 15 0 10"/>
+                        <TextBlock Text="min" Foreground="White" FontSize="17"/>
+                        <Slider Name="minPrice" AutoToolTipPlacement="BottomRight" Width="300" HorizontalAlignment="Left" Minimum="0" Maximum="200"/>
+                        <TextBlock Text="max" Foreground="White" FontSize="17"/>
+                        <Slider Name="maxPrice" AutoToolTipPlacement="BottomRight" Width="300" HorizontalAlignment="Left" Minimum="0" Maximum="200"/>
+                        <CheckBox Content="On Sale" FontSize="17" Foreground="White" Margin="0 10"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
