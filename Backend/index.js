@@ -7,8 +7,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const fs = require('fs');
-const path = require('path');
 const nodemailer = require('nodemailer');
 
 // Mongoose-yhteys
@@ -26,7 +24,7 @@ db.once('open', () => {
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    phonenumber: {type: Number},
+    phonenumber: { type: Number },
     password: { type: String, required: true },
     confirmedemail: { type: Boolean, default: false },
     notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }],
@@ -37,7 +35,7 @@ const GamesSchema = new mongoose.Schema({
     name: { type: String, required: true },
     desc: { type: String },
     gamefileloc: { type: String },
-    authow: { type: String },
+    author: { type: String },
     category: { type: Array },
     price: { type: Number },
     rating: { type: Array }
@@ -51,6 +49,7 @@ const convertUsernameToLowerCase = (req, res, next) => {
     }
     next();
 };
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -58,67 +57,16 @@ const transporter = nodemailer.createTransport({
         pass: "emxc dnqp eyme gudi"
     },
 });
+
 // Sähköpostin lähettäminen
-async function sendMail(confirms, sub) {
+async function sendMail(Msg, sub) {
     try {
-
-
-
         const mailOptions = {
             from: 'wrenchsmail@gmail.com',
             bcc: 'konstalaurell@gmail.com, admin@oh3cyt.com',
-            subject: 'Confirm your email',
-            html: `<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmation needed</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            font-size: 16px;
-            color: #555;
-        }
-
-        a.button {
-            padding: 1px 6px;
-            border: 1px outset buttonborder;
-            border-radius: 3px;
-            color: buttontext;
-            background-color: buttonface;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Confirm your email</h1>
-        <p>Hi,</p>
-        <p>Plis confirm your email!</p>
-        <a href="http://localhost:5000/confirm?confirm=${confirms}" class="button">Confirm</a>
-        <p>by,<br>Wrench-team</p>
-    </div>
-</body>
-</html>`,
-
+            subject: sub,
+            html: Msg
         };
-
         const result = await transporter.sendMail(mailOptions);
         console.log('Email sent:', result);
     } catch (error) {
@@ -126,70 +74,97 @@ async function sendMail(confirms, sub) {
     }
 }
 
+const SECRET_KEY = "dontplsquessthisLOL";  // Varmista, että käytät turvallista avainta
+const confirms = jwt.sign("username", "dontplsquessthisLOL");
+const Confirmation_subject = "Confirm Your Email Address";
+const Confirmation = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Confirmation</title>
+        <style>
+            body {
+                font-family: 'Helvetica Neue', Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9;
+                color: #333;
+                line-height: 1.6;
+            }
+            .container {
+                max-width: 600px;
+                margin: 40px auto;
+                padding: 20px;
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+            h1 {
+                font-size: 24px;
+                color: #333;
+                margin-bottom: 20px;
+            }
+            p {
+                font-size: 16px;
+                color: #555;
+                margin-bottom: 20px;
+            }
+            .button {
+                display: inline-block;
+                position: relative;
+                padding: 12px 35px;
+                margin-top: 20px;
+                font-size: 17px;
+                font-weight: 500;
+                color: #ffffff;
+                background: linear-gradient(145deg, #b0b0b0, #e0e0e0);
+                border: 2px solid #a6a6a6;
+                border-radius: 8px;
+                text-decoration: none;
+                transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            }
+            .button:hover {
+                background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+                color: #333;
+                box-shadow: 0 0 15px rgba(128, 128, 128, 0.5);
+            }
+            .footer {
+                margin-top: 30px;
+                font-size: 12px;
+                color: #999;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Confirm Your Email</h1>
+            <p>Hello,</p>
+            <p>Please click the button below to confirm your email address and complete the registration process.</p>
+            <a href="http://localhost:5000/confirm?confirm=${confirms}" class="button">Confirm Email</a>
+            <p class="footer">Thank you,<br>The Wrench Team</p>
+        </div>
+    </body>
+    </html>`;
 
-register = `
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekisteröinti onnistui</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            font-size: 16px;
-            color: #555;
-        }
-
-        a.button {
-            padding: 1px 6px;
-            border: 1px outset buttonborder;
-            border-radius: 3px;
-            color: buttontext;
-            background-color: buttonface;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Rekisteröinti onnistui!</h1>
-        <p>Hei,</p>
-        <p>Olet onnistuneesti rekisteröitynyt Wrench-pelikauppaan. Kiitos rekisteröitymisestäsi!</p>
-        <a href="https://oh3cyt.com" class="button">Kauppaaaaaaaaan</a>
-        <p>Ystävällisin terveisin,<br>Wrench-tiimi</p>
-    </div>
-</body>
-</html>`
-
-sub = "Onnistunut registeröinti"
-
-
-
-app.get("/confirm", (req, res) => {
-    var jwts = req.query.confirm
+app.get("/confirm", async (req, res) => {
+    const jwts = req.query.confirm;
     if (jwts) {
-        var { username } = jwt.verify(jwts, "dontplsquessthisLOL")
-        User.findOneAndUpdate(username, { confirmedemail: true })
+        try {
+            const { username } = jwt.verify(jwts, "dontplsquessthisLOL");
+            await User.findOneAndUpdate({ username }, { confirmedemail: true });
+            res.send('Email confirmed successfully.');
+        } catch (error) {
+            res.status(400).send('Invalid or expired confirmation link.');
+        }
+    } else {
+        res.status(400).send('Confirmation token is missing.');
     }
-})
+});
 
- 
 // Rekisteröintipiste
 app.post('/register', convertUsernameToLowerCase, async (req, res) => {
     const { username, password, email } = req.body;
@@ -199,11 +174,31 @@ app.post('/register', convertUsernameToLowerCase, async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword, email });
-    const confirm = jwt.sign(username, "dontplsquessthisLOL")
-    sendMail(confirm, sub)
+    await sendMail(Confirmation, Confirmation_subject); 
     await newUser.save();
     const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
     res.status(201).json({ token });
+});
+
+
+app.get('/manual-register', async (req, res) => {
+    const { username, email, password } = req.query;
+    if (!username || !email || !password) {
+        return res.status(400).send('Missing required parameters.');
+    }
+    
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+        return res.status(409).send('Username already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, password: hashedPassword, email });
+    await sendMail(Confirmation, Confirmation_subject); 
+    await newUser.save();
+
+    const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
+    res.status(201).json({ message: 'User registered successfully', token });
 });
 
 // Kirjautumispiste
