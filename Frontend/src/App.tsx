@@ -4,13 +4,8 @@ import Input from './components/input.tsx'
 function App() {
   return (
     <>
-      <h1 className='text-green-400'>
-        hi
-      </h1>
-      <Input type="small-white" />
-      <Input type="normal-white"/>
-      <Input type="small-dark"/>
-      <Input type="normal-dark"/>
+      <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
+      <Input type='text' width={62} size_color='normal-white' icon='search' label='Search' placeholder='Start your search here' />
     </>
   )
 }

@@ -12,10 +12,6 @@ export default {
       "wrench-neutral-4":     "#1F1F1F",
       "wrench-neutral-dark":  "#1C1C1C"
     },
-    fontSize: {
-      "16": ["16px", "16px"],
-      "20": ["20px", "20px"]
-    },
     extend: {},
   },
   plugins: [],
