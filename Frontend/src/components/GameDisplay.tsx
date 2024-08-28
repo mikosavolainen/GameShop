@@ -1,7 +1,7 @@
 import "../App.css";
 import test_image_wrench from "../assets/test_image_wrench.png"
-import Label from "./label"
-export default function Game_display({size, game_name, categories, description}:{size: "wide" | "small" | "large", game_name: string, categories: string[], description: string}){
+import Label from "./Label"
+export default function GameDisplay({size, game_name, categories, description}:{size: "wide" | "small" | "large", game_name: string, categories: string[], description: string}){
     let width = 0
     let image_width = 0
     switch (size){
