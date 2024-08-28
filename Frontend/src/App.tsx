@@ -10,7 +10,7 @@ function App() {
       <p className="text-wrench-neutral-white text-3xl pt-10">Highlighted</p>
       <GameDisplay size="large" game_name="This game is incredibly good for you to buy" categories={["Strategies", "RPG", "Arcade", "Cool game", "HEHEHEHAA", "Puzzle"]} description='Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact, I’m going to yap even more so that I will fill even more space. Sigma skibidi. I have a degree in yaponology.'/>
       <div>
-        
+      <GameDisplay size="small" game_name="This game is incredibly good for you to buy" categories={["Strategies", "RPG", "Arcade", "Cool game", "HEHEHEHAA", "Puzzle"]} description='Test description of the game, so we can see how it will appear in the future application! On the main block on the left side.'/>
       </div>
     </>
   )
