@@ -26,6 +26,7 @@ db.once('open', () => {
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
+    phonenumber: {type: Number},
     password: { type: String, required: true },
     confirmedemail: { type: Boolean, default: false },
     notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }],
