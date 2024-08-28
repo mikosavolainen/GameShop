@@ -1,4 +1,3 @@
-import { Link, Route, Switch } from "wouter";
 import './App.css'
 import GameDisplay from './components/GameDisplay.tsx'
 import Input from './components/Input.tsx'
