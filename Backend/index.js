@@ -213,14 +213,14 @@ app.get('/manual-register', async (req, res) => {
         // Send the confirmation email
         await sendMail(Confirmation, 'Email Confirmation');
 
-        // Return success response
+       
         const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
         res.status(201).json({ message: 'User registered successfully', token });
     } catch (error) {
-        // Handle duplicate key error (e.g., username or email already exists)
+        
         if (error.code === 11000) {
             console.error('Duplicate key error:', error);
-            const field = Object.keys(error.keyPattern)[0]; // Determine which field caused the duplication
+            const field = Object.keys(error.keyPattern)[0]; 
             res.status(409).send(`${field.charAt(0).toUpperCase() + field.slice(1)} already exists`);
         } else {
             console.error('Error during manual registration:', error);
@@ -228,6 +228,7 @@ app.get('/manual-register', async (req, res) => {
         }
     }
 });
+
 
 // Kirjautumispiste
 app.post('/login', convertUsernameToLowerCase, async (req, res) => {
