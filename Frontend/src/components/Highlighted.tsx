@@ -57,11 +57,21 @@ export default function Highlighted() {
         />
       )}
       <div className="grid grid-cols-5 gap-3 pt-6">
-        <button onClick={() => setSliderPage(1)} className={sliderPage === 1 ? `bg-wrench-purple border-0` : 'bg-wrench-neutral-3 border-0'}></button>
-        <button onClick={() => setSliderPage(2)} className={sliderPage === 2 ? `bg-wrench-purple border-0` : 'bg-wrench-neutral-3 border-0'}></button>
-        <button onClick={() => setSliderPage(3)} className={sliderPage === 3 ? `bg-wrench-purple border-0` : 'bg-wrench-neutral-3 border-0'}></button>
-        <button onClick={() => setSliderPage(4)} className={sliderPage === 4 ? `bg-wrench-purple border-0` : 'bg-wrench-neutral-3 border-0'}></button>
-        <button onClick={() => setSliderPage(5)} className={sliderPage === 5 ? `bg-wrench-purple border-0` : 'bg-wrench-neutral-3 border-0'}></button>
+        <button onClick={() => setSliderPage(1)} className="bg-wrench-neutral-dark border-0">
+            <div className={sliderPage === 1 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        </button>
+        <button onClick={() => setSliderPage(2)} className="bg-wrench-neutral-dark border-0">
+            <div className={sliderPage === 2 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        </button>
+        <button onClick={() => setSliderPage(3)} className="bg-wrench-neutral-dark border-0">
+            <div className={sliderPage === 3 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        </button>
+        <button onClick={() => setSliderPage(4)} className="bg-wrench-neutral-dark border-0">
+            <div className={sliderPage === 4 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        </button>
+        <button onClick={() => setSliderPage(5)} className="bg-wrench-neutral-dark border-0">
+            <div className={sliderPage === 5 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        </button>
       </div>
     </>
   );
