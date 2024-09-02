@@ -56,21 +56,21 @@ export default function Highlighted() {
           description="Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact, I’m going to yap even more so that I will fill even more space. Sigma skibidi. I have a degree in yaponology."
         />
       )}
-      <div className="grid grid-cols-5 gap-3 pt-6">
-        <button onClick={() => setSliderPage(1)} className="bg-wrench-neutral-dark border-0">
-            <div className={sliderPage === 1 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+      <div className="grid grid-cols-5 gap-3">
+        <button onClick={() => setSliderPage(1)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6">
+            <div className={`border rounded-full h-1 ${sliderPage === 1 ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
         </button>
-        <button onClick={() => setSliderPage(2)} className="bg-wrench-neutral-dark border-0">
-            <div className={sliderPage === 2 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        <button onClick={() => setSliderPage(2)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6">
+            <div className={`border rounded-full h-1 ${sliderPage === 2 ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
         </button>
-        <button onClick={() => setSliderPage(3)} className="bg-wrench-neutral-dark border-0">
-            <div className={sliderPage === 3 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        <button onClick={() => setSliderPage(3)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6">
+            <div className={`border rounded-full h-1 ${sliderPage === 3 ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
         </button>
-        <button onClick={() => setSliderPage(4)} className="bg-wrench-neutral-dark border-0">
-            <div className={sliderPage === 4 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        <button onClick={() => setSliderPage(4)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6">
+            <div className={`border rounded-full h-1 ${sliderPage === 4 ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
         </button>
-        <button onClick={() => setSliderPage(5)} className="bg-wrench-neutral-dark border-0">
-            <div className={sliderPage === 5 ? `border rounded-full bg-wrench-purple border-0 h-1` : 'border rounded-full bg-wrench-neutral-3 h-1'}></div>
+        <button onClick={() => setSliderPage(5)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6">
+            <div className={`border rounded-full h-1 ${sliderPage === 5 ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
         </button>
       </div>
     </>
