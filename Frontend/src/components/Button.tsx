@@ -7,7 +7,7 @@ import { Link } from 'wouter'
  * @param {string} props.type - The type of button (e.g., 'submit', 'button', etc.).
  * @param {string} [props.style='neutral'] - The style variant of the button (e.g., 'primary', 'secondary', 'neutral').
  * @param {string} [props.size='small'] - The size of the button (e.g., 'small', 'medium', 'large').
- * @param {React.ReactNode} [props.icon] - Optional icon element to be displayed within the button.
+ * @param {string} [props.icon] - Optional google icon name to be displayed within the button.
  * @param {string} props.text - The text to be displayed on the button.
  * @param {boolean} [props.disabled=false] - If true, disables the button.
  * @param {string} [props.className] - Additional class names for styling the button.
