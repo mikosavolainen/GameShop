@@ -28,11 +28,13 @@ export default function GameDisplay({discount, price, size, game_name, categorie
     return(
         <div className={`${grids}`}>
         <img className="rounded-3xl" src={test_image_wrench} width={image_width}/>
-            <div>
+            <div className="flex flex-col">
             <p className="text-wrench-neutral-white text-2xl py-2">{displayedName}</p>
             <Label categories={categories} />
             <p className="text-wrench-neutral-white text-left pt-2 text-base">{displayedDescription}</p>
-            <div className="flex">
+                <div className="flex flex-auto items-end">
+                <Button className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                <Button className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>
                 {discount && (
                     <p className="text-wrench-neutral-2 text-left text-base py-1 pr-4 line-through" id="price">{price} €</p>
                 )}
@@ -42,10 +44,6 @@ export default function GameDisplay({discount, price, size, game_name, categorie
                 {discount == null && (
                     <p className="text-wrench-neutral-white text-left text-base py-1" id="price">{price} €</p>
                 )}
-            </div>
-                <div className="flex">
-                <Button className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
-                <Button type="link" style="purple" icon="add" text="Add to cart"/>
                 </div>
             </div>
         </div>
