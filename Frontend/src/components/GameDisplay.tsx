@@ -4,6 +4,7 @@ import Label from "./Label"
 export default function GameDisplay({size, game_name, categories, description}:{size: "wide" | "small" | "large", game_name: string, categories: string[], description: string}){
     let width = 0
     let image_width = 0
+    let displayedDescription = description
     switch (size){
         case "wide":
             width = 1520
@@ -18,12 +19,15 @@ export default function GameDisplay({size, game_name, categories, description}:{
             width = 704
             break
     }
+    if(size == "small"){
+        displayedDescription = description.substring(0, 80) + "..."
+    }
     return(
         <div className={`max-w-[${width}px]`}>
         <img className="rounded-3xl" src={test_image_wrench} width={image_width}/>
         <p className="text-wrench-neutral-white text-2xl py-2">{game_name}</p>
         <Label categories={categories} />
-        <p className="text-wrench-neutral-white text-left py-2 text-base">{description} <a href="#" className="text-wrench-accent-gold hover:text-wrench-accent-gold">Read more...</a></p>
+        <p className="text-wrench-neutral-white text-left py-2 text-base">{displayedDescription} <a href="#" className="text-wrench-accent-gold hover:text-wrench-accent-gold">Read more...</a></p>
         </div>
     )
 }
