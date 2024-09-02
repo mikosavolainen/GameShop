@@ -187,11 +187,12 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ $or: [{username: username },{email: username}] });
     if (!user || !bcrypt.compareSync(password, user.password)) {
         return res.status(401).send("Invalid credentials");
     }
-    const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
+    var uname = user.username
+    const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: '1h' });
     res.json({ token });
 });
 
