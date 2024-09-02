@@ -175,7 +175,7 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
             <h1>Confirm Your Email</h1>
             <p>Hello,</p>
             <p>Please click the button below to confirm your email address and complete the registration process.</p>
-            <a href="http://localhost:5000/confirm?confirm=${confirms}" class="button">Confirm Email</a>
+            <a href="https://api.oh3cyt.com/confirm?confirm=${confirms}" class="button">Confirm Email</a>
             <p class="footer">Thank you,<br>The Wrench Team</p>
         </div>
     </body>
