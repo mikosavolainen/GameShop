@@ -24,6 +24,8 @@ namespace WrenchApp.Pages
         {
         }
 
+        private string order;
+
         public SearchPage(string tag = "", string search = "")
         {
             InitializeComponent();
@@ -61,11 +63,21 @@ namespace WrenchApp.Pages
             }
         
             Searchbox.Text = search;
+            order = "descending";
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void changeOrder(object sender, EventArgs e)
         {
-
+            if (order == "descending")
+            {
+                order = "ascending";
+                orderBy.Source = new BitmapImage(new Uri("pack://application:,,,/WrenchApp;component/Images/Icons/ascending.png"));
+            }
+            else
+            {
+                order = "descending";
+                orderBy.Source = new BitmapImage(new Uri("pack://application:,,,/WrenchApp;component/Images/Icons/descending.png"));
+            }
         }
     }
 }

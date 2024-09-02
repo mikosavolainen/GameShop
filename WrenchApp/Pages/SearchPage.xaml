@@ -411,7 +411,7 @@
                     <StackPanel Orientation="Horizontal" Height="70">
                         <Image Source="/WrenchApp;component/Images/Icons/RowView.png" Width="20" Margin="25 0 10 0" Cursor="Hand"/>
                         <Image Source="/WrenchApp;component/Images/Icons/GridView.png" Width="20" Margin="10 0" Cursor="Hand"/>
-                        <Image Source="/WrenchApp;component/Images/Icons/Descending.png" Width="20" Margin="10 0" Cursor="Hand"/>
+                        <Image Name="orderBy" Source="/WrenchApp;component/Images/Icons/Descending.png" Width="20" Margin="10 0" Cursor="Hand" MouseDown="changeOrder"/>
 
                         <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" Style="{DynamicResource ComboBoxStyle1}" SelectedIndex="0" Height="45" Width="200" VerticalContentAlignment="Center" FontSize="20" Foreground="White" >
                             <ComboBoxItem Content="Sort by popularity"/>
