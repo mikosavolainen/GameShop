@@ -24,5 +24,10 @@ namespace WrenchApp.Pages
         {
             InitializeComponent();
         }
+
+        private void Navigate_Library(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new LibraryPage());
+        }
     }
 }

@@ -63,6 +63,15 @@
                         <TextBlock Name="PopularPrice3" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
                     </StackPanel>
                 </Grid>
+                <TextBlock 
+                    HorizontalAlignment="Right" 
+                    Text="See all"
+                    TextDecorations="Underline"
+                    Foreground="#99B9EA"
+                    FontSize="20"
+                    Cursor="Hand"
+                    MouseDown="Navigate_Library"
+                />
 
                 <Grid Grid.ColumnSpan="2" Margin="50 200 50 75">
                     <Grid.ColumnDefinitions>
