@@ -33,12 +33,12 @@ export default function Button({
 }) {
   return (
     <div
-      className={`${(() => {
+      className={`border ${(() => {
         switch (size) {
           case 'small':
-            return 'border p-1'
+            return 'p-1'
           case 'big':
-            return 'border text-xl'
+            return 'text-lg py-1.5'
         }
       })()} ${(() => {
         switch (style) {
@@ -51,16 +51,16 @@ export default function Button({
         }
       })()} bg-white inline-block rounded-full relative ${ !disabled && 'shadow-[inset_0_1px_0_rgba(216,191,216,0.15)]' } active:shadow-none ${className}`}
     >
-      <span className="material-icons block absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+      <span className="material-icons block absolute left-2 top-[47%] -translate-y-1/2 pointer-events-none !text-[16px]">
         {icon}
       </span>
       {(() => {
         switch (type) {
           case 'link':
-            return <Link href="https://google.com" className="pl-7 pr-2">{text}</Link>
+            return <Link href="https://google.com" className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`}>{text}</Link>
           case 'button':
           case 'submit':
-            return <button>{text}</button>
+            return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`}>{text}</button>
         }
       })()}
     </div>
