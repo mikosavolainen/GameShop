@@ -7,10 +7,12 @@ export default function GameDisplay({discount, price, size, game_name, categorie
     let grids = ""
     let displayedDescription = description
     let displayedName = game_name
+    let image_width = 10000
     switch (size){
         case "small":
             displayedName = displayedName.substring(0, 30)
             displayedDescription = description.substring(0, 45)
+            image_width = 358
             break
         case "large":
             grids = "lg:grid lg:grid-cols-2 lg:gap-3"
@@ -24,7 +26,7 @@ export default function GameDisplay({discount, price, size, game_name, categorie
     }
     return(
         <div className={`${grids}`}>
-        <img className="rounded-3xl" src={test_image_wrench}/>
+        <img className="rounded-3xl" src={test_image_wrench} width={image_width}/>
             <div className="flex flex-col">
             <p className="text-wrench-neutral-white text-2xl py-2">{displayedName}</p>
             <Label categories={categories} />
