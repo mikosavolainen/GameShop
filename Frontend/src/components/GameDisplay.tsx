@@ -4,7 +4,6 @@ import Label from "./Label"
 import Button from "./Button"
 
 export default function GameDisplay({discount, price, size, game_name, categories, description}:{discount?: number, price: number, size: "small" | "large", game_name: string, categories: string[], description: string}){
-    let image_width = 0
     let grids = ""
     let displayedDescription = description
     let displayedName = game_name
@@ -12,11 +11,9 @@ export default function GameDisplay({discount, price, size, game_name, categorie
         case "small":
             displayedName = displayedName.substring(0, 30)
             displayedDescription = description.substring(0, 45)
-            image_width = 352
             break
         case "large":
-            image_width = 748
-            grids = "grid grid-cols-2"
+            grids = "lg:grid lg:grid-cols-2 lg:gap-3"
             break
     }
     if (displayedDescription != description){
@@ -27,7 +24,7 @@ export default function GameDisplay({discount, price, size, game_name, categorie
     }
     return(
         <div className={`${grids}`}>
-        <img className="rounded-3xl" src={test_image_wrench} width={image_width}/>
+        <img className="rounded-3xl" src={test_image_wrench}/>
             <div className="flex flex-col">
             <p className="text-wrench-neutral-white text-2xl py-2">{displayedName}</p>
             <Label categories={categories} />
