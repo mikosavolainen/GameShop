@@ -1,17 +1,32 @@
 import { Link } from "wouter";
 import Button from "./Button";
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Modal from "./Modal";
 import Input from "./Input";
 
 export default function Header() {
   const { modalOpen, setModalOpen } = useContext(AuthenticationModalContext)
+  useEffect(() => {
+    if(!open) {
+      
+    }
+  }, [open])
   return(
     <>
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal open={modalOpen} closeModal={() => setModalOpen(false)}>
         <h2 className="text-2xl">Sign Up</h2>
         <div>
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
           <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
         </div>
       </Modal>
