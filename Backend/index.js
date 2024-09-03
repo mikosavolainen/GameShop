@@ -9,7 +9,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 
-const SECRET_KEY = "Heh meidän salainen avain :DD"; // Heh meidän salainen avain :DD
+const SECRET_KEY =
+	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*’v｀*)♪Merry X’mas♪(*’v｀*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
