@@ -21,7 +21,8 @@ export default function Button({
   icon,
   text,
   disabled,
-  className
+  className,
+  onClick
 }: {
   type: 'link' | 'button' | 'submit'
   style?: 'purple' | 'coral' | 'neutral'
@@ -30,6 +31,7 @@ export default function Button({
   text: string
   disabled?: boolean
   className?: string
+  onClick?: () => void
 }) {
   return (
     <div
@@ -60,7 +62,7 @@ export default function Button({
             return <Link href="https://google.com" className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`}>{text}</Link>
           case 'button':
           case 'submit':
-            return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`}>{text}</button>
+            return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`} onClick={onClick}>{text}</button>
         }
       })()}
     </div>
