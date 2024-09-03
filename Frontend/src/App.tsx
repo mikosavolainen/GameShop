@@ -3,9 +3,7 @@ import Header from './components/Header.tsx'
 import Input from './components/Input.tsx'
 import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
-import Modal from './components/Modal.tsx'
-import { useContext, useState } from 'react'
-import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
+import AuthenticationModalWrapper from './wrappers/AuthenticationModalWrapper.tsx'
 
 function App() {
   return (
