@@ -3,7 +3,7 @@ import test_image_wrench from "../assets/test_image_wrench.png"
 import Label from "./Label"
 import Button from "./Button"
 
-export default function GameDisplay({discount, price, size, game_name, categories, description}:{discount?: number, price: number, size: "small" | "large", game_name: string, categories: string[], description: string}){
+export default function GameDisplay({classname, discount, price, size, game_name, categories, description}:{classname?: string, discount?: number, price: number, size: "small" | "large", game_name: string, categories: string[], description: string}){
     let grids = ""
     let displayedDescription = description
     let displayedName = game_name
@@ -12,7 +12,7 @@ export default function GameDisplay({discount, price, size, game_name, categorie
         case "small":
             displayedName = displayedName.substring(0, 30)
             displayedDescription = description.substring(0, 45)
-            image_width = 358
+            image_width = 380
             break
         case "large":
             grids = "lg:grid lg:grid-cols-2 lg:gap-3"
@@ -25,13 +25,13 @@ export default function GameDisplay({discount, price, size, game_name, categorie
         displayedName += "..."
     }
     return(
-        <div className={`${grids}`}>
+        <div className={`${grids} ${classname}`}>
         <img className="rounded-3xl" src={test_image_wrench} width={image_width}/>
             <div className="flex flex-col">
             <p className="text-wrench-neutral-white text-2xl py-2">{displayedName}</p>
             <Label categories={categories} />
             <p className="text-wrench-neutral-white text-left pt-2 text-base">{displayedDescription}</p>
-                <div className="flex flex-auto items-end">
+                <div className={`${size == "small" ? `flex flex-auto items-end` : `flex flex-auto items-end`}`}>
                 <Button className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
                 <Button className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>
                 {discount && (

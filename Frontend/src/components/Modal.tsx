@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Input from "./Input";
 
 export default function Modal({ open = false, onClose, children }: { open: boolean, onClose: () => void, children?: ReactNode }) {
   return (
