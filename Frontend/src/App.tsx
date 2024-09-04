@@ -20,11 +20,13 @@ function MainContent() {
   return(
     <>
         <Header />
-        <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
-        <Input type='text' style='light' size='big' icon='search' label='Search' className='w-1/2' placeholder='Start your search here' />
-        <Highlighted />
-        <Popular />
-        <New />
+        <div className="content-layout-margin">
+          <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
+          <Input type='text' style='light' size='big' icon='search' label='Search' className='w-1/2' placeholder='Start your search here' />
+          <Highlighted />
+          <Popular />
+          <New />
+        </div>
     </>
   )
 }
