@@ -4,15 +4,15 @@ import discord from "../assets/Frame-2.png"
 import youtube from "../assets/Frame-3.png"
 export default function Footer(){
     return(
-        <div className="pt-72 sm:flex pb-5">
-            <div>
+        <div className="pt-52 sm:flex pb-5">
+            <div className="pt-10">
                 <p className="text-wrench-neutral-white text-2xl">wrench</p>
                 <p className="text-sm text-wrench-neutral-3">© Wrench LLC 2024</p>
                 <p className="text-sm text-wrench-neutral-3">Los Angeles, Sigma street 69, apt 420F</p>
                 <p className="text-sm text-wrench-neutral-3">Ohio 6969694</p>
             </div>
             <div className="m-auto">
-                <div className="flex">
+                <div className="pt-10 flex">
                     <div className="pr-4">
                         <p className="text-wrench-neutral-white text-2xl">Resources</p>
                         <p className="text-sm text-wrench-neutral-1">Download</p>
