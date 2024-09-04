@@ -3,6 +3,7 @@ import Header from './components/Header.tsx'
 import Input from './components/Input.tsx'
 import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
+import New from './components/New.tsx'
 import AuthenticationModalWrapper from './wrappers/AuthenticationModalWrapper.tsx'
 
 function App() {
@@ -23,6 +24,7 @@ function MainContent() {
         <Input type='text' style='light' size='big' icon='search' label='Search' className='w-1/2' placeholder='Start your search here' />
         <Highlighted />
         <Popular />
+        <New />
     </>
   )
 }
