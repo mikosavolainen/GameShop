@@ -53,7 +53,7 @@ const convertUsernameToLowerCase = (req, res, next) => {
 		req.body.username = req.body.username.toLowerCase();
 	}
 	if (req.body.email) {
-		rreq.body.email = req.body.email.toLowerCase();
+		req.body.email = req.body.email.toLowerCase();
 	}
 	next();
 };
