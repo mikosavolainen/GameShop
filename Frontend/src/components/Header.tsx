@@ -30,11 +30,12 @@ export default function Header() {
           <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
         </div>
       </Modal>
-      <div className="flex items-center w-full h-16 z-20">
-        <div className="text-2xl font-semibold flex-1 block">
+      <div className="flex items-center w-full h-16 z-20 relative">
+        <div className="text-2xl font-semibold block">
           <Link href="/">wrench</Link>
         </div>
-        <div className="flex items-center flex-1 space-x-6 text-lg">
+        <div className="flex-1"></div>
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center space-x-6 text-lg">
           <Link href="/" className="hover:text-wrench-purple-1">Home</Link>
           <Link href="/" className="hover:text-wrench-purple-1">News</Link>
           <Link href="/" className="hover:text-wrench-purple-1">Download</Link>

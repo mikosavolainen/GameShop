@@ -1,23 +1,5 @@
 import "../App.css";
 
-/* switch (variation) {
-  case "small-white":
-    return "bg-wrench-neutral-white border-2 text-wrench-neutral-dark text-base p-1 pl-10 placeholder:text-wrench-neutral-2";
-    break;
-  case "normal-white":
-    string =
-      "bg-wrench-neutral-white border-2 text-wrench-neutral-dark text-xl p-2 pl-10 placeholder:text-wrench-neutral-2";
-    break;
-  case "small-dark":
-    string =
-      "bg-wrench-neutral-4 border text-wrench-neutral-white text-base p-1 pl-10 placeholder:text-wrench-neutral-3";
-    break;
-  case "normal-dark":
-    string =
-      "bg-wrench-neutral-4 border text-wrench-neutral-white text-xl p-2 pl-10 placeholder:text-wrench-neutral-3";
-    break;
-} */
-
 export default function Input({
   placeholder,
   className = "",
