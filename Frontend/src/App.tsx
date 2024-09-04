@@ -4,6 +4,7 @@ import Input from './components/Input.tsx'
 import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
+import Categories from './components/Categories.tsx'
 import AuthenticationModalWrapper from './wrappers/AuthenticationModalWrapper.tsx'
 
 function App() {
@@ -25,6 +26,7 @@ function MainContent() {
         <Highlighted />
         <Popular />
         <New />
+        <Categories />
     </>
   )
 }
