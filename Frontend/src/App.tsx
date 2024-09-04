@@ -38,7 +38,7 @@ function MainContent() {
 function HomePage() {
   return (
     <>
-      <div className="content-layout-margin">
+      <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
         <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
         <Input type='text' style='light' size='big' icon='search' label='Search' className='w-1/2' placeholder='Start your search here' />
         <Highlighted />
