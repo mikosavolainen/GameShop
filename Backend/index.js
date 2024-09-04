@@ -189,7 +189,7 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
     </body>
     </html>`;
 	await sendMail(Confirmation, "Email Confirmation", email);
-	res.status(201);
+	res.status(243).send("Done");
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
