@@ -15,6 +15,7 @@ import { Link } from 'wouter'
  * @returns {JSX.Element} The rendered button element.
  */
 export default function Button({
+  href,
   type,
   style = 'neutral',
   size = 'small',
@@ -24,6 +25,7 @@ export default function Button({
   className,
   onClick
 }: {
+  href?: string,
   type: 'link' | 'button' | 'submit'
   style?: 'purple' | 'coral' | 'neutral'
   size?: 'small' | 'big'
@@ -59,7 +61,7 @@ export default function Button({
       {(() => {
         switch (type) {
           case 'link':
-            return <Link href="https://google.com" className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`}>{text}</Link>
+            return <Link href={href ?? ""} className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`}>{text}</Link>
           case 'button':
           case 'submit':
             return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`} onClick={onClick}>{text}</button>

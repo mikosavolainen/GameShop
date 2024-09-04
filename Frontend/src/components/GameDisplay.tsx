@@ -2,6 +2,7 @@ import "../App.css";
 import test_image_wrench from "../assets/test_image_wrench.png"
 import Label from "./Label"
 import Button from "./Button"
+import { Link } from "wouter"
 
 export default function GameDisplay({classname, discount, price, size, game_name, categories, description}:{classname?: string, discount?: number, price: number, size: "small" | "large", game_name: string, categories: string[], description: string}){
     let grids = ""
@@ -10,7 +11,7 @@ export default function GameDisplay({classname, discount, price, size, game_name
     switch (size){
         case "small":
             displayedName = displayedName.substring(0, 30)
-            displayedDescription = description.substring(0, 45)
+            displayedDescription = description.substring(0, 60)
             break
         case "large":
             grids = "xl:grid xl:grid-cols-2 xl:gap-3"
@@ -23,6 +24,7 @@ export default function GameDisplay({classname, discount, price, size, game_name
         displayedName += "..."
     }
     return(
+        <Link href="/test">
         <div className={`${grids} ${classname}`}>
         <img className="rounded-3xl" src={test_image_wrench} alt="Game"/>
             <div className="flex flex-col">
@@ -31,7 +33,7 @@ export default function GameDisplay({classname, discount, price, size, game_name
             <p className="text-wrench-neutral-white text-left pt-2 text-base">{displayedDescription}</p>
             {size == "large" &&(
                 <div className="flex flex-auto items-end">
-                <Button className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                <Button href="/test" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
                 <Button className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>
                 {discount && (
                     <p className="text-wrench-neutral-2 text-left text-base py-1 pr-4 line-through" id="price">{price} €</p>
@@ -65,5 +67,6 @@ export default function GameDisplay({classname, discount, price, size, game_name
             )}
             </div>
         </div>
+        </Link>
     )
 }
