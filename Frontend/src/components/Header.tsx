@@ -1,17 +1,17 @@
 import { Link } from "wouter";
 import Button from "./Button";
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { useContext, useEffect } from "react";
+import { useContext, /*useEffect*/ } from "react";
 import Modal from "./Modal";
 import Input from "./Input";
 
 export default function Header() {
   const { modalOpen, setModalOpen } = useContext(AuthenticationModalContext)
-  useEffect(() => {
-    if(!open) {
+  // useEffect(() => {
+  //   if(!open) {
       
-    }
-  }, [open])
+  //   }
+  // }, [open])
   return(
     <>
       <Modal open={modalOpen} closeModal={() => setModalOpen(false)}>

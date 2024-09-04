@@ -6,6 +6,7 @@ import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
 import Categories from './components/Categories.tsx'
+import Footer from "./components/footer.tsx";
 import AuthenticationModalWrapper from './wrappers/AuthenticationModalWrapper.tsx'
 
 function App() {
@@ -40,6 +41,7 @@ function HomePage() {
         <Popular />
         <New />
         <Categories />
+        <Footer />
       </div>
     </>
   )

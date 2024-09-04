@@ -36,12 +36,14 @@ export default function Categories(){
                 break
         }
         return(
-            <button className="bg-wrench-neutral-dark rounded-lg border border-wrench-neutral-3 py-9">
-            <div>
-            <img className="block m-auto" src={`${pngSRC}`}/>
-            </div>
-            <div>{name}</div>
-        </button>
+            <>
+                <button className="bg-wrench-neutral-dark rounded-lg border border-wrench-neutral-3 py-9">
+                <div>
+                <img className="block m-auto" src={`${pngSRC}`}/>
+                </div>
+                <div>{name}</div>
+                </button>
+            </>
         )
     }
     return(
