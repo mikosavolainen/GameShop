@@ -188,7 +188,7 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
     </body>
     </html>`;
 	await sendMail(Confirmation, "Email Confirmation", email);
-	res.status(201).json({ confirms });
+	res.status(201);
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
@@ -196,6 +196,9 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	const user = await User.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
+	if (!user.confirmedemail) {
+		res.status(403).send("email is not verified");
+	}
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
 	}
