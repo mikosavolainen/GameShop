@@ -37,7 +37,7 @@ export default function Categories(){
         }
         return(
             <>
-                <button className="bg-wrench-neutral-dark rounded-lg border border-wrench-neutral-3 py-9">
+                <button className="bg-wrench-neutral-dark rounded-2xl border border-wrench-neutral-3 py-9">
                 <div>
                 <img className="block m-auto" src={`${pngSRC}`}/>
                 </div>
@@ -49,7 +49,7 @@ export default function Categories(){
     return(
         <>
         <p className="text-2xl pt-10">By categories</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 text-center">
             <Button name="War" png="swords"/>
             <Button name="Arcade" png="arcade"/>
             <Button name="Simulator" png="simulator"/>
