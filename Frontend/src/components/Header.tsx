@@ -38,7 +38,7 @@ export default function Header() {
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center space-x-6 text-lg">
           <Link href="/" className="hover:text-wrench-purple-1">Home</Link>
           <Link href="/" className="hover:text-wrench-purple-1">News</Link>
-          <Link href="/" className="hover:text-wrench-purple-1">Download</Link>
+          <Link href="/test" className="hover:text-wrench-purple-1">Download</Link>
         </div>
         <div className="flex items-center space-x-4">
           <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">shopping_basket</Link>
