@@ -9,6 +9,7 @@ import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappe
 import { useContext } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/footer.tsx";
+import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function MainContent() {
         <Route path="/" component={HomePage} />
         <Route path="/test" component={TestPage} />
       </Switch>
+      <MobileNavigationBar />
     </div>
   )
 }
