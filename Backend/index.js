@@ -16,12 +16,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench", {
+mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/", {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
 
 const db = mongoose.connection;
+
 db.once("open", () => {
 	console.log("Connected to MongoDB");
 });
