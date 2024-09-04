@@ -14,7 +14,7 @@ export default function GameDisplay({classname, discount, price, size, game_name
             displayedDescription = description.substring(0, 60)
             break
         case "large":
-            grids = "xl:grid xl:grid-cols-2 xl:gap-3"
+            grids = "grid lg:grid-cols-2 lg:gap-3"
             break
     }
     if (displayedDescription != description){
