@@ -7,6 +7,8 @@ import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
 import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
 import { useContext } from "react";
+import Categories from './components/Categories.tsx'
+import Footer from "./components/footer.tsx";
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function HomePage() {
         <Highlighted />
         <Popular />
         <New />
+        <Categories />
+        <Footer />
       </div>
     </>
   )
