@@ -30,7 +30,7 @@ export default function Header() {
           <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
         </div>
       </Modal>
-      <div className="flex items-center w-full h-16 z-20 sticky top-0 bg-wrench-neutral-dark/50 backdrop-blur-md content-layout-padding">
+      <div className="flex items-center w-full h-16 z-20 sticky top-0 bg-wrench-neutral-dark/85 backdrop-blur-3xl content-layout-padding">
         <div className="text-2xl font-semibold block">
           <Link href="/">wrench</Link>
         </div>

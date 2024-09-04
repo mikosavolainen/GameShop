@@ -1,45 +1,75 @@
-import { ReactNode, useEffect, useRef, MouseEvent } from "react";
+import { ReactNode, useEffect, useRef, MouseEvent, useState } from "react";
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Modal({ open = false, closeModal, children }: { open: boolean, closeModal: () => void, children?: ReactNode }) {
-  const modalRef = useRef<HTMLDivElement>(null);
-  // const scrollPosition = useRef<number>(0);
+  const scrollPosition = useRef(0);
+  const [scrollTop, setScrollTop] = useState(0);
+
+  const handleScroll = () => {
+    setScrollTop(window.scrollY);
+    console.log(window.scrollY)
+  };
 
   useEffect(() => {
-    // Function to prevent scrolling
-    const preventScroll = (event: Event) => {
-      event.preventDefault();
-      event.stopPropagation();
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const disableScroll = () => {
+      // Save the current scroll position
+      scrollPosition.current = scrollTop;
+
+      // Set body to fixed position at the current scroll position
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollPosition.current}px`;
+      document.body.style.width = '100%';
+    };
+
+    const enableScroll = () => {
+      // Re-enable scroll and reset the body's position
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+
+      // Restore the scroll position
+      window.scrollTo(0, scrollPosition.current);
     };
 
     if (open) {
-      // Add event listeners to prevent scroll
-      document.addEventListener('wheel', preventScroll, { passive: false });
-      document.addEventListener('touchmove', preventScroll, { passive: false });
-      document.addEventListener('keydown', preventScroll, { passive: false }); // Optional: to prevent scroll via keyboard (e.g., arrow keys)
-
-      // Optionally, save and reset scroll position if needed
-      // scrollPosition.current = window.scrollY;
-
+      disableScroll();
     } else {
-      // Remove event listeners to enable scroll
-      document.removeEventListener('wheel', preventScroll);
-      document.removeEventListener('touchmove', preventScroll);
-      document.removeEventListener('keydown', preventScroll);
+      enableScroll();
     }
 
-    // Cleanup on component unmount or when `open` changes
+    // Cleanup when the modal is closed
     return () => {
-      document.removeEventListener('wheel', preventScroll);
-      document.removeEventListener('touchmove', preventScroll);
-      document.removeEventListener('keydown', preventScroll);
+      enableScroll();
     };
   }, [open]);
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if(event.key === 'Escape') closeModal()
+  };
+
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <AnimatePresence>
       {open && (
-        <motion.div ref={modalRef} className={`fixed w-full h-full backdrop-blur-md top-0 left-0 md:py-12 z-30`} onClick={closeModal}
+        <motion.div className={`fixed w-full h-full backdrop-blur-md top-0 left-0 md:py-12 z-30 overflow-y-auto`} onClick={closeModal}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

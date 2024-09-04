@@ -5,9 +5,10 @@ import Input from './components/Input.tsx'
 import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
+import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
+import { useContext } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/footer.tsx";
-import AuthenticationModalWrapper from './wrappers/AuthenticationModalWrapper.tsx'
 
 function App() {
   return (
@@ -20,14 +21,15 @@ function App() {
 }
 
 function MainContent() {
+  const { scrollbarCompensation } = useContext(AuthenticationModalContext)
   return(
-    <>
-        <Header />
-        <Switch>
-          <Route path="/" component={HomePage} />
-          <Route path="/test" component={TestPage} />
-        </Switch>
-    </>
+    <div style={{marginRight: scrollbarCompensation+"px"}}>
+      <Header />
+      <Switch>
+        <Route path="/" component={HomePage} />
+        <Route path="/test" component={TestPage} />
+      </Switch>
+    </div>
   )
 }
 
