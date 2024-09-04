@@ -16,7 +16,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/", {
+mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench", {
+	
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
