@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,25 +41,75 @@ namespace WrenchApp
             }
         }
 
-        private void Log_In(object sender, EventArgs e)
+        async private void Log_In(object sender, EventArgs e)
         {
             string username = Username.Text;
             string password = Password.Password.ToString();
 
-            MessageBox.Show($"Successfully logged in\nUsername: {username}\nPassword: {password}");
+            // Ensure username and password are given
+            if (username == "" || password == "")
+            {
+                MessageBox.Show("Missing information!", "Warning");
+            } else
+            {
+                //////////////////////////////////////////////////////////////
+                // Skip logic if in edit mode                               //
+                if (ConfigurationManager.AppSettings["editmode"] == "true") //
+                {                                                           //
+                    Window mainWindow = new MainWindow();                   //
+                    mainWindow.Show();                                      //
+                    this.Close();                                           //
+                }                                                           //
+                //////////////////////////////////////////////////////////////
 
-            Window mainwindow = new MainWindow();
-            mainwindow.Show();
-            this.Close();
+                var formContent = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("username", username),
+                    new KeyValuePair<string, string>("password", password)
+                });
+
+                // Create a new HttpClient to handle the request
+                HttpClient httpClient = new HttpClient();
+
+                // Send a Get request to the specified URL
+
+                try
+                {
+                    // Attempt to send login request
+                    HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/login", formContent);
+
+                    try
+                    {
+                        // Ensure response is ok and extract the jwt token
+                        response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+
+                        // WRITE CODE ON SAVING JWT AUTH AND USERNAME
+
+                        // Open main window
+                        Window mainWindow = new MainWindow();
+                        mainWindow.Show();
+                        this.Close();
+                    } catch
+                    {
+                        MessageBox.Show("Incorrect credentials!", "Error");
+                    }
+
+                } catch
+                {
+                    MessageBox.Show("Error connecting to server!", "Error");
+                }
+            }
         }
 
         private void Forgot_Password(object sender, EventArgs e)
         {
-            MessageBox.Show("Too bad :(", "");
+            MessageBox.Show("Too bad :(", "Sucks to suck");
         }
 
         private void Register(object sender, RoutedEventArgs e)
         {
+            // Open register window
             Window register = new Register();
             register.Show();
             this.Close();

@@ -1,0 +1,245 @@
+﻿<Page x:Class="WrenchApp.Pages.GameScreen"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WrenchApp.Pages"
+      mc:Ignorable="d" 
+      Title="GameScreen">
+    <Page.Resources>
+        <Style x:Key="{x:Type RichTextBox}" TargetType="{x:Type RichTextBox}">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <Grid Width="1200" Margin="0 150 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Column="0" Grid.Row="0">
+                <Image Source="/WrenchApp;component/Images/placeholder.png" Width="600" Height="350" Stretch="UniformToFill"/>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
+                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
+                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
+                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
+                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="0" Margin="15 0 0 0">
+                <TextBlock Name="Title" Text="Game Name" Foreground="White" FontSize="40"/>
+                
+                <StackPanel Orientation="Horizontal" Margin="5 5">
+                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="6" Margin="0 0 10 0"> 
+                        <Label Foreground="White" Content="Tag1"/> 
+                    </Border>
+                    
+                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="6" Margin="0 0 10 0">
+                        <Label Foreground="White" Content="Tag2"/>
+                    </Border>
+                    
+                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="6" Margin="0 0 10 0">
+                        <Label Foreground="White" Content="Tag3"/>
+                    </Border>
+                    
+                </StackPanel>
+
+                <TextBlock Text="★★★☆☆ (3/5)" FontSize="20" Foreground="White" Margin="0 5"/>
+
+                <TextBlock Name="ShortDesc" Foreground="LightGray" FontSize="20" TextWrapping="WrapWithOverflow" Height="255"
+                           Text="This is a shortform description, so a shorter version that more accurately explains what the app does in a smaller format.
+                           I am yapping on purpose. I am trying to fill this space up as to make this description look better."/>
+
+                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1">
+                    <TextBlock Foreground="White" FontSize="20" Padding="30 20" Text="Add to Cart" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0 100 0 0">
+                <TextBlock Text="About" FontSize="40" Foreground="White" Margin="0 0 0 20"/>
+                <RichTextBox Foreground="White">
+                    <FlowDocument>
+                        <Paragraph FontSize="25">
+                            This shit is a demo of an extended description. It will contain a bunch of text that will be written all here. I am trying to fill this up as much as possible. I am now going to copy paste the large akmount of text that Nikolai wrote: "Test description of the game, so we can see how it will appear in the future application! 
+                            On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it 
+                            fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
+                            <LineBreak/>
+                            <LineBreak/>
+                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! 
+                            On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
+                            <LineBreak/>
+                            <LineBreak/>
+                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
+                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
+                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! 
+                            On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
+                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0 100 0 0" Grid.ColumnSpan="2">
+                <TextBlock Text="Reviews" FontSize="40" Foreground="White" Margin="0 0 0 10"/>
+                <Grid Margin="20 0 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Name="ReviewColumn1" Grid.Column="0">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Width="440">
+                                    <Border CornerRadius="100" Height="50" Width="50" Margin="0 0 15 5">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Username" Foreground="White" FontSize="20"/>
+                                        <TextBlock Text="20th December 2024" Foreground="Gray" FontSize="15"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Label Content="★★★☆☆ (3/5)" Width="150" Height="55" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="White" FontSize="20"/>
+                            </StackPanel>
+                            <RichTextBox Foreground="LightGray" FontSize="15">
+                                <FlowDocument>
+                                    <Paragraph>
+                                        This is a review of the game that I just played. I think that this game has alot of potential, but sadly falls flat due to it's completely and utterly unhinged story. There were moments in the game where I somehow felt genuienly scared for my own life, as there were multiple pictures of my own home and detailed descriptions of what the developer would do to me if I didn't rate it 5/5.
+                                    </Paragraph>
+                                    <Paragraph>
+                                        Putting aside the death threats, and the attempted break in, the gameplay itself was quite fun. I enjoyed how when I moved left it would sometimes move right. I believe this was made to make the player immersed in the world of a drunk person in the middle of the NY city.
+                                    </Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Width="440">
+                                    <Border CornerRadius="100" Height="50" Width="50" Margin="0 0 15 5">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Username" Foreground="White" FontSize="20"/>
+                                        <TextBlock Text="20th December 2024" Foreground="Gray" FontSize="15"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Label Content="★★★☆☆ (3/5)" Width="150" Height="55" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="White" FontSize="20"/>
+                            </StackPanel>
+                            <RichTextBox Foreground="LightGray" FontSize="15">
+                                <FlowDocument>
+                                    <Paragraph>
+                                        This is a review of the game that I just played. I think that this game has alot of potential, but sadly falls flat due to it's completely and utterly unhinged story. There were moments in the game where I somehow felt genuienly scared for my own life, as there were multiple pictures of my own home and detailed descriptions of what the developer would do to me if I didn't rate it 5/5.
+                                    </Paragraph>
+                                    <Paragraph>
+                                        Putting aside the death threats, and the attempted break in, the gameplay itself was quite fun. I enjoyed how when I moved left it would sometimes move right. I believe this was made to make the player immersed in the world of a drunk person in the middle of the NY city.
+                                    </Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Name="ReviewColumn2" Grid.Column="1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Width="440">
+                                    <Border CornerRadius="100" Height="50" Width="50" Margin="0 0 15 5">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Username" Foreground="White" FontSize="20"/>
+                                        <TextBlock Text="20th December 2024" Foreground="Gray" FontSize="15"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Label Content="★★★☆☆ (3/5)" Width="150" Height="55" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="White" FontSize="20"/>
+                            </StackPanel>
+                            <RichTextBox Foreground="LightGray" FontSize="15">
+                                <FlowDocument>
+                                    <Paragraph>
+                                        This is a review of the game that I just played. I think that this game has alot of potential, but sadly falls flat due to it's completely and utterly unhinged story. There were moments in the game where I somehow felt genuienly scared for my own life, as there were multiple pictures of my own home and detailed descriptions of what the developer would do to me if I didn't rate it 5/5.
+                                    </Paragraph>
+                                    <Paragraph>
+                                        Putting aside the death threats, and the attempted break in, the gameplay itself was quite fun. I enjoyed how when I moved left it would sometimes move right. I believe this was made to make the player immersed in the world of a drunk person in the middle of the NY city.
+                                    </Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="50 200 50 75">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Label Content="wrench" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="© Wrench LLC 2024&#x0a;Los Angeles, Sigma street 69, apt 420F&#x0a;Ohio 696969" 
+                    Foreground="#878787" 
+                    FontSize="15"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 15 0">
+                    <TextBlock Text="Resources" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="Developers" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Support" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Status" Foreground="White" FontSize="20" Cursor="Hand"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 0 0 0">
+                    <TextBlock Text="Legal" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="Terms of Service" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Privacy Policy" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Cookies" Foreground="White" FontSize="20" Cursor="Hand"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15 0 0 0">
+                    <TextBlock Text="Brand" Foreground="White" FontSize="25" HorizontalAlignment="Right"/>
+                    <TextBlock Text="Inquiries" Foreground="White" FontSize="25" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/facebook.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/instagram.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/discord.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/youtube.png" Cursor="Hand"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</Page>

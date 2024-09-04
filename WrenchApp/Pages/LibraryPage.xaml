@@ -7,7 +7,60 @@
       mc:Ignorable="d" 
       Title="LibraryPage">
 
-    <Grid>
-        
-    </Grid>
+    <ScrollViewer>
+        <Grid Width="1200" Margin="0 150 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <WrapPanel Name="GameHolder" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Margin="25" Width="250" Height="250" Background="#303030">
+                    <Image Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="250" Stretch="UniformToFill"/>
+                    <TextBlock Text="Game name" Foreground="White" FontSize="20" Margin="5 5 0 0"/>
+                    <Button HorizontalAlignment="Center" Height="45" Width="200" Content="Play" Background="#6A0DAD" Foreground="White" FontSize="20" Margin="0 5 0 0"/>
+                </StackPanel>
+            </WrapPanel>
+            
+            <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="50 200 50 75">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Label Content="wrench" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="© Wrench LLC 2024&#x0a;Los Angeles, Sigma street 69, apt 420F&#x0a;Ohio 696969" 
+                         Foreground="#878787" 
+                         FontSize="15"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 15 0">
+                    <TextBlock Text="Resources" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="Developers" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Support" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Status" Foreground="White" FontSize="20" Cursor="Hand"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 0 0 0">
+                    <TextBlock Text="Legal" Foreground="White" FontSize="25"/>
+                    <TextBlock Text="Terms of Service" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Privacy Policy" Foreground="White" FontSize="20" Cursor="Hand"/>
+                    <TextBlock Text="Cookies" Foreground="White" FontSize="20" Cursor="Hand"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15 0 0 0">
+                    <TextBlock Text="Brand" Foreground="White" FontSize="25" HorizontalAlignment="Right"/>
+                    <TextBlock Text="Inquiries" Foreground="White" FontSize="25" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/facebook.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/instagram.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/discord.png" Cursor="Hand" Margin="0 0 10 0"/>
+                        <Image Height="25" Source="/WrenchApp;component/Images/Icons/youtube.png" Cursor="Hand"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </Page>

@@ -8,6 +8,20 @@
       Title="SearchPage"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Page.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="15" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="{x:Type CheckBox}">
             <Setter Property="FontSize" Value="17"/>
             <Setter Property="Foreground" Value="White"/>
@@ -450,6 +464,8 @@
                         <CheckBox Content="On Sale" FontSize="17" Foreground="White" Margin="0 10"/>
                     </StackPanel>
                 </Border>
+
+                <Button Height="70" Margin="0 15 0 0" Content="Search" Foreground="White" FontSize="20" Background="#6A0DAD"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1">

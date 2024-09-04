@@ -39,6 +39,11 @@ namespace WrenchApp.Pages
             this.NavigationService.Navigate(new SearchPage(tag: tagToSearch));
         }
 
+        private void Game_Screen(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new GameScreen());
+        }
+
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string searchedGame = Searchbox.Text;
