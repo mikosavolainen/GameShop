@@ -8,7 +8,7 @@ export default function Modal({ open = false, closeModal, children }: { open: bo
     // Lock the background scroll when the modal is open
     if (open) {
       document.body.style.overflow = "hidden";
-            if (modalRef.current) {
+      if (modalRef.current) {
         modalRef.current.style.overflow = "auto";
       }
     } else {

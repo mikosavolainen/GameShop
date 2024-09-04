@@ -17,17 +17,17 @@ export default function Header() {
       <Modal open={modalOpen} closeModal={() => setModalOpen(false)}>
         <h2 className="text-2xl">Sign Up</h2>
         <div>
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' variation='normal-white' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
+          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
         </div>
       </Modal>
       <div className="flex items-center w-full h-16 z-20">
