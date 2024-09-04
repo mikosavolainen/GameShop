@@ -15,7 +15,7 @@ export default function GameDisplay({classname, discount, price, size, game_name
             image_width = 380
             break
         case "large":
-            grids = "lg:grid lg:grid-cols-2 lg:gap-3"
+            grids = "xl:grid xl:grid-cols-2 xl:gap-3"
             break
     }
     if (displayedDescription != description){
@@ -26,12 +26,13 @@ export default function GameDisplay({classname, discount, price, size, game_name
     }
     return(
         <div className={`${grids} ${classname}`}>
-        <img className="rounded-3xl" src={test_image_wrench} width={image_width}/>
+        <img className="rounded-3xl" src={test_image_wrench} width={image_width} alt="Game"/>
             <div className="flex flex-col">
             <p className="text-wrench-neutral-white text-2xl py-2">{displayedName}</p>
             <Label categories={categories} />
             <p className="text-wrench-neutral-white text-left pt-2 text-base">{displayedDescription}</p>
-                <div className={`${size == "small" ? `flex flex-auto items-end` : `flex flex-auto items-end`}`}>
+            {size == "large" &&(
+                <div className="flex flex-auto items-end">
                 <Button className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
                 <Button className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>
                 {discount && (
@@ -44,6 +45,26 @@ export default function GameDisplay({classname, discount, price, size, game_name
                     <p className="text-wrench-neutral-white text-left text-base py-1" id="price">{price} €</p>
                 )}
                 </div>
+            )}
+            {size == "small" &&(
+                <div className="flex flex-auto items-end">
+                {discount && (
+                    <p className="text-wrench-neutral-2 text-left text-base py-1 pr-4 line-through" id="price">{price} €</p>
+                )}
+                {discount && (
+                    <p className="text-wrench-neutral-white text-left text-base py-1" id="price">{discount} €</p>
+                )}
+                {discount == null && (
+                    <p className="text-wrench-neutral-white text-left text-base py-1" id="price">{price} €</p>
+                )}
+                </div>
+            )}
+            {size == "small" &&(
+                <div className="flex flex-auto items-end">
+                <Button className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                <Button className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>
+                </div>
+            )}
             </div>
         </div>
     )
