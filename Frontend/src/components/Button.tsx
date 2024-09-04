@@ -59,10 +59,10 @@ export default function Button({
       {(() => {
         switch (type) {
           case 'link':
-            return <Link href="https://google.com" className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`}>{text}</Link>
+            return <Link href="https://google.com" className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`}>{text}</Link>
           case 'button':
           case 'submit':
-            return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`} onClick={onClick}>{text}</button>
+            return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`} onClick={onClick}>{text}</button>
         }
       })()}
     </div>
