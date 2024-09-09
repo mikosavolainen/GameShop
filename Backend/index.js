@@ -17,7 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // Mongoose
-mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/", {
+mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench", {
+	
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
@@ -191,7 +192,7 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
     </body>
     </html>`;
 	await sendMail(Confirmation, "Email Confirmation", email);
-	res.status(200);
+	res.status(243).send("Done");
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
