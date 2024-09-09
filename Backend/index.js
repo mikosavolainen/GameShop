@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
-const { StringDecoder } = require("string_decoder");
+
 
 const SECRET_KEY =
 	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
 });
 const users = mongoose.model("users", userSchema);
 
-const GamesSchema = new mongoose.Schema({
+const gamesSchema = new mongoose.Schema({
 	name: { type: String, required: true },
 	desc: { type: String },
 	gamefileloc: { type: String },
@@ -49,7 +49,7 @@ const GamesSchema = new mongoose.Schema({
     multiplayer:{ type: String },
     Picturefileloc: { type: String },
 });
-const games = mongoose.model("games", GamesSchema);
+const games = mongoose.model("games", gamesSchema);
 
 
 const ReviewsSchema = new mongoose.Schema({
@@ -99,6 +99,18 @@ async function sendMail(Msg, sub, email) {
 app.get("/", (req, res) => {
 	res.json("hello world");
 });
+
+app.post("/get-all-games", async (req, res) => {
+    try {
+        const game = await games.find(); 
+        res.json(game); 
+    } catch (error) {
+        console.error("Error fetching games:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
 
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
