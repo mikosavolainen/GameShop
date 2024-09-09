@@ -10,17 +10,18 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 
 const SECRET_KEY =
-	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*’v｀*)♪Merry X’mas♪(*’v｀*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
+	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Mongoose
 mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/", {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
-
+mongoose.set("debug", true);
 const db = mongoose.connection;
 
 db.once("open", () => {
@@ -44,7 +45,7 @@ const GamesSchema = new mongoose.Schema({
 	author: { type: String },
 	category: { type: Array },
 	price: { type: Number },
-	rating: { type: Array },
+	ratings: { type: Array },
 });
 const Games = mongoose.model("Games", GamesSchema);
 
@@ -81,9 +82,11 @@ async function sendMail(Msg, sub, email) {
 		console.log("Error sending email:", error);
 	}
 }
+
 app.get("/", (req, res) => {
 	res.json("hello world");
 });
+
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
 	if (jwts) {
@@ -188,7 +191,7 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
     </body>
     </html>`;
 	await sendMail(Confirmation, "Email Confirmation", email);
-	res.status(201);
+	res.status(200);
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
@@ -206,7 +209,81 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
 	res.json({ token });
 });
+app.post("/forgot-password", async (req, res) => {
+	const { email } = req.body;
+	const user = await User.findOne({ email });
+	if (!user) {
+		res.status(400).send("didnt find email")
+	}
+	confirmation = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Reset Request</h1>
+        <p>Hello,</p>
+        <p>We received a request to reset the password for your account associated with this email address. If you did not request a password reset, please ignore this email.</p>
+        <p>To reset your password, please click the button below:</p>
+        <a href="https://yourwebsite.com/reset-password?token=YOUR_RESET_TOKEN" class="button">Reset Password</a>
+        <p>If the button above does not work, please copy and paste the following link into your web browser:</p>
+        <p>https://yourwebsite.com/reset-password?token=YOUR_RESET_TOKEN</p>
+        <p>This link will expire in 24 hours for your security.</p>
+        <p>Thank you,<br>Your Company Name</p>
+    </div>
+    <div class="footer">
+        <p>If you did not request this, please ignore this email.</p>
+    </div>
+</body>
+</html>
+`;
 
+	await sendMail(Confirmation, "Password reset", email);
+	res.status(200).send("reset password email send")
+})
 app.post("/upload", async (req, res) => {
 	if (req.file) {
 		// Upload logic here
