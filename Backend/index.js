@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
 	password: { type: String, required: true },
 	confirmedemail: { type: Boolean, default: false },
 });
-const User = mongoose.model("User", userSchema);
+const users = mongoose.model("users", userSchema);
 
 const GamesSchema = new mongoose.Schema({
 	name: { type: String, required: true },
@@ -46,7 +46,7 @@ const GamesSchema = new mongoose.Schema({
 	price: { type: Number },
 	ratings: { type: Array },
 });
-const Games = mongoose.model("Games", GamesSchema);
+const games = mongoose.model("games", GamesSchema);
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -91,7 +91,10 @@ app.get("/confirm", async (req, res) => {
 	if (jwts) {
 		try {
 			const { username } = jwt.verify(jwts, SECRET_KEY);
-			await User.findOneAndUpdate({ username }, { confirmedemail: true });
+			await users.findOneAndUpdate(
+				{ username },
+				{ confirmedemail: true }
+			);
 			res.send("Email confirmed successfully.");
 		} catch (error) {
 			res.status(400).send("Invalid or expired confirmation link.");
@@ -104,12 +107,12 @@ app.get("/confirm", async (req, res) => {
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	const existingUser = await User.findOne({ username });
+	const existingUser = await users.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Username already exists");
 	}
 	const hashedPassword = await bcrypt.hash(password, 10);
-	const newUser = new User({
+	const newUser = new users({
 		username,
 		password: hashedPassword,
 		email,
@@ -195,7 +198,7 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password } = req.body;
-	const user = await User.findOne({
+	const user = await users.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
 	if (!user.confirmedemail) {
@@ -208,12 +211,27 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
 	res.json({ token });
 });
-app.post("/forgot-password", async (req, res) => {
-	const { email } = req.body;
-	const user = await User.findOne({ email });
-	if (!user) {
-		res.status(400).send("didnt find email");
+app.post("/reset-password", async (req, res) => {
+	const { token } = req.query
+	const x = jwt.verify(token, SECRET_KEY)
+	if (x) {
+		const u = users.findOne({ email: x.email })
+		
 	}
+})
+app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
+	const { email } = req.body;
+	const user = await users.findOne({ email: email });
+	
+	if (!user) {
+		return res.status(400).send("didnt find email");
+	}
+	if (!user.confirmedemail) {
+		return res.status(401).send("You need to confirm your email")
+	}
+	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
+
+
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -267,9 +285,9 @@ app.post("/forgot-password", async (req, res) => {
         <p>Hello,</p>
         <p>We received a request to reset the password for your account associated with this email address. If you did not request a password reset, please ignore this email.</p>
         <p>To reset your password, please click the button below:</p>
-        <a href="https://yourwebsite.com/reset-password?token=YOUR_RESET_TOKEN" class="button">Reset Password</a>
+        <a href="http://localhost:5000/reset-password?token=${token}" class="button">Reset Password</a>
         <p>If the button above does not work, please copy and paste the following link into your web browser:</p>
-        <p>https://yourwebsite.com/reset-password?token=YOUR_RESET_TOKEN</p>
+        <p>http://localhost:5000/reset-password?token=${token}</p>
         <p>This link will expire in 24 hours for your security.</p>
         <p>Thank you,<br>Your Company Name</p>
     </div>
@@ -280,8 +298,8 @@ app.post("/forgot-password", async (req, res) => {
 </html>
 `;
 
-	await sendMail(Confirmation, "Password reset", email);
-	res.status(200).send("reset password email send");
+	await sendMail(confirmation, "Password reset", email);
+	return res.status(200).send("reset password email send");
 });
 app.post("/upload", async (req, res) => {
 	if (req.file) {
