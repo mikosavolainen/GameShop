@@ -10,13 +10,18 @@ import { useContext } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/footer.tsx";
 import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
     <>
-      <AuthenticationModalWrapper>
-        <MainContent />
-      </AuthenticationModalWrapper>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationModalWrapper>
+          <MainContent />
+        </AuthenticationModalWrapper>
+      </QueryClientProvider>
     </>
   )
 }

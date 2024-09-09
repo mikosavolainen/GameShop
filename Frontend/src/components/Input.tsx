@@ -13,6 +13,7 @@ export default function Input({
   required = false,
   value,
   error,
+  name,
 }: {
   placeholder: string;
   className?: string;
@@ -26,6 +27,7 @@ export default function Input({
   required?: boolean;
   value?: string;
   error?: string;
+  name?: string;
 }) {
   return (
     <div className={outerClassName}>
@@ -56,6 +58,7 @@ export default function Input({
         <input
           onChange={onChange}
           type={`${type}`}
+          name={name}
           className={`${(() => {
             switch (size) {
               case "small":
