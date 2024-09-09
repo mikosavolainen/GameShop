@@ -17,10 +17,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench", {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+mongoose.connect(
+	"mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench",
+	{}
+);
 
 const db = mongoose.connection;
 
@@ -46,19 +46,17 @@ const GamesSchema = new mongoose.Schema({
 	category: { type: Array },
 	price: { type: Number },
 	ratings: { type: Array },
-    multiplayer:{ type: String },
-    Picturefileloc: { type: String },
+	multiplayer: { type: String },
+	Picturefileloc: { type: String },
 });
 const games = mongoose.model("games", GamesSchema);
 
-
 const ReviewsSchema = new mongoose.Schema({
-    game: { type: String },
-    date: { type: Number },
-    writer: { type: String },
-    ratings: { type: Array },
-    desc: { type: String },
-
+	game: { type: String },
+	date: { type: Number },
+	writer: { type: String },
+	ratings: { type: Array },
+	desc: { type: String },
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
@@ -226,25 +224,23 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	res.json({ token });
 });
 app.post("/reset-password", async (req, res) => {
-	const { token } = req.query
-	const x = jwt.verify(token, SECRET_KEY)
+	const { token } = req.query;
+	const x = jwt.verify(token, SECRET_KEY);
 	if (x) {
-		const u = users.findOne({ email: x.email })
-		
+		const u = users.findOne({ email: x.email });
 	}
-})
+});
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });
-	
+
 	if (!user) {
 		return res.status(400).send("didnt find email");
 	}
 	if (!user.confirmedemail) {
-		return res.status(401).send("You need to confirm your email")
+		return res.status(401).send("You need to confirm your email");
 	}
 	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
-
 
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
