@@ -10,6 +10,8 @@ export default function Input({
   size,
   type,
   onChange,
+  focus,
+  blur,
   required = false,
   value,
   error,
@@ -23,6 +25,8 @@ export default function Input({
   size: "small" | "big";
   type: "text" | "password" | "email";
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  focus?: React.FocusEventHandler<HTMLInputElement>
+  blur?: React.FocusEventHandler<HTMLInputElement>
   required?: boolean;
   value?: string;
   error?: string;
@@ -54,6 +58,8 @@ export default function Input({
           {icon}
         </span>
         <input
+          onFocus={focus}
+          onBlur={blur}
           onChange={onChange}
           type={`${type}`}
           className={`${(() => {

@@ -1,7 +1,7 @@
 import { Route, Switch } from "wouter";
 import './App.css'
 import Header from './components/Header.tsx'
-import Input from './components/Input.tsx'
+import Search from './components/Search.tsx'
 import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
@@ -10,6 +10,7 @@ import { useContext } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/footer.tsx";
 import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
+import { Target } from "framer-motion";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function MainContent() {
       <Switch>
         <Route path="/" component={HomePage} />
         <Route path="/test" component={TestPage} />
+        <Route path="/search" component={SearchPage} />
       </Switch>
       <MobileNavigationBar />
     </div>
@@ -39,8 +41,7 @@ function HomePage() {
   return (
     <>
       <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
-        <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
-        <Input type='text' style='light' size='big' icon='search' label='Search' className='w-1/2' placeholder='Start your search here' />
+        <Search />
         <Highlighted />
         <Popular />
         <New />
@@ -58,6 +59,13 @@ function TestPage() {
         <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>Test test test</p>
       </div>
     </>
+  )
+}
+function SearchPage(){
+  return (
+    <div className="content-layout-margin">
+      <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>Test test test</p>
+    </div>
   )
 }
 
