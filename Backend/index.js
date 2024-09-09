@@ -15,14 +15,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 // Mongoose
 mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench", {
-	
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
-mongoose.set("debug", true);
+
 const db = mongoose.connection;
 
 db.once("open", () => {
@@ -214,7 +212,7 @@ app.post("/forgot-password", async (req, res) => {
 	const { email } = req.body;
 	const user = await User.findOne({ email });
 	if (!user) {
-		res.status(400).send("didnt find email")
+		res.status(400).send("didnt find email");
 	}
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
@@ -283,8 +281,8 @@ app.post("/forgot-password", async (req, res) => {
 `;
 
 	await sendMail(Confirmation, "Password reset", email);
-	res.status(200).send("reset password email send")
-})
+	res.status(200).send("reset password email send");
+});
 app.post("/upload", async (req, res) => {
 	if (req.file) {
 		// Upload logic here
