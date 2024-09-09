@@ -79,5 +79,12 @@ namespace WrenchApp.Pages
                 orderBy.Source = new BitmapImage(new Uri("pack://application:,,,/WrenchApp;component/Images/Icons/descending.png"));
             }
         }
+
+        private void Game_Screen(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new GameScreen());
+        }
     }
+
+
 }

@@ -56,6 +56,7 @@ namespace WrenchApp
                 // Skip logic if in edit mode                               //
                 if (ConfigurationManager.AppSettings["editmode"] == "true") //
                 {                                                           //
+                    ConfigurationManager.AppSettings["username"] = username;//
                     Window mainWindow = new MainWindow();                   //
                     mainWindow.Show();                                      //
                     this.Close();                                           //
@@ -84,7 +85,11 @@ namespace WrenchApp
                         response.EnsureSuccessStatusCode();
                         string responseBody = await response.Content.ReadAsStringAsync();
 
+                        MessageBox.Show($"{username}, {responseBody}");
+
                         // WRITE CODE ON SAVING JWT AUTH AND USERNAME
+                        ConfigurationManager.AppSettings["username"] = username;
+                        ConfigurationManager.AppSettings["JWT"] = responseBody;
 
                         // Open main window
                         Window mainWindow = new MainWindow();

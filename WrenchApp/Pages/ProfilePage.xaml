@@ -6,6 +6,42 @@
       xmlns:local="clr-namespace:WrenchApp.Pages"
       mc:Ignorable="d" 
       Title="ProfilePage">
+    <Page.Resources>
+        <Style x:Key="RowTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Margin" Value="10 5 0 5"/>
+        </Style>
+
+        <Style x:Key="RowDesc" TargetType="TextBlock">
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="FontSize" Value="16.666"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowPrice" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowImg" TargetType="Image">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+            <Setter Property="Source" Value="/WrenchApp;component/Images/placeholder.png"/>
+        </Style>
+
+        <Style x:Key="RowHolder" TargetType="StackPanel">
+            <Setter Property="Background" Value="#303030"/>
+            <Setter Property="Margin" Value="0 0 0 5"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="150"/>
+        </Style>
+    </Page.Resources>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Width="1200" Margin="0 150 0 0">
@@ -30,39 +66,45 @@
                     HorizontalAlignment="Left" 
                     Margin="0 100 0 0"
                 />
-                <Grid Height="465">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <Image Name="PopularImg1" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="0" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
-                        <TextBlock Name="PopularTitle1" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="PopularDesc1" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="PopularPrice1" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                
+                <StackPanel>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PlayedImg1" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="PlayedTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PlayedDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PlayedPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
 
-                    <Image Name="PopularImg2" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="1" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
-                        <TextBlock Name="PopularTitle2" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="PopularDesc2" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="PopularPrice2" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PlayedImg2" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="PlayedTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PlayedDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PlayedPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
 
-                    <Image Name="PopularImg3" Source="/WrenchApp;component/Images/placeholder.png" Grid.Row="2" Grid.Column="0" Height="150" Width="300" Stretch="UniformToFill" VerticalAlignment="Top"/>
-                    <StackPanel Grid.Row="2" Grid.Column="1" Background="#303030" Margin="0 0 0 5">
-                        <TextBlock Name="PopularTitle3" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="PopularDesc3" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="PopularPrice3" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PlayedImg3" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="PlayedTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PlayedDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PlayedPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </Grid>
+
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PlayedImg4" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="PlayedTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PlayedDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PlayedPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                
                 <TextBlock 
                     HorizontalAlignment="Right" 
                     Text="See all"

@@ -401,6 +401,40 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="RowTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Margin" Value="10 5 0 5"/>
+        </Style>
+
+        <Style x:Key="RowDesc" TargetType="TextBlock">
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="FontSize" Value="16.666"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowPrice" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowImg" TargetType="Image">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+            <Setter Property="Source" Value="/WrenchApp;component/Images/placeholder.png"/>
+        </Style>
+
+        <Style x:Key="RowHolder" TargetType="StackPanel">
+            <Setter Property="Background" Value="#303030"/>
+            <Setter Property="Margin" Value="0 0 0 5"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="150"/>
+        </Style>
     </Page.Resources>
 
     <ScrollViewer>
@@ -471,75 +505,74 @@
             <StackPanel Grid.Column="1">
                 <TextBlock Text="x Results" Foreground="White" FontSize="30"/>
 
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg1" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle1" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc1" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice1" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                <StackPanel Margin="0 0 0 150">
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg1" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
 
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg2" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle2" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc2" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice2" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg2" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
 
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg3" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle3" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc3" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice3" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg3" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
 
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg4" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle4" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc4" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice4" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg4" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
 
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg5" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle5" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc5" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice5" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg5" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle5" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc5" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice5" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg6" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle6" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc6" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice6" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg6" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle6" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc6" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice6" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg7" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle7" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc7" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice7" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg7" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle7" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc7" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice7" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-
-                <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal">
-                    <Image Name="ResultImg8" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
-                    <StackPanel>
-                        <TextBlock Name="ResultTitle8" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                        <TextBlock Name="ResultDesc8" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                        <TextBlock Name="ResultPrice8" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="ResultImg8" Style="{StaticResource RowImg}"/>
+                        <StackPanel>
+                            <TextBlock Name="ResultTitle8" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="ResultDesc8" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="ResultPrice8" Style="{StaticResource RowDesc}" Text="00.00€"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

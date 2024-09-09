@@ -21,6 +21,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -33,6 +34,90 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        
+        <Style x:Key="RowTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Margin" Value="10 5 0 5"/>
+        </Style>
+        
+        <Style x:Key="RowDesc" TargetType="TextBlock">
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="FontSize" Value="16.666"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowPrice" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowImg" TargetType="Image">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+            <Setter Property="Source" Value="/WrenchApp;component/Images/placeholder.png"/>
+        </Style>
+
+        <Style x:Key="RowHolder" TargetType="StackPanel">
+            <Setter Property="Background" Value="#303030"/>
+            <Setter Property="Margin" Value="0 0 0 5"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="150"/>
+        </Style>
+
+        <Style x:Key="SmallGridTitle" TargetType="Label">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="7.5 3.5 0 0"/>
+        </Style>
+
+        <Style x:Key="SmallGridDesc" TargetType="TextBlock">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Padding" Value="7.5 5 0 0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        </Style>
+
+        <Style x:Key="SmallGridPrice" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="11.5"/>
+            <Setter Property="Padding" Value="7.5 0 0 0"/>
+        </Style>
+
+        <Style x:Key="BigGridImg" TargetType="Image">
+            <Setter Property="Source" Value="/WrenchApp;component/Images/placeholder.png"/>
+            <Setter Property="Width" Value="600"/>
+            <Setter Property="Height" Value="300"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+        </Style>
+
+        <Style x:Key="BigGridTitle" TargetType="Label">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="15 7 0 0"/>
+        </Style>
+
+        <Style x:Key="BigGridDesc" TargetType="TextBlock">
+            <Setter Property="Width" Value="600"/>
+            <Setter Property="Height" Value="110"/>
+            <Setter Property="Padding" Value="15 10 0 0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        </Style>
+
+        <Style x:Key="BigGridPrice" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="23"/>
+            <Setter Property="Padding" Value="15 0 0 0"/>
         </Style>
     </Page.Resources>
 
@@ -79,6 +164,14 @@
                             BorderBrush="Transparent" Click="SearchButton_Click"/>
                     </Border>
                 </StackPanel>
+                <TextBlock 
+                    Text="Publish your own game!"
+                    TextDecorations="Underline"
+                    Foreground="#99B9EA"
+                    FontSize="20"
+                    Cursor="Hand"
+                    MouseDown="Publish_Screen"
+                />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Width="1200" Margin="0 0 0 50">
@@ -101,38 +194,38 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="HighlightedImg1" Source="/WrenchApp;component/Images/placeholder.png" Width="600" Height="300" Stretch="UniformToFill"/>
-                        <Label Name="HighlightedTitle1" Content="Title" FontSize="30" Foreground="White" Padding="15 7 0 0"/>
-                        <TextBlock Name="HighlightedDesc1" Text="Description" Width="600" Height="110" Padding="15 10 0 0" Foreground="White" FontSize="20" TextWrapping="WrapWithOverflow"/>
-                        <TextBlock Name="HighlightedPrice1" Text="00.00€" Foreground="White" FontSize="23" Padding="15 0 0 0"/>
+                        <Image Name="HighlightedImg1" Style="{StaticResource BigGridImg}"/>
+                        <Label Name="HighlightedTitle1" Style="{StaticResource BigGridTitle}" Content="Title"/>
+                        <TextBlock Name="HighlightedDesc1" Style="{StaticResource BigGridDesc}" Text="Description"/>
+                        <TextBlock Name="HighlightedPrice1" Style="{StaticResource BigGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="HighlightedImg2" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                        <Label Name="HighlightedTitle2" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                        <TextBlock Name="HighlightedDesc2" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                        <TextBlock Name="HighlightedPrice2" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                        <Image Name="HighlightedImg2" Style="{StaticResource RowImg}"/>
+                        <Label Name="HighlightedTitle2" Style="{StaticResource SmallGridTitle}" Content="Title"/>
+                        <TextBlock Name="HighlightedDesc2" Style="{StaticResource SmallGridDesc}" Text="Description"/>
+                        <TextBlock Name="HighlightedPrice2" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="0" Grid.Column="2" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="HighlightedImg3" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                        <Label Name="HighlightedTitle3" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                        <TextBlock Name="HighlightedDesc3" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                        <TextBlock Name="HighlightedPrice3" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                        <Image Name="HighlightedImg3" Style="{StaticResource RowImg}"/>
+                        <Label Name="HighlightedTitle3" Style="{StaticResource SmallGridTitle}" Content="Title"/>
+                        <TextBlock Name="HighlightedDesc3" Style="{StaticResource SmallGridDesc}" Text="Description"/>
+                        <TextBlock Name="HighlightedPrice3" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
-
+                    
                     <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="HighlightedImg4" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                        <Label Name="HighlightedTitle4" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                        <TextBlock Name="HighlightedDesc4" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                        <TextBlock Name="HighlightedPrice4" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                        <Image Name="HighlightedImg4" Style="{StaticResource RowImg}"/>
+                        <Label Name="HighlightedTitle4" Style="{StaticResource SmallGridTitle}" Content="Title"/>
+                        <TextBlock Name="HighlightedDesc4" Style="{StaticResource SmallGridDesc}" Text="Description"/>
+                        <TextBlock Name="HighlightedPrice4" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" Grid.Column="2" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="HighlightedImg5" Source="/WrenchApp;component/Images/placeholder.png" Width="300" Height="150" Stretch="UniformToFill"/>
-                        <Label Name="HighlightedTitle5" Content="Title" FontSize="15" Foreground="White" Padding="7.5 3.5 0 0"/>
-                        <TextBlock Name="HighlightedDesc5" Text="Description" Width="300" Height="55" Padding="7.5 5 0 0" Foreground="White" FontSize="10" TextWrapping="WrapWithOverflow"/>
-                        <TextBlock Name="HighlightedPrice5" Text="00.00€" Foreground="White" FontSize="11.5" Padding="7.5 0 0 0"/>
+                        <Image Name="HighlightedImg5" Style="{StaticResource RowImg}"/>
+                        <Label Name="HighlightedTitle5" Style="{StaticResource SmallGridTitle}" Content="Title"/>
+                        <TextBlock Name="HighlightedDesc5" Style="{StaticResource SmallGridDesc}" Text="Description"/>
+                        <TextBlock Name="HighlightedPrice5" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
                 </Grid>
 
@@ -143,48 +236,48 @@
                     HorizontalAlignment="Left" 
                 />
                 <StackPanel Margin="0 0 0 150">
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="PopularImg1" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PopularImg1" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="PopularTitle1" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="PopularDesc1" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="PopularPrice1" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="PopularTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PopularDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PopularPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="PopularImg2" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PopularImg2" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="PopularTitle2" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="PopularDesc2" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="PopularPrice2" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="PopularTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PopularDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PopularPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="PopularImg3" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PopularImg3" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="PopularTitle3" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="PopularDesc3" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="PopularPrice3" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="PopularTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PopularDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PopularPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="PopularImg4" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PopularImg4" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="PopularTitle4" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="PopularDesc4" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="PopularPrice4" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="PopularTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PopularDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PopularPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="PopularImg5" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="PopularImg5" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="PopularTitle6" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="PopularDesc6" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="PopularPrice6" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="PopularTitle5" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="PopularDesc5" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="PopularPrice5" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -196,48 +289,48 @@
                     HorizontalAlignment="Left" 
                 />
                 <StackPanel Margin="0 0 0 150">
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="NewestImg1" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="NewestImg1" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="NewestTitle1" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="NewestDesc1" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="NewestPrice1" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="NewestTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="NewestDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="NewestPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="NewestImg2" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="NewestImg2" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="NewestTitle2" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="NewestDesc2" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="NewestPrice2" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="NewestTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="NewestDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="NewestPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="NewestImg3" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="NewestImg3" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="NewestTitle3" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="NewestDesc3" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="NewestPrice3" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="NewestTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="NewestDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="NewestPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="NewestImg4" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="NewestImg4" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="NewestTitle4" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="NewestDesc4" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="NewestPrice4" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="NewestTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="NewestDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="NewestPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Background="#303030" Margin="0 0 0 5" Orientation="Horizontal" Cursor="Hand" MouseDown="Game_Screen">
-                        <Image Name="NewestImg5" Source="/WrenchApp;component/Images/placeholder.png" Height="150" Width="300" Stretch="UniformToFill"/>
+                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
+                        <Image Name="NewestImg5" Style="{StaticResource RowImg}"/>
                         <StackPanel>
-                            <TextBlock Name="NewestTitle5" Text="Title" Foreground="White" FontSize="25" Margin="10 5 0 5"/>
-                            <TextBlock Name="NewestDesc5" Height="70" FontSize="16.666" Foreground="White" TextWrapping="WrapWithOverflow" Text="Description" Margin="10 0 0 0"/>
-                            <TextBlock Name="NewestPrice5" FontSize="20" Text="00.00€" Foreground="White" Margin="10 0 0 0"/>
+                            <TextBlock Name="NewestTitle5" Style="{StaticResource RowTitle}" Text="Title"/>
+                            <TextBlock Name="NewestDesc5" Style="{StaticResource RowDesc}" Text="Description"/>
+                            <TextBlock Name="NewestPrice5" Style="{StaticResource RowDesc}" Text="00.00€"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

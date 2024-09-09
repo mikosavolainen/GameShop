@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Configuration;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -23,11 +24,20 @@ namespace WrenchApp.Pages
         public HomePage()
         {
             InitializeComponent();
+            
+            if (ConfigurationManager.AppSettings["editmode"] == "false")
+            {
+                InitializeItems();
+            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        void InitializeItems()
         {
+            // Featured
 
+            // Popular
+
+            // Newest
         }
 
         private void Search_Tag(object sender, RoutedEventArgs e)
@@ -48,6 +58,12 @@ namespace WrenchApp.Pages
         {
             string searchedGame = Searchbox.Text;
             this.NavigationService.Navigate(new SearchPage(search: searchedGame));
+        }
+
+        private void Publish_Screen(object sender, RoutedEventArgs e)
+        {
+            Window gamepublishscreen = new GamePublishScreen();
+            gamepublishscreen.Show();
         }
     }
 }
