@@ -1,9 +1,9 @@
 import { Link } from "wouter";
 import Button from "./Button";
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { useContext, /*useEffect*/ } from "react";
+import { FormEvent, useContext, /*useEffect*/ } from "react";
 import Modal from "./Modal";
-import Input from "./Input";
+import AuthForms from "./AuthForms";
 
 export default function Header() {
   const { modalOpen, setModalOpen } = useContext(AuthenticationModalContext)
@@ -15,20 +15,7 @@ export default function Header() {
   return(
     <>
       <Modal open={modalOpen} closeModal={() => setModalOpen(false)}>
-        <h2 className="text-2xl">Sign Up</h2>
-        <div>
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-          <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' />
-        </div>
+        <AuthForms />
       </Modal>
       <div className="hidden md:flex items-center w-full h-16 z-20 fixed left-0 right-0 top-0 bg-wrench-neutral-dark/85 backdrop-blur-3xl content-layout-padding">
         <div className="text-2xl font-semibold block">
