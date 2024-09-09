@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const { StringDecoder } = require("string_decoder");
 
 const SECRET_KEY =
 	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
@@ -45,8 +46,21 @@ const GamesSchema = new mongoose.Schema({
 	category: { type: Array },
 	price: { type: Number },
 	ratings: { type: Array },
+    multiplayer:{ type: String },
+    Picturefileloc: { type: String },
 });
 const games = mongoose.model("games", GamesSchema);
+
+
+const ReviewsSchema = new mongoose.Schema({
+    game: { type: String },
+    date: { type: Number },
+    writer: { type: String },
+    ratings: { type: Array },
+    desc: { type: String },
+
+});
+const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
