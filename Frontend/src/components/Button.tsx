@@ -64,7 +64,7 @@ export default function Button({
             return <Link href={href ?? ""} className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`}>{text}</Link>
           case 'button':
           case 'submit':
-            return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"}`} onClick={onClick}>{text}</button>
+            return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} w-full text-left`} onClick={onClick}>{text}</button>
         }
       })()}
     </div>

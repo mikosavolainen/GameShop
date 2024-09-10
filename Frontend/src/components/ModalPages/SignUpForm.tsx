@@ -20,18 +20,23 @@ export default function SignUpForm() {
 
   // Validation schema
   const signUpSchema = z.object({
-    username: z.string().min(3, { message: "E-mail or username should be at least 3 characters long" }),
+    username: z.string().min(3, { message: "Username should be at least 3 characters long" }),
+    phone: z.string().min(3, { message: "Phone should be at least 3 characters long" }),
+    email: z.string().min(3, { message: "E-mail should be at least 3 characters long" }),
     password: z.string().min(3, { message: "Password should be at least 3 characters long" }),
+    passwordMatch: z.string().min(3, { message: "Password does not match" }),
+    agree: z.preprocess(value => value === 'on', z.boolean())
   });
 
   const queryClient = useQueryClient();
-  const [errors, setErrors] = useState<{ username?: string, email?: string, phone?: string, password?: string, passwordMatch?: string, global?: string }>({});
+  const [errors, setErrors] = useState<{ username?: string, email?: string, phone?: string, password?: string, passwordMatch?: string, agree?: string, global?: string }>({});
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     phone: '',
     password: '',
     passwordMatch: '',
+    agree: '',
   });
 
   // React Query mutation for POST request with proper types
@@ -61,6 +66,7 @@ export default function SignUpForm() {
       phone: formData.phone,
       password: formData.password,
       passwordMatch: formData.passwordMatch,
+      agree: formData.agree
     });
 
     // Handle validation errors
@@ -68,7 +74,11 @@ export default function SignUpForm() {
       const formattedErrors = result.error.flatten().fieldErrors;
       setErrors({
         username: formattedErrors.username?.[0],
+        email: formattedErrors.email?.[0],
+        phone: formattedErrors.phone?.[0],
         password: formattedErrors.password?.[0],
+        passwordMatch: formattedErrors.passwordMatch?.[0],
+        agree: formattedErrors.agree?.[0],
       });
       return;
     }
@@ -88,7 +98,7 @@ export default function SignUpForm() {
 
   return (
     <>
-      <h2 className="text-2xl mb-4">Sign In</h2>
+      <h2 className="text-2xl mb-4">Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <Input
           type="text"
@@ -161,10 +171,10 @@ export default function SignUpForm() {
           outerClassName="mb-4"
         />
         {errors.global && <div className="text-wrench-accent-gold">{errors.global}</div>}
-        <Checkbox label="i agrer" />
-        <Button type="submit" icon="login" size="big" style="purple" className="block w-full my-4" text="Sign up" />
+        <Checkbox label="I agree to Terms and Conditions and Privacy Policy" id="agreeCheckbox" name="agree" className="mb-4" required />
+        <Button type="submit" icon="add" size="big" style="purple" className="block w-full my-4" text="Sign up" />
       </form>
-      <Button type="button" icon="add" size="big" style="neutral" className="block w-full" text="Sign in" onClick={() => setModalPage("signIn")} />
+      <Button type="button" icon="login" size="big" style="neutral" className="block w-full" text="Sign in" onClick={() => setModalPage("signIn")} />
     </>
   );
 }

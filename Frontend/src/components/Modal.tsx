@@ -26,7 +26,6 @@ export default function Modal({
 
   const handleScroll = () => {
     setScrollTop(window.scrollY)
-    console.log(window.scrollY)
   }
 
   useEffect(() => {
