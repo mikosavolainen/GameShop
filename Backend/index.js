@@ -10,52 +10,49 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 
 const SECRET_KEY =
-  "Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
+	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect(
-  "mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench",
-  {}
-);
+mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench");
 
 const db = mongoose.connection;
 
 db.once("open", () => {
-  console.log("Connected to MongoDB");
+	console.log("Connected to MongoDB");
 });
 
 // User Schema
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  phonenumber: { type: Number },
-  password: { type: String, required: true },
-  confirmedemail: { type: Boolean, default: false },
+	username: { type: String, required: true, unique: true },
+	email: { type: String, required: true, unique: true },
+	phonenumber: { type: Number },
+	password: { type: String, required: true },
+	confirmedemail: { type: Boolean, default: false },
 });
 const users = mongoose.model("users", userSchema);
 
 const gamesSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  desc: { type: String },
-  gamefileloc: { type: String },
-  author: { type: String },
-  category: { type: Array },
-  price: { type: Number },
-  ratings: { type: Array },
-  multiplayer: { type: String },
-  Picturefileloc: { type: String },
+	name: { type: String, required: true },
+	desc: { type: String },
+	gamefileloc: { type: String },
+	author: { type: String },
+	category: { type: Array },
+	price: { type: Number },
+	ratings: { type: Array },
+	multiplayer: { type: String },
+	Picturefileloc: { type: String },
 });
 const games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
-  game: { type: String },
-  date: { type: Number },
-  writer: { type: String },
-  ratings: { type: Array },
-  desc: { type: String },
+	game: { type: String },
+	date: { type: Number },
+	writer: { type: String },
+	ratings: { type: Array },
+	desc: { type: String },
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
@@ -68,41 +65,41 @@ const Library = mongoose.model("Library", LibrarySchema);
 
 
 const convertUsernameToLowerCase = (req, res, next) => {
-  if (req.body.username) {
-    req.body.username = req.body.username.toLowerCase();
-  }
-  if (req.body.email) {
-    req.body.email = req.body.email.toLowerCase();
-  }
-  next();
+	if (req.body.username) {
+		req.body.username = req.body.username.toLowerCase();
+	}
+	if (req.body.email) {
+		req.body.email = req.body.email.toLowerCase();
+	}
+	next();
 };
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "wrenchsmail@gmail.com",
-    pass: "emxc dnqp eyme gudi",
-  },
+	service: "gmail",
+	auth: {
+		user: "wrenchsmail@gmail.com",
+		pass: "emxc dnqp eyme gudi",
+	},
 });
 
 // Sähköpostin lähettäminen
 async function sendMail(Msg, sub, email) {
-  try {
-    const mailOptions = {
-      from: "wrenchsmail@gmail.com",
-      bcc: email,
-      subject: sub,
-      html: Msg,
-    };
-    const result = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", result);
-  } catch (error) {
-    console.log("Error sending email:", error);
-  }
+	try {
+		const mailOptions = {
+			from: "wrenchsmail@gmail.com",
+			bcc: email,
+			subject: sub,
+			html: Msg,
+		};
+		const result = await transporter.sendMail(mailOptions);
+		console.log("Email sent:", result);
+	} catch (error) {
+		console.log("Error sending email:", error);
+	}
 }
 
 app.get("/", (req, res) => {
-  res.json("hello world");
+	res.json("hello world");
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
@@ -123,47 +120,52 @@ app.post("/get-all-owned-games", async (req, res) => {
 
 
 app.post("/get-all-games", async (req, res) => {
-  try {
-    const game = await games.find();
-    res.json(game);
-  } catch (error) {
-    console.error("Error fetching games:", error);
-    res.status(500).send("Internal Server Error");
-  }
+	try {
+		const game = await games.find();
+		return res.json(game);
+	} catch (error) {
+		console.error("Error fetching games:", error);
+		return res.status(500).send("Internal Server Error");
+	}
 });
 
 app.get("/confirm", async (req, res) => {
-  const jwts = req.query.confirm;
-  if (jwts) {
-    try {
-      const { username } = jwt.verify(jwts, SECRET_KEY);
-      await users.findOneAndUpdate({ username }, { confirmedemail: true });
-      res.send("Email confirmed successfully.");
-    } catch (error) {
-      res.status(400).send("Invalid or expired confirmation link.");
-    }
-  } else {
-    res.status(400).send("Confirmation token is missing.");
-  }
+	const jwts = req.query.confirm;
+	if (jwts) {
+		try {
+			const { username } = jwt.verify(jwts, SECRET_KEY);
+			await users.findOneAndUpdate(
+				{ username },
+				{ confirmedemail: true }
+			);
+			return res.send("Email confirmed successfully.");
+		} catch (error) {
+			return res
+				.status(400)
+				.send("Invalid or expired confirmation link.");
+		}
+	} else {
+		return res.status(400).send("Confirmation token is missing.");
+	}
 });
 
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
-  const { username, password, email, phonenumber } = req.body;
-  const existingUser = await users.findOne({ username });
-  if (existingUser) {
-    return res.status(409).send("Username already exists");
-  }
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new users({
-    username,
-    password: hashedPassword,
-    email,
-    phonenumber,
-  });
-  await newUser.save();
-  const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
-  const Confirmation = `
+	const { username, password, email, phonenumber } = req.body;
+	const existingUser = await users.findOne({ username });
+	if (existingUser) {
+		return res.status(409).send("Username already exists");
+	}
+	const hashedPassword = await bcrypt.hash(password, 10);
+	const newUser = new users({
+		username,
+		password: hashedPassword,
+		email,
+		phonenumber,
+	});
+	await newUser.save();
+	const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
+	const Confirmation = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -235,45 +237,46 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
         </div>
     </body>
     </html>`;
-  await sendMail(Confirmation, "Email Confirmation", email);
-  res.status(243).send("Done");
+	await sendMail(Confirmation, "Email Confirmation", email);
+	res.status(243).send("Done");
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
-  const { username, password } = req.body;
-  const user = await users.findOne({
-    $or: [{ username: username }, { email: username }],
-  });
-  if (!user.confirmedemail) {
-    res.status(403).send("email is not verified");
-  }
-  if (!user || !bcrypt.compareSync(password, user.password)) {
-    return res.status(401).send("Invalid credentials");
-  }
-  var uname = user.username;
-  const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
-  res.json({ token });
+	const { username, password } = req.body;
+	const user = await users.findOne({
+		$or: [{ username: username }, { email: username }],
+	});
+	if (!user.confirmedemail) {
+		return res.status(403).send("email is not verified");
+	}
+	if (!user || !bcrypt.compareSync(password, user.password)) {
+		return res.status(401).send("Invalid credentials");
+	}
+	var uname = user.username;
+	const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
+	res.json({ token });
 });
 app.post("/reset-password", async (req, res) => {
-  const { token } = req.query;
-  const x = jwt.verify(token, SECRET_KEY);
-  if (x) {
-    const u = users.findOne({ email: x.email });
-  }
+	const { token, password } = req.query;
+	const x = jwt.verify(token, SECRET_KEY);
+	if (x) {
+		const newpass = await bcrypt.hash(password, 10);
+		await users.findOneAndUpdate({ email: x.email }, { password: newpass });
+	}
 });
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
-  const { email } = req.body;
-  const user = await users.findOne({ email: email });
+	const { email } = req.body;
+	const user = await users.findOne({ email: email });
 
-  if (!user) {
-    return res.status(400).send("didnt find email");
-  }
-  if (!user.confirmedemail) {
-    return res.status(401).send("You need to confirm your email");
-  }
-  const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
+	if (!user) {
+		return res.status(400).send("didnt find email");
+	}
+	if (!user.confirmedemail) {
+		return res.status(401).send("You need to confirm your email");
+	}
+	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
 
-  confirmation = `<!DOCTYPE html>
+	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -353,16 +356,16 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 
 `;
 
-  await sendMail(confirmation, "Password reset", email);
-  return res.status(200).send("reset password email send");
+	await sendMail(confirmation, "Password reset", email);
+	return res.status(200).send("reset password email send");
 });
 app.post("/upload", async (req, res) => {
-  if (req.file) {
-    // Upload logic here
-  }
+	if (req.file) {
+		// Upload logic here
+	}
 });
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port ${PORT}`);
 });
