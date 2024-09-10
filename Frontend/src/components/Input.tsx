@@ -21,7 +21,7 @@ export default function Input({
   className?: string;
   outerClassName?: string;
   label?: string;
-  icon: "search" | "key" | "person" | "mail";
+  icon: string;
   style: "light" | "dark";
   size: "small" | "big";
   type: "text" | "password" | "email";

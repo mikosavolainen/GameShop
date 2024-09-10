@@ -1,9 +1,9 @@
 import { Link } from "wouter";
 import Button from "./Button";
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { FormEvent, useContext, /*useEffect*/ } from "react";
+import { useContext, /*useEffect*/ } from "react";
 import Modal from "./Modal";
-import AuthForms from "./AuthForms";
+import AuthForms from "./ModalPages/AuthForms";
 
 export default function Header() {
   const { modalOpen, setModalOpen } = useContext(AuthenticationModalContext)

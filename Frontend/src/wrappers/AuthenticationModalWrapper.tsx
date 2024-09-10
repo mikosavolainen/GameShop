@@ -2,6 +2,8 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState
 import useScrollbarSize from "react-scrollbar-size"
 
 export const AuthenticationModalContext = createContext<{
+  modalLoading: boolean,
+  setModalLoading: Dispatch<SetStateAction<boolean>>,
   modalOpen: boolean,
   setModalOpen: Dispatch<SetStateAction<boolean>>,
   modalPage: string,
@@ -9,6 +11,8 @@ export const AuthenticationModalContext = createContext<{
   scrollbarCompensation: number,
   setScrollbarCompensation: Dispatch<SetStateAction<number>>
 }>({
+  modalLoading: false,
+  setModalLoading: () => {},
   modalOpen: false,
   setModalOpen: () => {},
   modalPage: "",
@@ -20,6 +24,7 @@ export const AuthenticationModalContext = createContext<{
 export default function AuthenticationModalWrapper({children}: {children: ReactNode}) {
   const [scrollbarCompensation, setScrollbarCompensation] = useState<number>(0)
   const { width } = useScrollbarSize();
+  const [modalLoading, setModalLoading] = useState<boolean>(false)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [modalPage, setModalPage] = useState<string>("signIn")
   useEffect(() => {
@@ -31,6 +36,8 @@ export default function AuthenticationModalWrapper({children}: {children: ReactN
 
   return (
     <AuthenticationModalContext.Provider value={{
+      modalLoading,
+      setModalLoading,
       modalOpen,
       setModalOpen,
       modalPage,

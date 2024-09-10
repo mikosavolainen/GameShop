@@ -280,7 +280,7 @@ app.post("/forgot-password", async (req, res) => {
 </html>
 `;
 
-	await sendMail(Confirmation, "Password reset", email);
+	await sendMail(confirmation, "Password reset", email);
 	res.status(200).send("reset password email send");
 });
 app.post("/upload", async (req, res) => {

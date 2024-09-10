@@ -19,7 +19,17 @@ export default {
       "wrench-purple": "#6A0DAD",
       "wrench-purple-2": "#5E1493"
     },
-    extend: {},
+    extend: {
+      keyframes: {
+        rotate: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        rotate: 'rotate 1s linear infinite',
+      },
+    },
   },
   plugins: [],
 }
