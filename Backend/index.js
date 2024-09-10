@@ -17,10 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect(
-	"mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench",
-	{}
-);
+mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench");
 
 const db = mongoose.connection;
 
@@ -101,10 +98,10 @@ app.get("/", (req, res) => {
 app.post("/get-all-games", async (req, res) => {
     try {
         const game = await games.find(); 
-        res.json(game); 
+        return res.json(game); 
     } catch (error) {
         console.error("Error fetching games:", error);
-        res.status(500).send("Internal Server Error");
+        return res.status(500).send("Internal Server Error");
     }
 });
 
@@ -119,12 +116,12 @@ app.get("/confirm", async (req, res) => {
 				{ username },
 				{ confirmedemail: true }
 			);
-			res.send("Email confirmed successfully.");
+			return res.send("Email confirmed successfully.");
 		} catch (error) {
-			res.status(400).send("Invalid or expired confirmation link.");
+			return res.status(400).send("Invalid or expired confirmation link.");
 		}
 	} else {
-		res.status(400).send("Confirmation token is missing.");
+		return res.status(400).send("Confirmation token is missing.");
 	}
 });
 
@@ -226,7 +223,7 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 		$or: [{ username: username }, { email: username }],
 	});
 	if (!user.confirmedemail) {
-		res.status(403).send("email is not verified");
+		return res.status(403).send("email is not verified");
 	}
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
@@ -236,10 +233,11 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	res.json({ token });
 });
 app.post("/reset-password", async (req, res) => {
-	const { token } = req.query;
+	const { token , password} = req.query;
 	const x = jwt.verify(token, SECRET_KEY);
-	if (x) {
-		const u = users.findOne({ email: x.email });
+    if (x) {
+        const newpass = await bcrypt.hash(password, 10);
+        await users.findOneAndUpdate({ email: x.email },{password: newpass});
 	}
 });
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
