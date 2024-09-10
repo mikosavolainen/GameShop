@@ -2,7 +2,7 @@ import Input from "./Input"
 import { useLocation } from "wouter";
 import { useState } from "react"
 export default function Search(){
-    const [location, setLocation] = useLocation()
+    const [, setLocation] = useLocation()
     const [searchBlock, setSearchBlock] = useState(false)
     const [inputFocus, setInputFocus] = useState(false)
     const [searchValue, setSearchValue] = useState("")
