@@ -5,6 +5,7 @@ import axios from "axios";
 import Input from "../Input";
 import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Checkbox from "../Checkbox";
 
 export default function SignUpForm() {
   const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
@@ -160,6 +161,7 @@ export default function SignUpForm() {
           outerClassName="mb-4"
         />
         {errors.global && <div className="text-wrench-accent-gold">{errors.global}</div>}
+        <Checkbox label="i agrer" />
         <Button type="submit" icon="login" size="big" style="purple" className="block w-full my-4" text="Sign up" />
       </form>
       <Button type="button" icon="add" size="big" style="neutral" className="block w-full" text="Sign in" onClick={() => setModalPage("signIn")} />
