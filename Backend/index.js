@@ -127,9 +127,11 @@ app.get("/confirm", async (req, res) => {
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	const existingUser = await users.findOne({ username });
+	const existingUser = await users.findOne({
+		$or: [{ username: username }, { email: email }],
+	});
 	if (existingUser) {
-		return res.status(409).send("Username already exists");
+		return res.status(409).send("Email or username already exists");
 	}
 	const hashedPassword = await bcrypt.hash(password, 10);
 	const newUser = new users({
@@ -237,6 +239,7 @@ app.post("/reset-password", async (req, res) => {
 	if (x) {
 		const newpass = await bcrypt.hash(password, 10);
 		await users.findOneAndUpdate({ email: x.email }, { password: newpass });
+		return res.status(200).send("RESETED");
 	}
 });
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
@@ -249,7 +252,7 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	if (!user.confirmedemail) {
 		return res.status(401).send("You need to confirm your email");
 	}
-	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
+	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "15min" });
 
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
