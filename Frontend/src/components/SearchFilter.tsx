@@ -1,13 +1,26 @@
 import Input from "./Input"
 import { useState } from "react"
+import { useLocation } from "wouter"
 // import GameDisplay from "./GameDisplay"
 export default function SearchFilter(){
+    const [, setLocation ] = useLocation()
     const [sortSwitch, setSortSwitch] = useState(true)
     const [selectedSorting, setSelectedSorting] = useState(true)
+    const [searchValue, setSearchValue] = useState("")
+    const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) =>{
+        setSearchValue(event.target.value)
+    }
+    function redirect(value: string){
+        setLocation("/search?q="+value)
+        event?.preventDefault()
+    }
     return (
         <div className="pt-16">
             <div>
-            <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here'/>
+            <form>
+            <Input type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' onChange={handleInputChange}/>
+            <input className="hidden" type="submit" onClick={() => redirect(searchValue)}></input>
+            </form>
                 <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl mt-4 p-3">
                     <button className="px-3 h-[20px] align-middle" onClick={() => setSelectedSorting(true)}>
                     <span className={`${selectedSorting == true ? `text-wrench-neutral-white` : `text-wrench-neutral-2`} material-icons pointer-events-none`}>
