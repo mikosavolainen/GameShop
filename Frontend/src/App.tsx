@@ -11,6 +11,7 @@ import Categories from './components/Categories.tsx'
 import Footer from "./components/footer.tsx";
 import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SearchFilter from "./components/SearchFilter.tsx";
 
 const queryClient = new QueryClient()
 
@@ -67,8 +68,8 @@ function TestPage() {
 }
 function SearchPage(){
   return (
-    <div className="content-layout-margin">
-      <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>Test test test</p>
+    <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
+    <SearchFilter />
     </div>
   )
 }

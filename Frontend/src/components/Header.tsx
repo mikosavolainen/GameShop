@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import Button from "./Button";
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { useContext, /*useEffect*/ } from "react";
+import { useContext } from "react";
 import Modal from "./Modal";
 import AuthForms from "./ModalPages/AuthForms";
 
