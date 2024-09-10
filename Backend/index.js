@@ -9,7 +9,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 
-
 const SECRET_KEY =
 	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
@@ -96,16 +95,14 @@ app.get("/", (req, res) => {
 });
 
 app.post("/get-all-games", async (req, res) => {
-    try {
-        const game = await games.find(); 
-        return res.json(game); 
-    } catch (error) {
-        console.error("Error fetching games:", error);
-        return res.status(500).send("Internal Server Error");
-    }
+	try {
+		const game = await games.find();
+		return res.json(game);
+	} catch (error) {
+		console.error("Error fetching games:", error);
+		return res.status(500).send("Internal Server Error");
+	}
 });
-
-
 
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
@@ -118,7 +115,9 @@ app.get("/confirm", async (req, res) => {
 			);
 			return res.send("Email confirmed successfully.");
 		} catch (error) {
-			return res.status(400).send("Invalid or expired confirmation link.");
+			return res
+				.status(400)
+				.send("Invalid or expired confirmation link.");
 		}
 	} else {
 		return res.status(400).send("Confirmation token is missing.");
@@ -233,11 +232,11 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	res.json({ token });
 });
 app.post("/reset-password", async (req, res) => {
-	const { token , password} = req.query;
+	const { token, password } = req.query;
 	const x = jwt.verify(token, SECRET_KEY);
-    if (x) {
-        const newpass = await bcrypt.hash(password, 10);
-        await users.findOneAndUpdate({ email: x.email },{password: newpass});
+	if (x) {
+		const newpass = await bcrypt.hash(password, 10);
+		await users.findOneAndUpdate({ email: x.email }, { password: newpass });
 	}
 });
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
@@ -256,47 +255,61 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Reset Confirmation</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
             color: #333;
-            padding: 20px;
+            line-height: 1.6;
         }
         .container {
             max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
+            margin: 40px auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         h1 {
+            font-size: 24px;
             color: #333;
-            text-align: center;
+            margin-bottom: 20px;
         }
         p {
-            line-height: 1.6;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
         }
         .button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
+            display: inline-block;
+            position: relative;
+            padding: 12px 35px;
+            margin-top: 20px;
+            font-size: 17px;
+            font-weight: 500;
+            color: #ffffff;
+            background: linear-gradient(145deg, #b0b0b0, #e0e0e0);
+            border: 2px solid #a6a6a6;
+            border-radius: 8px;
             text-decoration: none;
-            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+            color: #333;
+            box-shadow: 0 0 15px rgba(128, 128, 128, 0.5);
         }
         .footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #777;
-            font-size: 12px;
-        }
+                margin-top: 30px;
+                font-size: 12px;
+                color: #999;
+            }
     </style>
 </head>
 <body>
@@ -309,13 +322,13 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
         <p>If the button above does not work, please copy and paste the following link into your web browser:</p>
         <p>http://localhost:5000/reset-password?token=${token}</p>
         <p>This link will expire in 24 hours for your security.</p>
-        <p>Thank you,<br>Your Company Name</p>
-    </div>
     <div class="footer">
-        <p>If you did not request this, please ignore this email.</p>
+         <p>Thank you,<br>The Wrench Team</p>
+    </div>
     </div>
 </body>
 </html>
+
 `;
 
 	await sendMail(confirmation, "Password reset", email);
