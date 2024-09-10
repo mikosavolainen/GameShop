@@ -59,6 +59,14 @@ const ReviewsSchema = new mongoose.Schema({
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
+const LibrarySchema = new mongoose.Schema({
+  owner: { type: String},
+  game: { type: String },
+
+});
+const Library = mongoose.model("Library", LibrarySchema);
+
+
 const convertUsernameToLowerCase = (req, res, next) => {
   if (req.body.username) {
     req.body.username = req.body.username.toLowerCase();
@@ -96,6 +104,23 @@ async function sendMail(Msg, sub, email) {
 app.get("/", (req, res) => {
   res.json("hello world");
 });
+
+app.post("/get-all-owned-games", async (req, res) => {
+  try {
+    const ownerId = req.body.owner; 
+    if (!ownerId) {
+      return res.status(400).send("Owner ID is required");
+    }
+   
+    const games = await Library.find({ owner: ownerId });
+
+    res.json(games);
+  } catch (error) {
+    console.error("Error fetching games:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 
 app.post("/get-all-games", async (req, res) => {
   try {
