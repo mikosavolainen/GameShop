@@ -6,12 +6,13 @@ import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
 import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/footer.tsx";
 import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchFilter from "./components/SearchFilter.tsx";
+import MobileMenu from "./components/MobileMenu.tsx";
 
 const queryClient = new QueryClient()
 
@@ -29,6 +30,7 @@ function App() {
 
 function MainContent() {
   const { scrollbarCompensation } = useContext(AuthenticationModalContext)
+  const [mobileMenu, setMobileMenu] = useState(false)
   return(
     <div style={{marginRight: scrollbarCompensation+"px"}}>
       <Header />
@@ -38,7 +40,8 @@ function MainContent() {
         <Route path="/test" component={TestPage} />
         <Route path="/search" component={SearchPage} />
       </Switch>
-      <MobileNavigationBar />
+      {mobileMenu && <MobileMenu />}
+      <MobileNavigationBar setMobileMenu={setMobileMenu} />
     </div>
   )
 }
