@@ -40,7 +40,7 @@ export default function SearchFilter(){
                 <option>Sort by release date</option>
             </select>
         </div>
-        <div className="border border-wrench-neutral-3 rounded-2xl mt-4">
+        <div className="border border-wrench-neutral-3 rounded-2xl mt-4 pb-6">
             <p className="px-6 mt-4"><span className="pr-2 align-middle w-[22px] h-[22px] text-wrench-neutral-white material-icons pointer-events-none">filter_alt</span>Filters</p>
             <p className="px-6 mt-4">Categories</p>
             <div className="flex py-3 mr-4">
