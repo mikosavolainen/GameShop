@@ -1,13 +1,15 @@
 import { useState } from "react"
 import Input from "./Input"
+import Search from "./Search"
 import Checkbox from "./Checkbox"
 import Button from "./Button"
 export default function SearchFilter(){
     const [sortSwitch, setSortSwitch] = useState(true)
     const [selectedSorting, setSelectedSorting] = useState(true)
     return (
-        <div className="mt-4">
-        <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl p-3">
+        <div className="mt-4 w-[380px]">
+            <Search />
+        <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl p-3 mt-4">
             <button className="px-3 h-[20px] align-middle" onClick={() => setSelectedSorting(true)}>
             <span className={`${selectedSorting == true ? `text-wrench-neutral-white` : `text-wrench-neutral-2`} material-icons cursor-pointer`}>
                 view_agenda

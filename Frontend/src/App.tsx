@@ -75,12 +75,7 @@ function SearchPage(){
   return (
     //const searchString = useSearch() to get search results as a string example: http://localhost:5173/search?q=fefaadadsasdasd returns q=fefaadadsasdasd
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
-      <div className="flex">
-        <div>
-          <Search />
-          <SearchFilter />
-        </div>
-      </div>
+      <SearchFilter />
       <Footer />
     </div>
   )
