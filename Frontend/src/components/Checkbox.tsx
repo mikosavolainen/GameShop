@@ -1,4 +1,4 @@
-const Checkbox = ({ label, id, name, className, error, required = false }: { label: string, id: string, name?: string, className?: string, error?: string, required: boolean }) => {
+const Checkbox = ({ label, id, name, className, error, required = false}: { label: string, id: string, name?: string, className?: string, error?: string, required: boolean}) => {
   return (
     <div className={`${className}`}>
       <div className={`flex items-center gap-2 relative`}>

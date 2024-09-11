@@ -49,10 +49,10 @@ export default function GameDisplay({classname, discount, price, size, game_name
             {size == "small" &&(
                 <div className="flex flex-auto items-end">
                 {discount && (
+                    <> 
                     <p className="text-wrench-neutral-2 text-left text-base py-1 pr-4 line-through" id="price">{price} €</p>
-                )}
-                {discount && (
                     <p className="text-wrench-neutral-white text-left text-base py-1" id="price">{discount} €</p>
+                    </>
                 )}
                 {discount == null && (
                     <p className="text-wrench-neutral-white text-left text-base py-1" id="price">{price} €</p>

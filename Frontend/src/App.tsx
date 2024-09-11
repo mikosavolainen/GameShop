@@ -12,6 +12,7 @@ import Footer from "./components/footer.tsx";
 import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchFilter from "./components/SearchFilter.tsx";
+import GameDisplay from "./components/GameDisplay.tsx";
 
 const queryClient = new QueryClient()
 
@@ -70,10 +71,15 @@ function TestPage() {
 }
 function SearchPage(){
   return (
-    //const search = useSearch() to get search results as a string example: http://localhost:5173/search?q=fefaadadsasdasd returns q=fefaadadsasdasd
+    //const searchString = useSearch() to get search results as a string example: http://localhost:5173/search?q=fefaadadsasdasd returns q=fefaadadsasdasd
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
-    <Search />
-    <SearchFilter />
+      <div className="flex">
+        <div>
+          <Search />
+          <SearchFilter />
+        </div>
+      </div>
+      <Footer />
     </div>
   )
 }
