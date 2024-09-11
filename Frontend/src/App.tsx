@@ -47,7 +47,8 @@ function HomePage() {
   return (
     <>
       <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
-        <Search />
+        <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
+        <Search inLanding/>
         <Highlighted />
         <Popular />
         <New />
@@ -69,7 +70,9 @@ function TestPage() {
 }
 function SearchPage(){
   return (
-    <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
+    //const search = useSearch() to get search results as a string example: http://localhost:5173/search?q=fefaadadsasdasd returns q=fefaadadsasdasd
+    <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
+    <Search />
     <SearchFilter />
     </div>
   )
