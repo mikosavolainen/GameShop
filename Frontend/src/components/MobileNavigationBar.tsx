@@ -45,7 +45,7 @@ export default function MobileNavigationBar({setMobileMenu}: {setMobileMenu: Rea
       </Link>
       <button className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => setMobileMenu(!false)}>
       <i className="material-icons group-active:text-wrench-purple-1">menu</i>
-      <span className="block text-xs group-active:text-wrench-purple-1">Home</span>
+      <span className="block text-xs group-active:text-wrench-purple-1">Menu</span>
       </button>
     </div>
   )

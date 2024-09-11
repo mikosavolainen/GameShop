@@ -36,11 +36,10 @@ function MainContent() {
       <Header />
       <Switch>
         <Route path="/" component={HomePage} />
-        <Route path="/reset-password" component={HomePage} />
         <Route path="/test" component={TestPage} />
         <Route path="/search" component={SearchPage} />
       </Switch>
-      {mobileMenu && <MobileMenu />}
+      <MobileMenu opened={mobileMenu} />
       <MobileNavigationBar setMobileMenu={setMobileMenu} />
     </div>
   )
