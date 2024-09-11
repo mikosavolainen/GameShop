@@ -94,7 +94,7 @@ export default function Modal({
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-wrench-neutral-4 border border-wrench-neutral-3 rounded-3xl mx-auto w-full md:w-[560px] relative"
+            className="bg-wrench-neutral-4/95 border border-wrench-neutral-3 rounded-3xl mx-auto w-full md:w-[560px] relative"
             onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
