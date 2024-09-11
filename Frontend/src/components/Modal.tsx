@@ -87,14 +87,14 @@ export default function Modal({
     <AnimatePresence>
       {open && (
         <motion.div
-          className={`fixed w-full h-full backdrop-blur-md top-0 left-0 md:py-12 z-30 overflow-y-auto`}
+          className={`fixed w-full h-full backdrop-blur-md top-0 left-0 md:py-12 z-30 overflow-y-auto bg-wrench-neutral-4/95 md:bg-wrench-neutral-4/0`}
           onClick={closeModal}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="bg-wrench-neutral-4/95 border border-wrench-neutral-3 rounded-3xl mx-auto w-full md:w-[560px] relative"
+            className="md:bg-wrench-neutral-4/95 md:border border-wrench-neutral-3 md:rounded-3xl mx-auto w-full md:w-[560px] h-auto relative"
             onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
