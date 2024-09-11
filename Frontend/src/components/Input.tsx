@@ -77,7 +77,7 @@ export default function Input({
               case "light":
                 return "text-wrench-neutral-dark placeholder:text-wrench-neutral-2";
               case "dark":
-                return "text-wrench-neutral-white placeholder:text-wrench-neutral-3";
+                return "text-wrench-neutral-white bg-wrench-neutral-dark placeholder:text-wrench-neutral-3";
             }
           })()} w-full inline-block outline-none`}
           placeholder={`${placeholder}`}
