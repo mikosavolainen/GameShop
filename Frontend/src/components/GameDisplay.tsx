@@ -4,7 +4,7 @@ import Label from "./Label"
 import Button from "./Button"
 import { Link } from "wouter"
 
-export default function GameDisplay({classname, discount, price, size, gameName, categories, description}:{classname?: string, discount?: number | null, price: number, size: "small" | "large", gameName: string, categories: (string | undefined)[], description: string}){
+export default function GameDisplay({classname, discount, price, size, gameName, categories, description}:{classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string}){
     let grids = ""
     let displayedDescription = description
     let displayedName = gameName
@@ -16,6 +16,9 @@ export default function GameDisplay({classname, discount, price, size, gameName,
         case "large":
             grids = "grid lg:grid-cols-2 lg:gap-6"
             break
+        case "wide":
+            grids = "md:flex"
+            break;
     }
     if (displayedDescription != description){
         displayedDescription += "..."
@@ -26,7 +29,7 @@ export default function GameDisplay({classname, discount, price, size, gameName,
     return(
         <Link href="/test">
         <div className={`${grids} ${classname}`}>
-        <img className="rounded-3xl" src={test_image_wrench} alt="Game"/>
+        <img className={`rounded-3xl ${size == "wide" ? "mr-6" : ""}`} src={test_image_wrench} alt="Game" width={`${size == "wide" ? "362": ""}`}/>
             <div className="flex flex-col">
             <h4 className="text-wrench-neutral-white text-xl font-semibold my-2">{displayedName}</h4>
             <div>
@@ -41,7 +44,7 @@ export default function GameDisplay({classname, discount, price, size, gameName,
                   {discount && <span className="text-wrench-neutral-white text-left text-base py-1" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
                 </div>
             )}
-            {size == "small" && (
+            {size !== "large" && (
               <>
                 <div className="flex flex-auto items-end mb-2">
                   <span className={`${discount ? "line-through text-wrench-neutral-2 pr-2" : "text-wrench-neutral-white"} text-left text-base py-1`} style={{fontFamily: `"Trispace", sans-serif`}}>{price} €</span>

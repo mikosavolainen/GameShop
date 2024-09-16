@@ -7,12 +7,12 @@ import GameDisplay from "./GameDisplay"
 import { useSearch } from "wouter"
 export default function SearchFilter(){
     const [sortSwitch, setSortSwitch] = useState(true)
-    const [selectedSorting, setSelectedSorting] = useState("wide")
+    const [selectedSorting, setSelectedSorting] = useState("grid")
     const searchString = useSearch()
     return (
         <>
-        <div className="flex">
-            <div className="md:w-[30%]">
+        <div className="lg:flex">
+            <div className="lg:w-[383px]">
             <Search />
             <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl p-3 mt-4">
                 <button className="px-3 h-[20px] align-middle" onClick={() => setSelectedSorting("wide")}>
@@ -73,14 +73,38 @@ export default function SearchFilter(){
                 <Checkbox label="Studio developer, developer" id="9" className="px-6 py-2" required={false}/>
             </div>
             </div>
-            <div className="ml-10 w-full">
+            <div className="mr-10 ml-10 w-[70%]">
             <p className="font-bold text-4xl">300 results for {searchString.substring(2)}</p>
-            <div className="grid grid-cols-3 gap-4">
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size="small" categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size="small" categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size="small" categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size="small" categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size="small" categories={["Cool"]}/>
+            <div className="flex my-4">
+                <button>&lt;</button>
+                <button className="mx-4">1</button>
+                <button className="underline">200</button>
+                <button className="mx-4">312</button>
+                <button>&gt;</button>
+            </div>
+            <div className={`${selectedSorting == "wide" ? `` : `grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4`}`}>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+            </div>
+            <div className="flex my-4">
+                <button>&lt;</button>
+                <button className="mx-4">1</button>
+                <button className="underline">200</button>
+                <button className="mx-4">312</button>
+                <button>&gt;</button>
             </div>
             </div>
         </div>
