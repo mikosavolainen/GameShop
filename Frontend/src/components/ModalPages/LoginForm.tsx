@@ -5,9 +5,12 @@ import axios from "axios";
 import Input from "../Input";
 import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { signInHelper } from "../../lib/AuthFunctions";
+import { AuthContext } from "../../wrappers/AuthWrapper";
 
 export default function LoginForm() {
   const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
+  const { setUser } = useContext(AuthContext)
 
   // API request function
   const loginRequest = async (formData: { username: string; password: string }) => {
@@ -36,9 +39,7 @@ export default function LoginForm() {
     onSuccess: (data) => {
       // Handle success (e.g., store user data, redirect)
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      // Possibly redirect or update global state
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("username", formData.username)
+      signInHelper(setUser, data.token, formData.username)
       setModalLoading(false)
     },
     onError: (error: { response?: { data?: string } }) => {

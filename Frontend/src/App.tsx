@@ -13,6 +13,7 @@ import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchFilter from "./components/SearchFilter.tsx";
 import MobileMenu from "./components/MobileMenu.tsx";
+import AuthWrapper from "./wrappers/AuthWrapper.tsx";
 
 const queryClient = new QueryClient()
 
@@ -20,9 +21,11 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <AuthenticationModalWrapper>
-          <MainContent />
-        </AuthenticationModalWrapper>
+        <AuthWrapper>
+          <AuthenticationModalWrapper>
+            <MainContent />
+          </AuthenticationModalWrapper>
+        </AuthWrapper>
       </QueryClientProvider>
     </>
   )
