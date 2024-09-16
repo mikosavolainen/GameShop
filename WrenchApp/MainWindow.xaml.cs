@@ -1,4 +1,5 @@
 ﻿using System;
+using CredentialManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,24 @@ namespace WrenchApp
         {
             InitializeComponent();
             Mainframe.Source = new Uri("Pages/HomePage.xaml", UriKind.Relative);
+            Username.Text = ConfigurationManager.AppSettings["username"];
+        }
+
+        private void Logout(object sender, EventArgs e)
+        {
+            using (var cred = new Credential())
+            {
+                cred.Target = "WrenchApp";
+
+                if (cred.Load())
+                {
+                    cred.Delete();
+                }
+            }
+
+            Window login = new Login();
+            login.Show();
+            this.Close();
         }
 
         private void Minimize_Screen(object sender, EventArgs e)

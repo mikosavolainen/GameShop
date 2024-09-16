@@ -1,4 +1,6 @@
 ﻿using System;
+using CredentialManagement;
+using System.Security;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -15,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace WrenchApp
 {
@@ -26,6 +29,32 @@ namespace WrenchApp
         public Login()
         {
             InitializeComponent();
+            Get_Credential();
+        }
+
+        private void Create_Credential(string username, string password)
+        {
+            // Create a new credential
+            using (var cred = new Credential())
+            {
+                cred.Target = "WrenchApp";
+                cred.Username = username;
+                cred.Password = password;
+                cred.Save(); 
+            }
+        }
+
+        private void Get_Credential()
+        {
+            using (var cred = new Credential())
+            {
+                cred.Target = "WrenchApp";
+
+                if (cred.Load())
+                {
+                    LoginFunc(true, cred.Username, cred.Password);
+                }
+            }
         }
 
         private void Close_Screen(object sender, EventArgs e)
@@ -41,27 +70,34 @@ namespace WrenchApp
             }
         }
 
-        async private void Log_In(object sender, EventArgs e)
+        private void Log_In(object sender, RoutedEventArgs e)
         {
-            string username = Username.Text;
-            string password = Password.Password.ToString();
+            LoginFunc(false, Username.Text, Password.Password.ToString());
+        }
 
+        async private void LoginFunc(bool autologin, string username, string password)
+        {
             // Ensure username and password are given
-            if (username == "" || password == "")
+            if ((username == "" || password == "") && !autologin)
             {
                 MessageBox.Show("Missing information!", "Warning");
             } else
             {
-                //////////////////////////////////////////////////////////////
-                // Skip logic if in edit mode                               //
-                if (ConfigurationManager.AppSettings["editmode"] == "true") //
-                {                                                           //
-                    ConfigurationManager.AppSettings["username"] = username;//
-                    Window mainWindow = new MainWindow();                   //
-                    mainWindow.Show();                                      //
-                    this.Close();                                           //
-                }                                                           //
-                //////////////////////////////////////////////////////////////
+
+                // Skip logic if in edit mode                
+                if (ConfigurationManager.AppSettings["editmode"] == "true")
+                {                                                          
+                    if (!autologin)
+                    {
+                        Create_Credential(username, password);
+                    }
+
+                    ConfigurationManager.AppSettings["username"] = username;
+                    Window mainWindow = new MainWindow();                   
+                    mainWindow.Show();                                  
+                    this.Close();                                      
+                }                                                    
+
 
                 var formContent = new FormUrlEncodedContent(new[]
                 {
@@ -91,13 +127,24 @@ namespace WrenchApp
                         ConfigurationManager.AppSettings["username"] = username;
                         ConfigurationManager.AppSettings["JWT"] = responseBody;
 
+                        if (!autologin)
+                        {
+                            Create_Credential(username, password);
+                        }
+
                         // Open main window
                         Window mainWindow = new MainWindow();
                         mainWindow.Show();
                         this.Close();
                     } catch
                     {
-                        MessageBox.Show("Incorrect credentials!", "Error");
+                        if (autologin == true)
+                        {
+                            MessageBox.Show("Login information has changed, please log in again.", "Error");
+                        } else
+                        {
+                            MessageBox.Show("Incorrect information!", "Error");
+                        }
                     }
 
                 } catch

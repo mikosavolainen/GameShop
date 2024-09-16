@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,11 +24,17 @@ namespace WrenchApp.Pages
         public ProfilePage()
         {
             InitializeComponent();
+            Username.Text = ConfigurationManager.AppSettings["username"];
         }
 
         private void Navigate_Library(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new LibraryPage());
+        }
+
+        private void Game_Screen(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new GameScreen());
         }
     }
 }

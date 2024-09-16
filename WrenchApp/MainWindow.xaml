@@ -137,7 +137,10 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 30 5">
-            <TextBlock Name="username" Text="" Foreground="White" FontSize="20" VerticalAlignment="Center" Margin="0 0 10 0"/>
+            <StackPanel Margin="0 0 10 0" VerticalAlignment="bottom">
+                <TextBlock Name="Username" Text="Username" FontSize="20" Foreground="White" HorizontalAlignment="Right"/>
+                <TextBlock Text="Logout" Cursor="Hand" Foreground="#99B9EA" FontSize="12" VerticalAlignment="Bottom" TextDecorations="Underline" HorizontalAlignment="Right" MouseDown="Logout"/>
+            </StackPanel>
             <Border CornerRadius="100" Height="50" Width="50" Cursor="Hand" MouseDown="Profile_Screen">
                 <Border.Background>
                     <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
