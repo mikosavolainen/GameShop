@@ -50,8 +50,8 @@ export default function Highlighted() {
   const [sliderPage, setSliderPage] = useState<number>(0);
   useEffect(() => {
     const clock = setTimeout(() => {
-      if(sliderPage == 5){
-        setSliderPage(1)
+      if(sliderPage == testData.length-1){
+        setSliderPage(0)
       }
       else{
         setSliderPage(sliderPage + 1)
@@ -62,7 +62,6 @@ export default function Highlighted() {
   function slide(number: number){
     setSliderPage(number)
   }
-
   return (
     <>
       <h3 className="text-wrench-neutral-white text-xl mt-10 mb-3">Highlighted</h3>
