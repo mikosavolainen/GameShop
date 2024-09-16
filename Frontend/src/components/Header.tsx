@@ -1,14 +1,19 @@
 import { Link, useRoute } from "wouter";
 import Button from "./Button";
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import Modal from "./Modal";
 import AuthForms from "./ModalPages/AuthForms";
+import { AuthContext } from "../wrappers/AuthWrapper";
+import { signOutHelper } from "../lib/AuthFunctions";
+import default_pfp from "../assets/default_pfp.jpg"
 
 export default function Header() {
   const [, setLocation] = useLocation()
   const { modalOpen, setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
+  const { user, setUser } = useContext(AuthContext)
+  const [dropdown, setDropdown] = useState<boolean>(false)
 
   const [setNewPasswordRouteMatch] = useRoute("/reset-password");
 
@@ -39,9 +44,27 @@ export default function Header() {
           <Link href="/test" className="hover:text-wrench-purple-1">Download</Link>
         </div>
         <div className="flex items-center space-x-4">
-          <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">shopping_basket</Link>
-          <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">notifications</Link>
-          <Button type="button" text="Sign In" icon="login" style="purple" size="big" onClick={() => setModalOpen(true)} />
+          {user ? (
+            <>
+              {/* <Button type="button" text="Sign Out" icon="logout" style="purple" size="big" onClick={() => signOutHelper(setUser)} /> */}
+              <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">shopping_basket</Link>
+              <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">notifications</Link>
+              <div className="relative">
+                <button onClick={() => alert("h")}>
+                  <img alt="Default profile picture" src={default_pfp} className="size-10 rounded-full" />
+                </button>
+                { dropdown && (
+                  <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl w-64 h-32 absolute right-0">
+
+                  </div>
+                ) }
+              </div>
+            </>
+          ) : (
+            <>
+              <Button type="button" text="Sign In" icon="login" style="purple" size="big" onClick={() => setModalOpen(true)} />
+            </>
+          )}
         </div>
       </div>
     </>
