@@ -38,7 +38,7 @@ export default function Search({inLanding}:{inLanding?:boolean}){
         <input className="hidden" type="submit" onClick={() => redirect(searchValue)}></input>
         </form>
         {searchBlock && inputFocus && inLanding && (
-            <div className="absolute text-wrench-neutral-dark bg-wrench-neutral-white w-1/2 p-2 rounded-sm">
+            <div className="absolute text-wrench-neutral-dark bg-wrench-neutral-white w-1/2 p-2 rounded-2xl">
                 <button onClick={() => redirect("test")} className="p-1 my-1 min-w-full border border-wrench-neutral-dark hover:border-wrench-neutral-2 rounded-xl">
                     test
                 </button>
