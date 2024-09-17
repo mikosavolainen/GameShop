@@ -57,12 +57,10 @@ const ReviewsSchema = new mongoose.Schema({
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const LibrarySchema = new mongoose.Schema({
-  owner: { type: String},
-  game: { type: String },
-
+	owner: { type: String },
+	game: { type: String },
 });
 const Library = mongoose.model("Library", LibrarySchema);
-
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -99,25 +97,26 @@ async function sendMail(Msg, sub, email) {
 }
 
 app.get("/", (req, res) => {
-	res.json("hello world");
+	res.redirect(
+		"https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwio_8ngmceIAxUvGBAIHc5_HQ0QwqsBegQIERAG&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449"
+	);
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
-  try {
-    const ownerId = req.body.owner; 
-    if (!ownerId) {
-      return res.status(400).send("Owner ID is required");
-    }
-   
-    const games = await Library.find({ owner: ownerId });
+	try {
+		const ownerId = req.body.owner;
+		if (!ownerId) {
+			return res.status(400).send("Owner ID is required");
+		}
 
-    res.json(games);
-  } catch (error) {
-    console.error("Error fetching games:", error);
-    res.status(500).send("Internal Server Error");
-  }
+		const games = await Library.find({ owner: ownerId });
+
+		res.json(games);
+	} catch (error) {
+		console.error("Error fetching games:", error);
+		res.status(500).send("Internal Server Error");
+	}
 });
-
 
 app.post("/get-all-games", async (req, res) => {
 	try {
@@ -260,11 +259,18 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 });
 app.post("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
-	const x = jwt.verify(token, SECRET_KEY);
-	if (x) {
-		const newpass = await bcrypt.hash(password, 10);
-		await users.findOneAndUpdate({ email: x.email }, { password: newpass });
-		return res.status(200).send("RESETED");
+	try {
+		const x = jwt.verify(token, SECRET_KEY);
+		if (x) {
+			const newpass = await bcrypt.hash(password, 10);
+			await users.findOneAndUpdate(
+				{ email: x.email },
+				{ password: newpass }
+			);
+			return res.status(200).send("RESETED");
+		}
+	} catch (error) {
+		res.status(400).send("invalid token");
 	}
 });
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
