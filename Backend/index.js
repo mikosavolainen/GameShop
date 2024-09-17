@@ -62,6 +62,10 @@ const LibrarySchema = new mongoose.Schema({
 });
 const Library = mongoose.model("Library", LibrarySchema);
 
+const NewsletterSchema = new mongoose.Schema({
+    email: String
+});
+const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
 		req.body.username = req.body.username.toLowerCase();
