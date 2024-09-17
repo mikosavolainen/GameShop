@@ -264,7 +264,7 @@ app.post("/reset-password", async (req, res) => {
 	if (x) {
 		const newpass = await bcrypt.hash(password, 10);
 		await users.findOneAndUpdate({ email: x.email }, { password: newpass });
-		return res.status(200).send("RESTED");
+		return res.status(200).send("RESETED");
 	}
 });
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
