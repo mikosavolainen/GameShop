@@ -1,14 +1,85 @@
+import { Route, Switch } from "wouter";
 import './App.css'
-import Game_display from './components/game_display.tsx'
-import Input from './components/input.tsx'
+import Header from './components/Header.tsx'
+import Search from './components/Search.tsx'
+import Highlighted from './components/Highlighted.tsx'
+import Popular from './components/Popular.tsx'
+import New from './components/New.tsx'
+import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
+import { useContext, useState } from "react";
+import Categories from './components/Categories.tsx'
+import Footer from "./components/footer.tsx";
+import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SearchFilter from "./components/SearchFilter.tsx";
+import MobileMenu from "./components/MobileMenu.tsx";
+import AuthWrapper from "./wrappers/AuthWrapper.tsx";
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
     <>
-      <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
-      <Input type='text' width={62} size_color='normal-white' icon='search' label='Search' placeholder='Start your search here' />
-      <Game_display size="large" game_name="This game is incredibly good for you to buy" categories={["Strategies", "RPG", "Arcade", "Cool game"]} description='Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact, I’m going to yap even more so that I will fill even more space. Sigma skibidi. I have a degree in yaponology.'/>
+      <QueryClientProvider client={queryClient}>
+        <AuthWrapper>
+          <AuthenticationModalWrapper>
+            <MainContent />
+          </AuthenticationModalWrapper>
+        </AuthWrapper>
+      </QueryClientProvider>
     </>
+  )
+}
+
+function MainContent() {
+  const { scrollbarCompensation } = useContext(AuthenticationModalContext)
+  const [mobileMenu, setMobileMenu] = useState(false)
+  return(
+    <div style={{marginRight: scrollbarCompensation+"px"}}>
+      <Header />
+      <Switch>
+        <Route path="/" component={HomePage} />
+        <Route path="/test" component={TestPage} />
+        <Route path="/search" component={SearchPage} />
+      </Switch>
+      <MobileMenu opened={mobileMenu} />
+      <MobileNavigationBar setMobileMenu={setMobileMenu} />
+    </div>
+  )
+}
+
+function HomePage() {
+  return (
+    <>
+      <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
+        <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
+        <Search inLanding/>
+        <Highlighted />
+        <Popular />
+        <New />
+        <Categories />
+        <Footer />
+      </div>
+    </>
+  )
+}
+
+function TestPage() {
+  return (
+    <>
+      <div className="content-layout-margin">
+        <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>Test test test</p>
+      </div>
+    </>
+  )
+}
+function SearchPage(){
+  return (
+    //const searchString = useSearch() to get search results as a string example: http://localhost:5173/search?q=fefaadadsasdasd returns q=fefaadadsasdasd
+    <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
+      <SearchFilter />
+      <Footer />
+    </div>
   )
 }
 

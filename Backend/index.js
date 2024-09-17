@@ -198,11 +198,11 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	const user = await User.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
-	if (!user.confirmedemail) {
-		res.status(403).send("email is not verified");
-	}
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
+	}
+  if (!user.confirmedemail) {
+		return res.status(403).send("email is not verified");
 	}
 	var uname = user.username;
 	const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
@@ -280,7 +280,7 @@ app.post("/forgot-password", async (req, res) => {
 </html>
 `;
 
-	await sendMail(Confirmation, "Password reset", email);
+	await sendMail(confirmation, "Password reset", email);
 	res.status(200).send("reset password email send");
 });
 app.post("/upload", async (req, res) => {
