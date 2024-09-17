@@ -46,16 +46,18 @@ export default function Header() {
         <div className="flex items-center space-x-4">
           {user ? (
             <>
-              {/* <Button type="button" text="Sign Out" icon="logout" style="purple" size="big" onClick={() => signOutHelper(setUser)} /> */}
               <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">shopping_basket</Link>
               <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">notifications</Link>
               <div className="relative">
-                <button onClick={() => alert("h")}>
-                  <img alt="Default profile picture" src={default_pfp} className="size-10 rounded-full" />
+                <button onClick={() => setDropdown(old => !old)}>
+                  <img alt="Default profile picture" src={default_pfp} className="size-8 rounded-full mt-1.5" />
                 </button>
                 { dropdown && (
-                  <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl w-64 h-32 absolute right-0">
-
+                  <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute right-0 text-right">
+                    <Link href={`/user/${user.username}`} className="inline-block py-3 px-8 whitespace-nowrap">My Profile</Link>
+                    <Link href={`/user/${user.username}`} className="block py-3 px-8 whitespace-nowrap">Settings</Link>
+                    <Button type="button" text="" icon="logout" style="purple" size="big" />
+                      <button onClick={() => signOutHelper(setUser)} className="block py-3 px-8 whitespace-nowrap">Sign Out</button>
                   </div>
                 ) }
               </div>

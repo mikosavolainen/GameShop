@@ -9,7 +9,7 @@ import { signInHelper } from "../../lib/AuthFunctions";
 import { AuthContext } from "../../wrappers/AuthWrapper";
 
 export default function LoginForm() {
-  const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
+  const { setModalPage, setModalLoading, setModalOpen } = useContext(AuthenticationModalContext)
   const { setUser } = useContext(AuthContext)
 
   // API request function
@@ -41,6 +41,7 @@ export default function LoginForm() {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       signInHelper(setUser, data.token, formData.username)
       setModalLoading(false)
+      setModalOpen(false)
     },
     onError: (error: { response?: { data?: string } }) => {
       // Set error message state
