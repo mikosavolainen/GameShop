@@ -69,7 +69,7 @@ export default function Highlighted() {
   }
   return (
     <>
-      <h3 className="text-wrench-neutral-white text-xl mt-10 mb-3">Highlighted</h3>
+      <h3 className="text-xl font-semibold mb-4 mt-8">Highlighted</h3>
       <div className="relative overflow-hidden">
         <div
           className="flex transition-transform duration-500"
