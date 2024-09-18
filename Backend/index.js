@@ -103,19 +103,17 @@ async function sendMail(Msg, sub, email) {
 
 app.get("/", (req, res) => {
 	res.redirect(
-		"https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwio_8ngmceIAxUvGBAIHc5_HQ0QwqsBegQIERAG&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449"
+		"lol.tyhjyys.com"
 	);
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
 	try {
-		const token = await jwt.verify("req.body.token", SECRET_KEY);
+		const token = await jwt.verify(req.body.token, SECRET_KEY);
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-
 		const games = await Library.find({ owner: token.username });
-
 		res.json(games);
 	} catch (error) {
 		console.error("Error fetching games:", error);
@@ -132,7 +130,9 @@ app.post("/get-all-games", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
-
+app.post("/get-game", async (req, res) => {
+	return res.status(200).send("fu")
+})
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
 	if (jwts) {
