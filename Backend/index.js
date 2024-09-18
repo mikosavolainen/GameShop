@@ -58,7 +58,7 @@ const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const LibrarySchema = new mongoose.Schema({
 	owner: { type: String },
-	game: { type: String },
+	games: { type: Array },
 });
 const Library = mongoose.model("Library", LibrarySchema);
 
@@ -108,12 +108,12 @@ app.get("/", (req, res) => {
 
 app.post("/get-all-owned-games", async (req, res) => {
 	try {
-		const ownerId = req.body.owner;
-		if (!ownerId) {
+		const token = await jwt.verify("req.body.token", SECRET_KEY);
+		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
 
-		const games = await Library.find({ owner: ownerId });
+		const games = await Library.find({ owner: token.username });
 
 		res.json(games);
 	} catch (error) {
@@ -247,18 +247,21 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
-	const { username, password } = req.body;
+	var { username, password } = req.body;
 	const user = await users.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
+	if (!user) {
+		return res.status(401).send("no user or email find")
+	}
 	if (!user.confirmedemail) {
 		return res.status(403).send("email is not verified");
 	}
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
 	}
-	var uname = user.username;
-	const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
+	username = user.username
+	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	res.json({ token });
 });
 app.post("/reset-password", async (req, res) => {
