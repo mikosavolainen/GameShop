@@ -49,15 +49,18 @@ export default function Header() {
               <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">shopping_basket</Link>
               <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">notifications</Link>
               <div className="relative">
-                <button onClick={() => setDropdown(old => !old)}>
-                  <img alt="Default profile picture" src={default_pfp} className="size-8 rounded-full mt-1.5" />
+                <button onClick={() => setDropdown(old => !old)} className="flex gap-3 group">
+                  <div className="text-right">
+                    <span className="block group-hover:text-wrench-purple-1">{user.username}</span>
+                    <span className="block text-xs group-hover:text-wrench-purple-1">something under</span>
+                  </div>
+                  <img alt="Default profile picture" src={default_pfp} className="size-8 rounded-full mt-1" />
                 </button>
                 { dropdown && (
-                  <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute right-0 text-right">
-                    <Link href={`/user/${user.username}`} className="inline-block py-3 px-8 whitespace-nowrap">My Profile</Link>
-                    <Link href={`/user/${user.username}`} className="block py-3 px-8 whitespace-nowrap">Settings</Link>
-                    <Button type="button" text="" icon="logout" style="purple" size="big" />
-                      <button onClick={() => signOutHelper(setUser)} className="block py-3 px-8 whitespace-nowrap">Sign Out</button>
+                  <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden py-1">
+                    <Link href={`/user/${user.username}`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">My Profile</Link>
+                    <Link href={`/settings`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">Settings</Link>
+                    <button onClick={() => signOutHelper(setUser)} className="block py-2.5 pr-6 pl-12 m-0 whitespace-nowrap w-full text-right hover:text-wrench-purple-1">Sign Out</button>
                   </div>
                 ) }
               </div>
