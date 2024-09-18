@@ -9,6 +9,7 @@ import { AuthContext } from "../wrappers/AuthWrapper";
 import { signOutHelper } from "../lib/AuthFunctions";
 import default_pfp from "../assets/default_pfp.jpg"
 import { AnimatePresence, motion } from "framer-motion"
+import { useDetectClickOutside } from "react-detect-click-outside";
 
 export default function Header() {
   const [, setLocation] = useLocation()
@@ -17,6 +18,7 @@ export default function Header() {
   const [dropdown, setDropdown] = useState<boolean>(false)
 
   const [setNewPasswordRouteMatch] = useRoute("/reset-password");
+  const outsideRef = useDetectClickOutside({ onTriggered: () => setDropdown(false) });
 
   useEffect(() => {
     if(setNewPasswordRouteMatch){
@@ -49,7 +51,7 @@ export default function Header() {
             <>
               <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">shopping_basket</Link>
               <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">notifications</Link>
-              <div className="relative">
+              <div className="relative" ref={outsideRef}>
                 <button onClick={() => setDropdown(old => !old)} className="flex gap-3 group">
                   <div className="text-right">
                     <span className="block group-hover:text-wrench-purple-1">{user.username}</span>
@@ -57,18 +59,21 @@ export default function Header() {
                   </div>
                   <img alt="Default profile picture" src={default_pfp} className="size-8 rounded-full mt-1" />
                 </button>
-                { dropdown && (
-                  <motion.div
-                  initial={{ opacity: 0, y: -10 }} // Starts hidden and above the dropdown area
-                  animate={{ opacity: 1, y: 0 }}   // Animates to full opacity and its original position
-                  exit={{ opacity: 0, y: -10 }}     // Fades and slides back up when exiting
-                  transition={{ duration: 0.3, ease: "easeInOut" }} // Smooth transition
-                  className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden py-1">
-                    <Link href={`/user/${user.username}`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">My Profile</Link>
-                    <Link href={`/settings`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">Settings</Link>
-                    <button onClick={() => signOutHelper(setUser)} className="block py-2.5 pr-6 pl-12 m-0 whitespace-nowrap w-full text-right hover:text-wrench-purple-1">Sign Out</button>
-                  </motion.div>
-                ) }
+                <AnimatePresence>
+                  { dropdown && (
+                    <motion.div
+                    initial={{ opacity: 0, y: -10 }} // Starts hidden and above the dropdown area
+                    animate={{ opacity: 1, y: 0 }}   // Animates to full opacity and its original position
+                    exit={{ opacity: 0, y: -10 }}     // Fades and slides back up when exiting
+                    transition={{ duration: 0.3, ease: "easeInOut" }} // Smooth transition
+                    onClick={() => setDropdown(false)}
+                    className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden py-1">
+                      <Link href={`/user/${user.username}`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">My Profile</Link>
+                      <Link href={`/settings`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">Settings</Link>
+                      <button onClick={() => signOutHelper(setUser)} className="block py-2.5 pr-6 pl-12 m-0 whitespace-nowrap w-full text-right hover:text-wrench-purple-1">Sign Out</button>
+                    </motion.div>
+                  ) }
+                </AnimatePresence>
               </div>
             </>
           ) : (
