@@ -42,7 +42,7 @@ function MainContent() {
         <Route path="/" component={HomePage} />
         <Route path="/game/:id" component={GamePage} />
         <Route path="/search" component={SearchPage} />
-        <Route path="/game/:id" component={GamePage} />
+        <Route path="/test" component={TestPage} />
         <Route path="/user/:user" component={UserPage} />
       </Switch>
       <MobileMenu opened={mobileMenu} />
@@ -67,7 +67,7 @@ function HomePage() {
   )
 }
 
-function GamePage() {
+function TestPage() {
   return (
     <>
       <div className="content-layout-margin">
