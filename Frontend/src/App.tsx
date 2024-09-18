@@ -15,6 +15,7 @@ import SearchFilter from "./components/SearchFilter.tsx";
 import MobileMenu from "./components/MobileMenu.tsx";
 import AuthWrapper from "./wrappers/AuthWrapper.tsx";
 import GamePage from "./components/Game/GamePage.tsx";
+import UserPageContent from "./components/UserPageContent.tsx";
 
 const queryClient = new QueryClient()
 
@@ -88,6 +89,7 @@ function SearchPage(){
 function UserPage(){
   return(
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
+      <UserPageContent />
       <Footer />
     </div>
   )
