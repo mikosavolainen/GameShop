@@ -46,6 +46,7 @@ export default function SignUpForm() {
       // Handle success (e.g., store user data, redirect)
       queryClient.invalidateQueries({ queryKey: ['users'] });
       // Possibly redirect or update global state
+      setModalLoading(false)
     },
     onError: (error: { response?: { data?: string } }) => {
       // Set error message state

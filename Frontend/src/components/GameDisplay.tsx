@@ -27,7 +27,7 @@ export default function GameDisplay({classname, discount, price, size, gameName,
         displayedName += "..."
     }
     return(
-        <Link href="/test">
+        <Link href="/game/jtemporaryid">
         <div className={`${grids} ${classname}`}>
         <img className={`rounded-3xl ${size == "wide" ? "mr-6" : ""}`} src={test_image_wrench} alt="Game" width={`${size == "wide" ? "362": ""}`}/>
             <div className="flex flex-col">
@@ -38,8 +38,8 @@ export default function GameDisplay({classname, discount, price, size, gameName,
             <p className="text-wrench-neutral-white text-left mt-2 text-base">{displayedDescription}</p>
             {size == "large" && (
                 <div className="flex flex-auto items-end">
-                  <Button href="/test" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
-                  <Button className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>
+                  <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                  {/* <Button href="/game?id=temporaryid" className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>         I think this is unnecessary*/} 
                   <span className={`${discount ? "line-through text-wrench-neutral-2 pr-2" : "text-wrench-neutral-white"} text-left text-base py-1`} style={{fontFamily: `"Trispace", sans-serif`}}>{price} €</span>
                   {discount && <span className="text-wrench-neutral-white text-left text-base py-1" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
                 </div>
@@ -51,8 +51,8 @@ export default function GameDisplay({classname, discount, price, size, gameName,
                   {discount && <span className="text-wrench-neutral-white text-left text-base py-1" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
                 </div>
                 <div className="flex flex-auto items-end">
-                  <Button className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
-                  <Button className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>
+                  <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                  {/* <Button href="/game?id=temporaryid" className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/> */}
                 </div>
               </>
             )}

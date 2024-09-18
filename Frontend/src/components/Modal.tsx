@@ -103,7 +103,7 @@ export default function Modal({
             {/* Stop the click event from propagating to the parent div */}
             {modalLoading && (
               <motion.div
-                className="absolute w-full h-full bg-wrench-neutral-white/20 z-30 flex flex-col items-center justify-center"
+                className="absolute w-full h-full bg-wrench-neutral-white/20 z-30 flex flex-col items-center justify-center md:rounded-3xl"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
