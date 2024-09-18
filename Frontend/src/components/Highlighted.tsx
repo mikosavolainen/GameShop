@@ -65,18 +65,29 @@ export default function Highlighted() {
   return (
     <>
       <h3 className="text-wrench-neutral-white text-xl mt-10 mb-3">Highlighted</h3>
-      <GameDisplay
-        discount={testData[sliderPage].discount}
-        price={testData[sliderPage].price}
-        size="large"
-        gameName={testData[sliderPage].name}
-        categories={testData[sliderPage].categories}
-        description={testData[sliderPage].shortDescription}
-      />
+      <div className="relative overflow-hidden">
+        <div
+          className="flex transition-transform duration-500"
+          style={{ transform: `translateX(-${(sliderPage) * 100}%)` }}
+        >
+          {testData.map((data, index) => (
+            <div className="min-w-full" key={index}>
+              <GameDisplay
+                discount={data.discount}
+                price={data.price}
+                size="large"
+                gameName={data.name}
+                categories={data.categories}
+                description={data.shortDescription}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="grid grid-cols-5 gap-3">
         {testData.map((data, i) => (
-          <button onClick={() => slide(i)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6">
-            <div className={`border rounded-full h-1 ${sliderPage === i ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
+          <button onClick={() => slide(i)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6 group">
+            <div className={`rounded-full group-hover:bg-wrench-neutral-2 h-1 ${sliderPage === i ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
           </button>
         ))}
       </div>

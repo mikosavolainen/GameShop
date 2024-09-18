@@ -16,6 +16,7 @@ import MobileMenu from "./components/MobileMenu.tsx";
 import AuthWrapper from "./wrappers/AuthWrapper.tsx";
 import GamePage from "./components/Game/GamePage.tsx";
 import UserPageContent from "./components/UserPageContent.tsx";
+import Button from "./components/Button.tsx";
 
 const queryClient = new QueryClient()
 
@@ -72,7 +73,18 @@ function DownloadPage() {
   return (
     <>
       <div className="content-layout-margin">
-        <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>Test test test</p>
+        <h1 className='text-5xl text-wrench-neutral-white pt-40 font-bold'>Download Wrench Client for Windows</h1>
+        <h2 className="mt-4 text-xl">Fast and easy downloads & instant access</h2>
+        <Button text="Download" type="link" style="purple" size="big" icon="download" className="mt-4" />
+        <h3 className="font-semibold text-xl mt-8">Troubleshooting</h3>
+        <h4 className="font-semibold text-lg mt-4">Trouble</h4>
+        <p>This is some kind of a skibidi explanation of a skibidi problem.  Longer text example lorem ipsum dolor sit amet. This is some kind of a skibidi explanation of a skibidi problem. Longer text example lorem ipsum dolor sit amet. Longer text example lorem ipsum dolor sit amet.</p>
+        <h4 className="font-semibold text-lg mt-4">Trouble</h4>
+        <p>This is some kind of a skibidi explanation of a skibidi problem.  Longer text example lorem ipsum dolor sit amet. This is some kind of a skibidi explanation of a skibidi problem. Longer text example lorem ipsum dolor sit amet. Longer text example lorem ipsum dolor sit amet.</p>
+        <h4 className="font-semibold text-lg mt-4">Trouble</h4>
+        <p>This is some kind of a skibidi explanation of a skibidi problem.  Longer text example lorem ipsum dolor sit amet. This is some kind of a skibidi explanation of a skibidi problem. Longer text example lorem ipsum dolor sit amet. Longer text example lorem ipsum dolor sit amet.</p>
+        <h4 className="font-semibold text-lg mt-4">Trouble</h4>
+        <p>This is some kind of a skibidi explanation of a skibidi problem.  Longer text example lorem ipsum dolor sit amet. This is some kind of a skibidi explanation of a skibidi problem. Longer text example lorem ipsum dolor sit amet. Longer text example lorem ipsum dolor sit amet.</p>
         <Footer />
       </div>
     </>

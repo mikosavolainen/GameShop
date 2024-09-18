@@ -34,8 +34,8 @@ export default function Search({inLanding}:{inLanding?:boolean}){
     return(
         <>
         <form>
-          <div className="w-1/2">
-            <Input blur={focusInputChange} focus={focusInputChange}type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' onChange={handleInputChange}/>
+          <div className={`w-full ${inLanding && "xl:w-1/2"}`}>
+            <Input blur={focusInputChange} focus={focusInputChange} type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' onChange={handleInputChange}/>
           </div>
           <input className="hidden" type="submit" onClick={() => redirect(searchValue)}></input>
         </form>
