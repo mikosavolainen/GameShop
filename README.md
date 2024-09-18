@@ -127,3 +127,4 @@ To set up the email service, ensure to replace `EMAIL_USER` and `EMAIL_PASS` in 
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+.

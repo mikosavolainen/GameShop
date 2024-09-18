@@ -57,12 +57,15 @@ const ReviewsSchema = new mongoose.Schema({
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const LibrarySchema = new mongoose.Schema({
-  owner: { type: String},
-  game: { type: String },
-
+	owner: { type: String },
+	games: { type: Array },
 });
 const Library = mongoose.model("Library", LibrarySchema);
 
+const NewsletterSchema = new mongoose.Schema({
+    email: String
+});
+	const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -99,25 +102,26 @@ async function sendMail(Msg, sub, email) {
 }
 
 app.get("/", (req, res) => {
-	res.json("hello world");
+	res.redirect(
+		"https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwio_8ngmceIAxUvGBAIHc5_HQ0QwqsBegQIERAG&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449"
+	);
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
-  try {
-    const ownerId = req.body.owner; 
-    if (!ownerId) {
-      return res.status(400).send("Owner ID is required");
-    }
-   
-    const games = await Library.find({ owner: ownerId });
+	try {
+		const token = await jwt.verify("req.body.token", SECRET_KEY);
+		if (!token) {
+			return res.status(400).send("Owner ID is required");
+		}
 
-    res.json(games);
-  } catch (error) {
-    console.error("Error fetching games:", error);
-    res.status(500).send("Internal Server Error");
-  }
+		const games = await Library.find({ owner: token.username });
+
+		res.json(games);
+	} catch (error) {
+		console.error("Error fetching games:", error);
+		res.status(500).send("Internal Server Error");
+	}
 });
-
 
 app.post("/get-all-games", async (req, res) => {
 	try {
@@ -152,9 +156,7 @@ app.get("/confirm", async (req, res) => {
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	const existingUser = await users.findOne({
-		$or: [{ username: username }, { email: email }],
-	});
+	const existingUser = await User.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
@@ -244,27 +246,37 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
-	const { username, password } = req.body;
+	var { username, password } = req.body;
 	const user = await users.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
+	if (!user) {
+		return res.status(401).send("no user or email find")
+	}
+	if (!user.confirmedemail) {
+		return res.status(403).send("email is not verified");
+	}
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
 	}
-  if (!user.confirmedemail) {
-		return res.status(403).send("email is not verified");
-	}
-	var uname = user.username;
-	const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
+	username = user.username
+	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	res.json({ token });
 });
 app.post("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
-	const x = jwt.verify(token, SECRET_KEY);
-	if (x) {
-		const newpass = await bcrypt.hash(password, 10);
-		await users.findOneAndUpdate({ email: x.email }, { password: newpass });
-		return res.status(200).send("RESTED");
+	try {
+		const x = jwt.verify(token, SECRET_KEY);
+		if (x) {
+			const newpass = await bcrypt.hash(password, 10);
+			await users.findOneAndUpdate(
+				{ email: x.email },
+				{ password: newpass }
+			);
+			return res.status(200).send("RESETED");
+		}
+	} catch (error) {
+		res.status(400).send("invalid token");
 	}
 });
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
@@ -272,13 +284,8 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const user = await users.findOne({ email: email });
 
 	if (!user) {
-		return res.status(400).send("didnt find email");
+		res.status(400).send("didnt find email");
 	}
-	if (!user.confirmedemail) {
-		return res.status(401).send("You need to confirm your email");
-	}
-	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "15min" });
-
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
