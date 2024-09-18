@@ -4,7 +4,7 @@ import Label from "./Label"
 import Button from "./Button"
 import { Link } from "wouter"
 
-export default function GameDisplay({classname, discount, price, size, gameName, categories, description}:{classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string}){
+export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string}){
     let grids = ""
     let displayedDescription = description
     let displayedName = gameName
@@ -27,9 +27,11 @@ export default function GameDisplay({classname, discount, price, size, gameName,
         displayedName += "..."
     }
     return(
-        <Link href="/game/jtemporaryid">
+      <>
         <div className={`${grids} ${classname}`}>
+        <Link href="/game/jtemporaryid">
         <img className={`rounded-3xl ${size == "wide" ? "mr-6" : ""}`} src={test_image_wrench} alt="Game" width={`${size == "wide" ? "362": ""}`}/>
+            </Link>
             <div className="flex flex-col">
             <h4 className="text-wrench-neutral-white text-xl font-semibold my-2">{displayedName}</h4>
             <div>
@@ -39,6 +41,12 @@ export default function GameDisplay({classname, discount, price, size, gameName,
             {size == "large" && (
                 <div className="flex flex-auto items-end">
                   <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                  {review == "send" && (
+                    <Button type="button" style="coral" icon="send" text="Leave a review"></Button>
+                  )}
+                  {review == "edit" && (
+                    <Button type="button" icon="edit" text="Edit review"></Button>
+                  )}
                   {/* <Button href="/game?id=temporaryid" className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>         I think this is unnecessary*/} 
                   <span className={`${discount ? "line-through text-wrench-neutral-2 pr-2" : "text-wrench-neutral-white"} text-left text-base py-1`} style={{fontFamily: `"Trispace", sans-serif`}}>{price} €</span>
                   {discount && <span className="text-wrench-neutral-white text-left text-base py-1" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
@@ -52,12 +60,18 @@ export default function GameDisplay({classname, discount, price, size, gameName,
                 </div>
                 <div className="flex flex-auto items-end">
                   <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                  {review == "send" && (
+                    <Button type="button" style="coral" icon="send" text="Leave a review"></Button>
+                  )}
+                  {review == "edit" && (
+                    <Button type="button" icon="edit" text="Edit review"></Button>
+                  )}
                   {/* <Button href="/game?id=temporaryid" className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/> */}
                 </div>
               </>
             )}
             </div>
         </div>
-        </Link>
+      </>
     )
 }
