@@ -65,7 +65,7 @@ const Library = mongoose.model("Library", LibrarySchema);
 const NewsletterSchema = new mongoose.Schema({
     email: String
 });
-	const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
+const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -263,6 +263,7 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	res.json({ token });
 });
+
 app.post("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
 	try {
@@ -279,6 +280,7 @@ app.post("/reset-password", async (req, res) => {
 		res.status(400).send("invalid token");
 	}
 });
+
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });
@@ -369,6 +371,7 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	await sendMail(confirmation, "Password reset", email);
 	return res.status(200).send("reset password email send");
 });
+
 app.post("/upload", async (req, res) => {
 	if (req.file) {
 		// Upload logic here
