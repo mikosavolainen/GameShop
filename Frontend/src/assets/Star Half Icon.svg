@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+  <!-- Define the gradient -->
+  <defs>
+    <linearGradient id="halfGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="50%" style="stop-color:#FFD700; stop-opacity:1" /> <!-- Left side color (gold) -->
+      <stop offset="50%" style="stop-color:#FFD700; stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D8BFD8; stop-opacity:1" /> <!-- Right side color (red) -->
+    </linearGradient>
+  </defs>
+  
+  <!-- Use the gradient to fill the star -->
+  <path d="m263-161.54 57.31-246.77-191.46-165.92 252.61-21.92L480-828.84l98.54 232.69 252.61 21.92-191.46 165.92L697-161.54 480-292.46 263-161.54Z" fill="url(#halfGradient)" />
+</svg>
