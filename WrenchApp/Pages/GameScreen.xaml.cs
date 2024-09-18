@@ -24,5 +24,10 @@ namespace WrenchApp.Pages
         {
             InitializeComponent();
         }
+
+        private void AddToCart(object sender, EventArgs e)
+        {
+
+        }
     }
 }

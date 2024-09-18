@@ -409,9 +409,11 @@
 
         <Style x:Key="RowDesc" TargetType="TextBlock">
             <Setter Property="Height" Value="70"/>
+            <Setter Property="Width" Value="450"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="FontSize" Value="16.666"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Margin" Value="10 0 0 0"/>
         </Style>
 
@@ -478,15 +480,7 @@
 
                         <TextBlock Text="Categories" Foreground="White" FontSize="20" Margin="0 25 0 10"/>
                         <ScrollViewer Height="225">
-                            <StackPanel>
-                                <CheckBox Name="arcadeCb" Content="Arcade"/>
-                                <CheckBox Name="rpgCb" Content="RPG"/>
-                                <CheckBox Name="adventureCb" Content="Adventure"/>
-                                <CheckBox Name="strategyCb" Content="Strategy"/>
-                                <CheckBox Name="sportsCb" Content="Sports"/>
-                                <CheckBox Name="racingCb" Content="Racing"/>
-                                <CheckBox Name="puzzleCb" Content="Puzzle"/>
-                                <CheckBox Name="simulationCb" Content="Simulation"/>
+                            <StackPanel Name="Tags">
                             </StackPanel>
                         </ScrollViewer>
 
@@ -505,75 +499,8 @@
             <StackPanel Grid.Column="1">
                 <TextBlock Text="x Results" Foreground="White" FontSize="30"/>
 
-                <StackPanel Margin="0 0 0 150">
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg1" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg2" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg3" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg4" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg5" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle5" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc5" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice5" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg6" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle6" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc6" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice6" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg7" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle7" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc7" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice7" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="ResultImg8" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="ResultTitle8" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="ResultDesc8" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="ResultPrice8" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
+                <StackPanel Margin="0 0 0 150" Name="GameHolder">
+                    
                 </StackPanel>
             </StackPanel>
 

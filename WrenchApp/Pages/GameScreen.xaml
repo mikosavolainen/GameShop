@@ -71,11 +71,13 @@
 
                 <TextBlock Text="★★★☆☆ (3/5)" FontSize="20" Foreground="White" Margin="0 5"/>
 
-                <TextBlock Name="ShortDesc" Foreground="LightGray" FontSize="20" TextWrapping="WrapWithOverflow" Height="255"
+                <TextBlock Name="ShortDesc" Foreground="LightGray" FontSize="20" TextWrapping="WrapWithOverflow" Height="200"
                            Text="This is a shortform description, so a shorter version that more accurately explains what the app does in a smaller format.
                            I am yapping on purpose. I am trying to fill this space up as to make this description look better."/>
 
-                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1">
+                <TextBlock Text="Creator: Unknown" Foreground="White" FontSize="20" Margin="0 0 0 20"/>
+
+                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1" MouseDown="AddToCart" Cursor="Hand">
                     <TextBlock Foreground="White" FontSize="20" Padding="30 20" Text="Add to Cart" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
             </StackPanel>
