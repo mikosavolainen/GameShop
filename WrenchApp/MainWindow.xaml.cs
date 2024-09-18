@@ -94,5 +94,10 @@ namespace WrenchApp
         {
             Mainframe.Source = new Uri("Pages/ProfilePage.xaml", UriKind.Relative);
         }
+
+        private void CartOpen(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not worky");
+        }
     }
 }

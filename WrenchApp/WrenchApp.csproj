@@ -233,5 +233,8 @@
   <ItemGroup>
     <Resource Include="Images\placeholderpfp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\shoppingcart.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

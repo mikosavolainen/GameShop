@@ -80,7 +80,7 @@ namespace WrenchApp
             // Ensure username and password are given
             if ((username == "" || password == "") && !autologin)
             {
-                MessageBox.Show("Missing information!", "Warning");
+                MessageBox.Show("Missing information.", "Warning");
             } else
             {
 
@@ -121,8 +121,6 @@ namespace WrenchApp
                         response.EnsureSuccessStatusCode();
                         string responseBody = await response.Content.ReadAsStringAsync();
 
-                        MessageBox.Show($"{username}, {responseBody}");
-
                         // WRITE CODE ON SAVING JWT AUTH AND USERNAME
                         ConfigurationManager.AppSettings["username"] = username;
                         ConfigurationManager.AppSettings["JWT"] = responseBody;
@@ -143,13 +141,13 @@ namespace WrenchApp
                             MessageBox.Show("Login information has changed, please log in again.", "Error");
                         } else
                         {
-                            MessageBox.Show("Incorrect information!", "Error");
+                            MessageBox.Show("Incorrect information.", "Error");
                         }
                     }
 
-                } catch
+                } catch (Exception e)
                 {
-                    MessageBox.Show("Error connecting to server!", "Error");
+                    MessageBox.Show(e.ToString());
                 }
             }
         }

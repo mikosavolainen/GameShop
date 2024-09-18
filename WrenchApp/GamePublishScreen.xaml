@@ -93,7 +93,7 @@
             
             <StackPanel Margin="15">
                 <TextBlock Text="Name"/>
-                <TextBox/>
+                <TextBox Name="gametitle" TextChanged="ChangePreviewTitle"/>
 
                 <TextBlock Text="Shortform description"/>
                 <RichTextBox Height="75"/>
@@ -103,7 +103,17 @@
             </StackPanel>
 
             <StackPanel Margin="15" Grid.Column="1">
-                
+                <TextBlock Text="Game file" FontSize="20"/>
+                <Button Style="{x:Null}" Content="Select File" Width="85" Height="25" HorizontalAlignment="Left" Cursor="Hand" Click="selectfolder" Margin="0 5 0 0"/>
+                <TextBlock Name="selectedfolder" Text="No file selected..." Foreground="LightGray" FontSize="15" Margin="0 5" FontStyle="Italic"/>
+
+                <TextBlock Text="Cover Image" FontSize="20"/>
+                <Button Style="{x:Null}" Content="Select File" Width="85" Height="25" HorizontalAlignment="Left" Cursor="Hand" Click="selectimg" Margin="0 5 0 0"/>
+                <TextBlock Name="selectedimg" Text="No image selected..." Foreground="LightGray" FontSize="15" Margin="0 5" FontStyle="Italic"/>
+
+                <TextBlock Text="Preview" FontSize="30" HorizontalAlignment="Center" Margin="10" TextDecorations="Underline"/>
+                <Image Name="previewimage" Source="WrenchApp;component/Images/placeholder.png" Stretch="UniformToFill" Height="150" Width="300"/>
+                <TextBlock Name="previewtitle" Text="Unnamed Game" HorizontalAlignment="Center" FontSize="25" Margin="0"/>
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">

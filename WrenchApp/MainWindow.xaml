@@ -137,7 +137,8 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 0 30 5">
-            <StackPanel Margin="0 0 10 0" VerticalAlignment="bottom">
+            <Image Source="/WrenchApp;component/Images/Icons/shoppingcart.png" Width="22" Margin="15 0" MouseDown="CartOpen" Cursor="Hand"/>
+            <StackPanel Margin="0 0 10 0" VerticalAlignment="Center">
                 <TextBlock Name="Username" Text="Username" FontSize="20" Foreground="White" HorizontalAlignment="Right"/>
                 <TextBlock Text="Logout" Cursor="Hand" Foreground="#99B9EA" FontSize="12" VerticalAlignment="Bottom" TextDecorations="Underline" HorizontalAlignment="Right" MouseDown="Logout"/>
             </StackPanel>

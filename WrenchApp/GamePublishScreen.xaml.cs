@@ -42,5 +42,37 @@ namespace WrenchApp
                 this.Close();
             }
         }
+
+        private void selectfolder(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "Compressed files (*.zip, *.rar, *.7z)|*.zip;*.rar;*.7z|All files (*.*)|*.*";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                selectedfolder.Text = dlg.FileName;
+            }
+        }
+
+        private void selectimg(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "Image files (*.jpg, *.png)|*.jpg;*.png|All files (*.*)|*.*";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                selectedimg.Text = dlg.FileName;
+                previewimage.Source = new BitmapImage(new Uri(dlg.FileName));
+            }
+        }
+
+        private void ChangePreviewTitle(object sender, RoutedEventArgs e)
+        {
+            previewtitle.Text = gametitle.Text;
+        }
     }
 }
