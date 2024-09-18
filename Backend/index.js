@@ -65,7 +65,8 @@ const Library = mongoose.model("Library", LibrarySchema);
 const NewsletterSchema = new mongoose.Schema({
     email: String
 });
-const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
+	const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
+
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
 		req.body.username = req.body.username.toLowerCase();
@@ -155,9 +156,7 @@ app.get("/confirm", async (req, res) => {
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	const existingUser = await users.findOne({
-		$or: [{ username: username }, { email: email }],
-	});
+	const existingUser = await User.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
@@ -285,13 +284,8 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const user = await users.findOne({ email: email });
 
 	if (!user) {
-		return res.status(400).send("didnt find email");
+		res.status(400).send("didnt find email");
 	}
-	if (!user.confirmedemail) {
-		return res.status(401).send("You need to confirm your email");
-	}
-	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "15min" });
-
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
