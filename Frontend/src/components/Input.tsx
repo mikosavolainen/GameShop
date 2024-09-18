@@ -70,7 +70,7 @@ export default function Input({
               case "small":
                 return "text-base p-1 pl-10";
               case "big":
-                return "text-lg p-2 pl-11";
+                return "text-lg px-2 py-1.5 pl-11";
             }
           })()} ${(() => {
             switch (style) {

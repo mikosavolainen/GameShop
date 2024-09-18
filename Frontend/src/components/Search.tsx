@@ -1,6 +1,7 @@
 import Input from "./Input"
 import { useLocation } from "wouter";
 import { useState } from "react"
+import Button from "./Button";
 export default function Search({inLanding}:{inLanding?:boolean}){
     const [, setLocation] = useLocation()
     const [searchBlock, setSearchBlock] = useState(false)
@@ -34,10 +35,12 @@ export default function Search({inLanding}:{inLanding?:boolean}){
     return(
         <>
         <form>
-          <div className={`w-full ${inLanding && "xl:w-1/2"}`}>
-            <Input blur={focusInputChange} focus={focusInputChange} type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' onChange={handleInputChange}/>
-          </div>
-          <input className="hidden" type="submit" onClick={() => redirect(searchValue)}></input>
+          <div className={`w-full ${inLanding && "xl:w-1/2"} flex`}>
+            <Input outerClassName="grow" blur={focusInputChange} focus={focusInputChange} type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' onChange={handleInputChange}/>
+            <div className="content-end ml-1">
+            <Button size="big" style="purple" type="submit" icon="search" text="search" onClick={() => redirect(searchValue)}/>
+            </div>
+            </div>
         </form>
         {searchBlock && inputFocus && inLanding && (
             <div className="absolute text-wrench-neutral-dark bg-wrench-neutral-white w-1/2 p-2 rounded-2xl">
