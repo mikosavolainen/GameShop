@@ -8,6 +8,7 @@ import AuthForms from "./ModalPages/AuthForms";
 import { AuthContext } from "../wrappers/AuthWrapper";
 import { signOutHelper } from "../lib/AuthFunctions";
 import default_pfp from "../assets/default_pfp.jpg"
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function Header() {
   const [, setLocation] = useLocation()
@@ -41,7 +42,7 @@ export default function Header() {
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center space-x-6 text-lg">
           <Link href="/" className="hover:text-wrench-purple-1">Home</Link>
           <Link href="/search" className="hover:text-wrench-purple-1">Search</Link>
-          <Link href="/test" className="hover:text-wrench-purple-1">Download</Link>
+          <Link href="/download" className="hover:text-wrench-purple-1">Download</Link>
         </div>
         <div className="flex items-center space-x-4">
           {user ? (
@@ -57,11 +58,16 @@ export default function Header() {
                   <img alt="Default profile picture" src={default_pfp} className="size-8 rounded-full mt-1" />
                 </button>
                 { dropdown && (
-                  <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden py-1">
+                  <motion.div
+                  initial={{ opacity: 0, y: -10 }} // Starts hidden and above the dropdown area
+                  animate={{ opacity: 1, y: 0 }}   // Animates to full opacity and its original position
+                  exit={{ opacity: 0, y: -10 }}     // Fades and slides back up when exiting
+                  transition={{ duration: 0.3, ease: "easeInOut" }} // Smooth transition
+                  className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden py-1">
                     <Link href={`/user/${user.username}`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">My Profile</Link>
                     <Link href={`/settings`} className="block py-2.5 pr-6 pl-12 whitespace-nowrap w-full hover:text-wrench-purple-1">Settings</Link>
                     <button onClick={() => signOutHelper(setUser)} className="block py-2.5 pr-6 pl-12 m-0 whitespace-nowrap w-full text-right hover:text-wrench-purple-1">Sign Out</button>
-                  </div>
+                  </motion.div>
                 ) }
               </div>
             </>

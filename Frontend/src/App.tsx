@@ -14,7 +14,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchFilter from "./components/SearchFilter.tsx";
 import MobileMenu from "./components/MobileMenu.tsx";
 import AuthWrapper from "./wrappers/AuthWrapper.tsx";
-import GamePage from "./components/GamePage.tsx";
+import GamePage from "./components/Game/GamePage.tsx";
 
 const queryClient = new QueryClient()
 
@@ -42,7 +42,7 @@ function MainContent() {
         <Route path="/" component={HomePage} />
         <Route path="/game/:id" component={GamePage} />
         <Route path="/search" component={SearchPage} />
-        <Route path="/test" component={TestPage} />
+        <Route path="/download" component={DownloadPage} />
         <Route path="/user/:user" component={UserPage} />
       </Switch>
       <MobileMenu opened={mobileMenu} />
@@ -67,7 +67,7 @@ function HomePage() {
   )
 }
 
-function TestPage() {
+function DownloadPage() {
   return (
     <>
       <div className="content-layout-margin">
