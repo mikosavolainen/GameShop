@@ -52,8 +52,8 @@ export default function Highlighted() {
   useEffect(() => {
     while(timer !== 10000){
       const clock = setTimeout(() => {
-        setTimer(old => old+50)
-      },50);
+        setTimer(old => old+10)
+      },10);
       return() => clearTimeout(clock)
     }
     if(sliderPage == testData.length-1){
@@ -63,7 +63,7 @@ export default function Highlighted() {
       setSliderPage(sliderPage + 1)
     }
     setTimer(0)
-  })
+  }, [timer])
   function slide(number: number){
     setSliderPage(number)
   }
@@ -91,8 +91,10 @@ export default function Highlighted() {
       </div>
       <div className="grid grid-cols-5 gap-3">
         {testData.map((data, i) => (
-          <button onClick={() => slide(i)} className="bg-wrench-neutral-dark border-0 pb-2 pt-6 group">
-            <div className={`rounded-full group-hover:bg-wrench-neutral-2 h-1 ${sliderPage === i ? `bg-wrench-purple border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}></div>
+          <button onClick={() => {slide(i); setTimer(0)}} className="bg-wrench-neutral-dark border-0 pb-2 pt-6 group">
+            <div className={`rounded-full group-hover:bg-wrench-neutral-2 h-1 relative ${sliderPage === i ? `bg-wrench-neutral-3 border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'}`}>
+              { sliderPage === i && <div className={`rounded-full bg-wrench-purple h-1 absolute drop-shadow-glow`} style={{width: timer/100+"%"}}></div> }
+            </div>
           </button>
         ))}
       </div>

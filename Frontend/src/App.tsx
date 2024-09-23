@@ -1,4 +1,4 @@
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import './App.css'
 import Header from './components/Header.tsx'
 import Search from './components/Search.tsx'
@@ -6,7 +6,7 @@ import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
 import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/footer.tsx";
 import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
@@ -37,6 +37,13 @@ function App() {
 function MainContent() {
   const { scrollbarCompensation } = useContext(AuthenticationModalContext)
   const [mobileMenu, setMobileMenu] = useState(false)
+
+  const  pathname = useLocation();
+
+  useEffect(() => { // fix to scroll to top on page change
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return(
     <div style={{marginRight: scrollbarCompensation+"px"}}>
       <Header />
