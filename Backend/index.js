@@ -14,7 +14,7 @@ const {
 } = require("googleapis/build/src/apis/gamesConfiguration");
 const fs = require("fs");
 const csvParser = require("csv-parser");const path = require('path');
-const fs = require('fs');
+
 
 const SECRET_KEY ="Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
