@@ -29,6 +29,8 @@ namespace WrenchApp.Pages
 
         private string order;
         private JArray games;
+        private List<string> selectedtags = new List<string>();
+        private bool passedfilter;
 
         public SearchPage(string tag = "", string search = "")
         {
@@ -56,8 +58,23 @@ namespace WrenchApp.Pages
             DisplayGames(games);
         }
 
+        private void AddTag(string tagname)
+        {
+            selectedtags.Add(tagname);
+            DisplayGames(games);
+        }
+
+        private void DeleteTag(string tagname)
+        {
+            selectedtags.Remove(tagname);
+            DisplayGames(games);
+        }
+
         private void DisplayGames(JArray games)
         {
+            passedfilter = false;
+            GameHolder.Children.Clear();
+
             foreach (JObject item in games)
             {
                 // Create outer StackPanel
@@ -95,18 +112,6 @@ namespace WrenchApp.Pages
                     Text = item["price"].ToString() + "€"
                 };
 
-                // Add TextBlocks to inner StackPanel
-                innerStackPanel.Children.Add(titleTextBlock);
-                innerStackPanel.Children.Add(descTextBlock);
-                innerStackPanel.Children.Add(priceTextBlock);
-
-                // Add Image and inner StackPanel to outer StackPanel
-                outerStackPanel.Children.Add(image);
-                outerStackPanel.Children.Add(innerStackPanel);
-
-                // Add the outer StackPanel to the gameholder StackPanel
-                GameHolder.Children.Add(outerStackPanel);
-
                 // Add categories to tags
                 foreach (JValue category in item["category"])
                 {
@@ -118,6 +123,8 @@ namespace WrenchApp.Pages
                                     .Split(',')
                                     .Select(c => c.Trim())
                                     .ToList();
+
+                    passedfilter = selectedtags == null || selectedtags.All(c => categories.Contains(c));
 
                     foreach (var cat in categories)
                     {
@@ -131,9 +138,27 @@ namespace WrenchApp.Pages
                                 Content = cat
                             };
 
+                            categorytag.Checked += (s, e) => AddTag(tagname: cat);
+                            categorytag.Unchecked += (s, e) => DeleteTag(tagname: cat);
+
                             Tags.Children.Add(categorytag);
                         }
                     }
+                }
+
+                // Add TextBlocks to inner StackPanel
+                innerStackPanel.Children.Add(titleTextBlock);
+                innerStackPanel.Children.Add(descTextBlock);
+                innerStackPanel.Children.Add(priceTextBlock);
+
+                // Add Image and inner StackPanel to outer StackPanel
+                outerStackPanel.Children.Add(image);
+                outerStackPanel.Children.Add(innerStackPanel);
+
+                // Add the outer StackPanel to the gameholder StackPanel if not filtered out
+                if (passedfilter)
+                {
+                    GameHolder.Children.Add(outerStackPanel);
                 }
             }
         }
