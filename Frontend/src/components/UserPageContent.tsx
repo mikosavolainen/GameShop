@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react"
-import { AuthContext } from "../wrappers/AuthWrapper";
 import { useParams } from "wouter"
 import default_pfp from "../assets/default_pfp.jpg"
 import Button from "./Button";
 import GameDisplay from "./GameDisplay";
+import { AuthContext } from "../wrappers/AuthWrapper";
 export default function UserPageContent(){
     const params = useParams();
     useEffect(() => {
