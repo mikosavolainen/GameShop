@@ -32,7 +32,7 @@ export default function Header() {
     <>
       <Modal open={modalOpen} closeModal={() => {
         setModalOpen(false);
-        setTimeout(() => setModalPage("signIn"), 1000) // timeout so that the page changes after the animation
+        // setTimeout(() => setModalPage("signIn"), 1000) // timeout so that the page changes after the animation
         }}>
         <AuthForms />
       </Modal>
@@ -78,7 +78,7 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Button type="button" text="Sign In" icon="login" style="purple" size="big" onClick={() => setModalOpen(true)} />
+              <Button type="button" text="Sign In" icon="login" style="purple" size="big" onClick={() => {setModalOpen(true); setModalPage("signIn")}} />
             </>
           )}
         </div>

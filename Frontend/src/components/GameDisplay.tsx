@@ -3,8 +3,11 @@ import test_image_wrench from "../assets/test_image_wrench.png"
 import Label from "./Label"
 import Button from "./Button"
 import { Link } from "wouter"
+import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
+import { useContext } from "react";
 
 export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string}){
+    const { modalOpen, setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
     let grids = ""
     let displayedDescription = description
     let displayedName = gameName
@@ -61,10 +64,10 @@ export default function GameDisplay({classname, discount, price, size, gameName,
                 <div className="flex flex-auto items-end">
                   <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
                   {review == "send" && (
-                    <Button type="button" style="coral" icon="send" text="Leave a review"></Button>
+                    <Button onClick={() => {setModalOpen(true); setModalPage("review")}}type="button" style="coral" icon="send" text="Leave a review"></Button>
                   )}
                   {review == "edit" && (
-                    <Button type="button" icon="edit" text="Edit review"></Button>
+                    <Button onClick={() => {setModalOpen(true); setModalPage("review")}} type="button" icon="edit" text="Edit review"></Button>
                   )}
                   {/* <Button href="/game?id=temporaryid" className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/> */}
                 </div>
