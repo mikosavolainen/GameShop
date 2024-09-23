@@ -18,10 +18,8 @@ export default function Search({inLanding}:{inLanding?:boolean}){
     //     }
     // }
     const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        if(event.target.value != ""){
-            setSearchValue(event.target.value)
+        setSearchValue(event.target.value)
             // setSearchBlock(true)
-        }
         // else{
         //     setSearchBlock(false)
         // }
