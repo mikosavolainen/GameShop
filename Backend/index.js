@@ -8,9 +8,10 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const path = require('path');
+const fs = require('fs');
 
-const SECRET_KEY =
-	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
+const SECRET_KEY ="Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -65,7 +66,7 @@ const Library = mongoose.model("Library", LibrarySchema);
 const NewsletterSchema = new mongoose.Schema({
     email: String
 });
-	const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
+const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -369,11 +370,86 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	await sendMail(confirmation, "Password reset", email);
 	return res.status(200).send("reset password email send");
 });
-app.post("/upload", async (req, res) => {
-	if (req.file) {
-		// Upload logic here
-	}
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+require('dotenv').config();
+const multer = require('multer');
+const { Client, GatewayIntentBits } = require('discord.js');
+
+
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages
+    ]
 });
+
+client.once('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.login(process.env.DISCORD_TOKEN);
+
+const upload = multer({
+    dest: 'uploads/',
+    limits: { fileSize: 8 * 1024 * 1024 }
+});
+
+app.post('/upload', upload.array('images', 10), async (req, res) => {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ error: 'No files uploaded.' });
+    }
+
+    try {
+        const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
+        if (!channel) {
+            return res.status(500).json({ error: 'Discord channel not found.' });
+        }
+
+        const imageUrls = [];
+
+        for (const file of req.files) {
+            const filePath = path.join(__dirname, file.path);
+
+            try {
+                const sentMessage = await channel.send({
+                    content: `Heh uusi kuva :D: ${file.originalname}`,
+                    files: [{
+                        attachment: filePath,
+                        name: file.originalname
+                    }]
+                });
+
+                const imageUrl = sentMessage.attachments.first().url;
+                imageUrls.push(imageUrl);
+
+                fs.unlinkSync(filePath);
+            } catch (error) {
+                console.error(`Failed to upload image: ${file.originalname}`, error);
+                fs.unlinkSync(filePath);  
+            }
+        }
+
+        if (imageUrls.length === 0) {
+            return res.status(500).json({ error: 'Failed to upload any images.' });
+        }
+
+        res.json({ urls: imageUrls });
+
+    } catch (err) {
+        console.error('Error uploading images to Discord:', err);
+        res.status(500).json({ error: 'Internal server error during image upload.' });
+    }
+});
+
+
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
