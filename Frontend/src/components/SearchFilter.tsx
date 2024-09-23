@@ -74,7 +74,7 @@ export default function SearchFilter(){
             </div>
             </div>
             <div className="mr-10 ml-10 w-[70%]">
-            <p className="font-bold text-4xl">300 results for {searchString.substring(2)}</p>
+            {searchString.substring(2) !== "" ? <p className="font-bold text-4xl">300 results for {searchString.substring(2)}</p> : <p className="font-bold text-4xl">Showing all {searchString.substring(2)}</p>}
             <div className="flex my-4">
                 <button>&lt;</button>
                 <button className="mx-4">1</button>

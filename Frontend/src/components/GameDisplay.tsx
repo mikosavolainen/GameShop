@@ -7,7 +7,7 @@ import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapp
 import { useContext } from "react";
 
 export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string}){
-    const { modalOpen, setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
+    const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
     let grids = ""
     let displayedDescription = description
     let displayedName = gameName
