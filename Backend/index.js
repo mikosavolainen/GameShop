@@ -8,7 +8,12 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
-
+const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
+const {
+	gamesConfiguration,
+} = require("googleapis/build/src/apis/gamesConfiguration");
+const fs = require("fs");
+const csvParser = require("csv-parser");
 const SECRET_KEY =
 	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
@@ -45,6 +50,9 @@ const gamesSchema = new mongoose.Schema({
 	multiplayer: { type: String },
 	Picturefileloc: { type: String },
 });
+gamesSchema.plugin(mongoose_fuzzy_searching, {
+	fields: ["name", "desc", "author"],
+});
 const games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
@@ -63,9 +71,9 @@ const LibrarySchema = new mongoose.Schema({
 const Library = mongoose.model("Library", LibrarySchema);
 
 const NewsletterSchema = new mongoose.Schema({
-    email: String
+	email: String,
 });
-	const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
+const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema);
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -83,6 +91,57 @@ const transporter = nodemailer.createTransport({
 		user: "wrenchsmail@gmail.com",
 		pass: "emxc dnqp eyme gudi",
 	},
+});
+// Function to import CSV data into MongoDB
+const importCsvToMongo = async (filePath) => {
+	const gamesData = [];
+
+	return new Promise((resolve, reject) => {
+		fs.createReadStream(filePath)
+			.pipe(csvParser())
+			.on("data", (row) => {
+				gamesData.push({
+					name: row.name,
+					desc: row.desc,
+					gamefileloc: row.gamefileloc,
+					author: row.author,
+					category: row.category,
+					price: row.price,
+					ratings: row.ratings,
+					multiplayer: row.multiplayer === "yes",
+					Picturefileloc: row.Picturefileloc,
+				});
+			})
+			.on("end", async () => {
+				try {
+					await games.insertMany(gamesData);
+					console.log(
+						"Games data successfully imported into MongoDB."
+					);
+					resolve();
+				} catch (error) {
+					console.error("Error inserting data into MongoDB:", error);
+					reject(error);
+				}
+			})
+			.on("error", (error) => {
+				console.error("Error reading CSV file:", error);
+				reject(error);
+			});
+	});
+};
+
+// Endpoint to trigger CSV import
+app.get("/import-games", async (req, res) => {
+	const filePath = "games.csv"; // Replace with your actual CSV file path
+	try {
+		await importCsvToMongo(filePath);
+		res.send(
+			"CSV data import process initiated and completed successfully."
+		);
+	} catch (error) {
+		res.status(500).send("Failed to import CSV data");
+	}
 });
 
 // Sähköpostin lähettäminen
@@ -102,20 +161,16 @@ async function sendMail(Msg, sub, email) {
 }
 
 app.get("/", (req, res) => {
-	res.redirect(
-		"https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwio_8ngmceIAxUvGBAIHc5_HQ0QwqsBegQIERAG&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449"
-	);
+	res.redirect("lol.tyhjyys.com");
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
 	try {
-		const token = await jwt.verify("req.body.token", SECRET_KEY);
+		const token = await jwt.verify(req.body.token, SECRET_KEY);
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-
 		const games = await Library.find({ owner: token.username });
-
 		res.json(games);
 	} catch (error) {
 		console.error("Error fetching games:", error);
@@ -131,6 +186,28 @@ app.post("/get-all-games", async (req, res) => {
 		console.error("Error fetching games:", error);
 		return res.status(500).send("Internal Server Error");
 	}
+});
+
+app.get("/get-game", async (req, res) => {
+	const { text } = req.query;
+
+	if (text) {
+		try {
+			// Use a regex pattern for fuzzy searching (case-insensitive and partial matches)
+			const result = await games.fuzzySearch(text);
+
+			if (result.length > 0) {
+				return res.status(200).json(result);
+			} else {
+				return res.status(404).send("No game found matching the query");
+			}
+		} catch (err) {
+			console.error(err);
+			return res.status(500).send("Internal Server Error");
+		}
+	}
+
+	return res.status(400).send("No query provided");
 });
 
 app.get("/confirm", async (req, res) => {
@@ -251,7 +328,7 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 		$or: [{ username: username }, { email: username }],
 	});
 	if (!user) {
-		return res.status(401).send("no user or email find")
+		return res.status(401).send("no user or email find");
 	}
 	if (!user.confirmedemail) {
 		return res.status(403).send("email is not verified");
@@ -259,10 +336,11 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
 	}
-	username = user.username
+	username = user.username;
 	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	res.json({ token });
 });
+
 app.post("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
 	try {
@@ -279,6 +357,7 @@ app.post("/reset-password", async (req, res) => {
 		res.status(400).send("invalid token");
 	}
 });
+
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });
@@ -369,6 +448,7 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	await sendMail(confirmation, "Password reset", email);
 	return res.status(200).send("reset password email send");
 });
+
 app.post("/upload", async (req, res) => {
 	if (req.file) {
 		// Upload logic here
