@@ -1,4 +1,3 @@
-import Input from "../Input"
 import { useState } from "react"
 import star_icon from "../../assets/Star icon.svg"
 import star_icon_golden from "../../assets/Star icon golden.svg"
@@ -34,7 +33,7 @@ export default function ReviewForm(){
     return(
         <>
         <h2 className="text-2xl mb-4">Review</h2>
-        <Input type="text" size="big" name="review" label="Review" placeholder="Write a review" style="light" icon="edit"></Input>
+        <textarea className={`bg-wrench-neutral-white w-full text-wrench-neutral-dark outline-none p-1 border border-wrench-neutral-3 focus:border-wrench-neutral-2`} maxLength={250} rows={5} placeholder={"Write your review"}></textarea>
         <StarReview />
         <div className="flex">
         <Button className="mt-5 mr-2" size="big" style="purple" type="button" text="Submit" icon="send"/>
