@@ -11,7 +11,7 @@ const nodemailer = require("nodemailer");
 const fs = require("fs");
 const csvParser = require("csv-parser");
 const path = require('path');
-
+const multer = require("multer");
 
 const SECRET_KEY ="Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
@@ -503,7 +503,7 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 require('dotenv').config();
-const multer = require('multer');
+
 const { Client, GatewayIntentBits } = require('discord.js');
 
 
