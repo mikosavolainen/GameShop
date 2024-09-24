@@ -65,7 +65,7 @@ function HomePage() {
   return (
     <>
       <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
-        <h1 className='text-5xl text-wrench-neutral-white pt-40 font-bold mb-8'>1 200 500+ games of any kind</h1>
+        <h1 className='text-5xl text-wrench-neutral-white pt-40 font-bold mb-3'>1 200 500+ games of any kind</h1>
         <Search inLanding/>
         <PopularCategories />
         <Highlighted />

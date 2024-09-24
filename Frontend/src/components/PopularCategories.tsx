@@ -2,7 +2,7 @@ import { Link } from "wouter"
 
 const PopularCategories = () => {
   return(
-    <div className="mt-3">
+    <div className="mt-5">
       {/* <h2 className="mb-2">Popular categories</h2> */}
       <div>
         <PopularCategory name="War" icon="swords" />
