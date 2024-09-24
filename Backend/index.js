@@ -50,7 +50,7 @@ const gamesSchema = new mongoose.Schema({
 });
 
 
-const games = mongoose.model("games", gamesSchema);
+const Games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
 	game: { type: String },
@@ -127,13 +127,17 @@ app.post("/get-all-owned-games", async (req, res) => {
 
 app.post("/get-all-games", async (req, res) => {
 	try {
-		const game = await games.find();
+		const game = await Games.find();
 		return res.json(game);
 	} catch (error) {
 		console.error("Error fetching games:", error);
 		return res.status(500).send("Internal Server Error");
 	}
 });
+
+
+
+
 
 app.get("/search-game", async (req, res) => {
 	const { text , } = req.query;
@@ -143,7 +147,7 @@ app.get("/search-game", async (req, res) => {
 			// Use a regex pattern for fuzzy searching (case-insensitive and partial matches)
 			const regex = new RegExp(text, "i"); // 'i' for case-insensitive
 
-			const result = await games.find({
+			const result = await Games.find({
 				$or: [
 					{ name: { $regex: regex } },
 					{ desc: { $regex: regex } },
