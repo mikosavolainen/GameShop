@@ -49,22 +49,24 @@ const testData: {
 export default function Highlighted() {
   const [sliderPage, setSliderPage] = useState<number>(0);
   const [timer, setTimer] = useState<number>(0);
+  const [timerRunning, setTimerRunning] = useState(true)
   useEffect(() => {
-    while(timer !== 10000){
+    while(timer !== 10000) {
       const clock = setTimeout(() => {
-        setTimer(old => old+10)
+        if(timerRunning) setTimer(old => old+10)
       },10);
       return() => clearTimeout(clock)
     }
     if(sliderPage == testData.length-1){
       setSliderPage(0)
     }
-    else{
+    else {
       setSliderPage(sliderPage + 1)
     }
     setTimer(0)
-  }, [timer])
-  function slide(number: number){
+  }, [timer, timerRunning])
+
+  function slide(number: number) {
     setSliderPage(number)
   }
   return (
@@ -74,6 +76,7 @@ export default function Highlighted() {
         <div
           className="flex transition-transform duration-500"
           style={{ transform: `translateX(-${(sliderPage) * 100}%)` }}
+          onMouseEnter={() => setTimerRunning(false)} onMouseLeave={() => setTimerRunning(true)}
         >
           {testData.map((data, index) => (
             <div className="min-w-full" key={index}>
