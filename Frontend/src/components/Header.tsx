@@ -15,10 +15,13 @@ export default function Header() {
   const [, setLocation] = useLocation()
   const { modalOpen, setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
   const { user, setUser } = useContext(AuthContext)
+
   const [dropdown, setDropdown] = useState<boolean>(false)
+  const [notificationsDropdown, setNotificationsDropdown] = useState<boolean>(false)
+  const outsideRef = useDetectClickOutside({ onTriggered: () => setDropdown(false) });
+  const outsideNotificationsRef = useDetectClickOutside({ onTriggered: () => setNotificationsDropdown(false) });
 
   const [setNewPasswordRouteMatch] = useRoute("/reset-password");
-  const outsideRef = useDetectClickOutside({ onTriggered: () => setDropdown(false) });
 
   useEffect(() => {
     if(setNewPasswordRouteMatch){
@@ -49,10 +52,25 @@ export default function Header() {
         <div className="flex items-center space-x-4">
           {user ? (
             <>
-              <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">shopping_basket</Link>
-              <Link href="/" className="hover:text-wrench-purple-1 block material-icons text-xl">notifications</Link>
+              <Link href="/" className="hover:text-wrench-purple-1 block material-symbols-rounded text-xl">shopping_basket</Link>
+              <div className="relative" ref={outsideNotificationsRef}>
+                <button onClick={() => setNotificationsDropdown(prev => !prev)} className="hover:text-wrench-purple-1 block material-symbols-rounded text-xl">notifications</button>
+                <AnimatePresence>
+                  { notificationsDropdown && (
+                    <motion.div
+                    initial={{ opacity: 0, y: -10 }} // Starts hidden and above the dropdown area
+                    animate={{ opacity: 1, y: 0 }}   // Animates to full opacity and its original position
+                    exit={{ opacity: 0, y: -10 }}     // Fades and slides back up when exiting
+                    transition={{ duration: 0.3, ease: "easeInOut" }} // Smooth transition
+                    onClick={() => setDropdown(false)}
+                    className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden py-1">
+                      <h4 className="text-lg">Notifications</h4>
+                    </motion.div>
+                  ) }
+                </AnimatePresence>
+              </div>
               <div className="relative" ref={outsideRef}>
-                <button onClick={() => setDropdown(old => !old)} className="flex gap-3 group">
+                <button onClick={() => setDropdown(prev => !prev)} className="flex gap-3 group">
                   <div className="text-right">
                     <span className="block group-hover:text-wrench-purple-1">{user.username}</span>
                     <span className="block text-xs group-hover:text-wrench-purple-1">something under</span>

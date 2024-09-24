@@ -28,23 +28,23 @@ export default function MobileNavigationBar({setMobileMenu}: {setMobileMenu: Rea
   return(
     <div className="md:hidden flex items-center justify-around w-full h-16 z-20 fixed left-0 right-0 bottom-0 bg-wrench-neutral-dark/85 backdrop-blur-3xl content-layout-padding">
       <Link href="/" className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => setMobileMenu(!true)}> {/* don't replace !true with false, i will be really sad if you do - Nikolai */}
-      <i className="material-icons block group-active:text-wrench-purple-1">home</i>
+      <i className="material-symbols-rounded block group-active:text-wrench-purple-1">home</i>
       <span className="block text-xs group-active:text-wrench-purple-1">Home</span>
       </Link>
       <Link href="/search" className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => setMobileMenu(!true)}>
-      <i className="material-icons group-active:text-wrench-purple-1">search</i>
+      <i className="material-symbols-rounded group-active:text-wrench-purple-1">search</i>
       <span className="block text-xs group-active:text-wrench-purple-1">Search</span>
       </Link>
       <Link href="/" className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => setMobileMenu(!true)}>
-      <i className="material-icons group-active:text-wrench-purple-1">shopping_basket</i>
+      <i className="material-symbols-rounded group-active:text-wrench-purple-1">shopping_basket</i>
       <span className="block text-xs group-active:text-wrench-purple-1">Basket</span>
       </Link>
       <Link href="/" className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => setMobileMenu(!true)}>
-      <i className="material-icons group-active:text-wrench-purple-1">notifications</i>
+      <i className="material-symbols-rounded group-active:text-wrench-purple-1">notifications</i>
       <span className="block text-xs group-active:text-wrench-purple-1">Notifications</span>
       </Link>
       <button className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => setMobileMenu(!false)}>
-      <i className="material-icons group-active:text-wrench-purple-1">menu</i>
+      <i className="material-symbols-rounded group-active:text-wrench-purple-1">menu</i>
       <span className="block text-xs group-active:text-wrench-purple-1">Menu</span>
       </button>
     </div>

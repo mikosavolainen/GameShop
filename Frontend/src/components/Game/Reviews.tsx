@@ -51,7 +51,7 @@ function Review({username, date, rating, content}: {username: string, date: Date
           <span className="block text-wrench-neutral-2 text-sm">{date.toString()}</span>
         </div>
         <div>
-          <div className="flex align-middle"><span className="mt-1 mr-1.5">4.0/5.0</span><RatingStars rating={rating} /></div>
+          <div className="flex align-middle"><span className="mt-1 mr-1.5">{rating}/5</span><RatingStars rating={rating} /></div>
         </div>
       </Link>
       <Interweave noHtml content={content} />
