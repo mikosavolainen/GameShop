@@ -280,10 +280,7 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 		res.status(500).json({ error: "Failed to upload the game." });
 	}
 });
-
-
-
-
+// Get game by id
 app.post('/get-game-by-id', async (req, res) => {
     const id = req.body.id;
 
@@ -292,7 +289,6 @@ app.post('/get-game-by-id', async (req, res) => {
     }
 
     try {
-        // Muuta peliId ObjectId-tyypiksi
         const peli = await Games.findById( id ).exec();
 
         if (!peli) {
@@ -306,9 +302,6 @@ app.post('/get-game-by-id', async (req, res) => {
     }
 });
   
-
-
-
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
