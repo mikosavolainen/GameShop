@@ -1,21 +1,28 @@
-# Wrench Game Store API
+Sure! Here’s the updated documentation for the Wrench Game Store API, incorporating the details from your code. 
 
-This project is an API built using Node.js, Express, and MongoDB for managing users and games for a game store. It supports user registration, login, email confirmation, and game uploading.
+# Wrench Game Store API Documentation
+
+This project is an API built using Node.js, Express, and MongoDB for managing users and games for a game store. It supports user registration, login, email confirmation, game uploading, and other functionalities.
 
 ## Features
 
 - **User Registration & Login:** 
   - New users can register and confirm their email.
-  - Users can log in using a username and password.
+  - Users can log in using a username or email and password.
   
 - **Email Confirmation:** 
   - After registration, an email is sent to the user for email verification.
-  
+
 - **Game Management:** 
-  - Games can be added to the database with metadata like name, description, file location, category, price, and rating.
-  
-- **Password Encryption:** 
-  - User passwords are hashed using `bcryptjs` for security.
+  - Games can be added to the database with metadata like name, description, file location, author, category, price, and ratings.
+  - Users can retrieve their owned games and search for games using various filters (e.g., text search, category, price range).
+
+- **Password Management:**
+  - Users can reset their passwords via email.
+  - Passwords are encrypted using `bcryptjs` for security.
+
+- **Discord Integration:** 
+  - Uploaded images can be sent to a specified Discord channel.
 
 ## Prerequisites
 
@@ -23,6 +30,7 @@ To run this project, you need to have the following installed:
 
 - [Node.js](https://nodejs.org/) v12 or later
 - [MongoDB](https://www.mongodb.com/) instance
+- [Discord.js](https://discord.js.org/) library for Discord functionalities
 
 ## Installation
 
@@ -37,94 +45,149 @@ To run this project, you need to have the following installed:
    npm install
    ```
 
-3. Create a `.env` file with the following configuration:
-   ```bash
+3. Create a `.env` file in the root directory and add your environment variables:
+   ```plaintext
+   DISCORD_TOKEN=your_discord_bot_token
+   DISCORD_CHANNEL_ID=your_discord_channel_id
    PORT=5000
-   MONGO_URI=mongodb://Kissa:KissaKala2146@37.33.70.228:27018/
-   JWT_SECRET=dontplsquessthisLOL
-   EMAIL_USER=wrenchsmail@gmail.com
-   EMAIL_PASS=your-email-password
    ```
 
 4. Start the server:
    ```bash
-   npm start
+   node index.js
    ```
 
 ## API Endpoints
 
-### Register a New User
-- **Endpoint:** `POST /register`
-- **Description:** Registers a new user and sends a confirmation email.
-- **Request Body:**
-  ```json
-  {
-    "username": "testuser",
-    "email": "testuser@example.com",
-    "password": "password123"
-  }
-  ```
+### User Registration
 
-### Confirm Email
-- **Endpoint:** `GET /confirm`
-- **Description:** Confirms the user's email address using a token sent via email.
-- **Query Parameters:** 
-  - `confirm`: The JWT token sent via email.
+- **POST** `/register`
+  - Request Body:
+    ```json
+    {
+      "username": "string",
+      "password": "string",
+      "email": "string",
+      "phonenumber": "number"
+    }
+    ```
 
-### Login
-- **Endpoint:** `POST /login`
-- **Description:** Logs in the user and returns a JWT token.
-- **Request Body:**
-  ```json
-  {
-    "username": "testuser",
-    "password": "password123"
-  }
-  ```
+- **Response:**
+  - Status `243`: Confirmation email sent.
+  - Status `409`: User or email already exists.
 
-### Upload a Game
-- **Endpoint:** `POST /upload`
-- **Description:** Uploads a game to the store (Upload logic is still under development).
+### User Login
 
-## MongoDB Schema
+- **POST** `/login`
+  - Request Body:
+    ```json
+    {
+      "username": "string",
+      "password": "string"
+    }
+    ```
 
-### User Schema
-```js
-{
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  confirmedemail: { type: Boolean, default: false },
-  notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }]
-}
-```
+- **Response:**
+  - Status `200`: Returns a JWT token.
+  - Status `401`: Invalid credentials or user not found.
+  - Status `403`: Email is not verified.
 
-### Game Schema
-```js
-{
-  name: { type: String, required: true },
-  desc: { type: String },
-  gamefileloc: { type: String },
-  authow: { type: String },
-  category: { type: Array },
-  price: { type: Number },
-  rating: { type: Array }
-}
-```
+### Email Confirmation
 
-## Email Functionality
+- **GET** `/confirm`
+  - Query Parameter:
+    - `confirm`: JWT token for confirmation.
 
-The email service is set up using `nodemailer` and Gmail. Once the user registers, an email is sent with a confirmation link. Users must confirm their email to activate their account.
+- **Response:**
+  - Status `200`: Email confirmed successfully.
+  - Status `400`: Invalid or expired confirmation link.
 
-To set up the email service, ensure to replace `EMAIL_USER` and `EMAIL_PASS` in your `.env` file with valid Gmail credentials.
+### Game Management
 
-## Security Notes
+#### Upload Game
 
-- **Password Hashing:** Passwords are hashed using `bcryptjs` before saving to the database.
-- **JWT Authentication:** Tokens are generated using `jsonwebtoken` and should be stored securely on the client side.
+- **POST** `/upload-game`
+  - Form Data:
+    - `gamefile`: File to upload.
+    - Other fields in the request body:
+      ```json
+      {
+        "name": "string",
+        "desc": "string",
+        "author": "string",
+        "category": "string", // Comma-separated
+        "price": "number",
+        "multiplayer": "boolean"
+      }
+      ```
 
-## License
+- **Response:**
+  - Status `201`: Game uploaded successfully.
+  - Status `400`: Game file is required.
+  - Status `500`: Failed to upload the game.
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+#### Get All Games
 
-.
+- **POST** `/get-all-games`
+  
+- **Response:**
+  - Status `200`: Returns a list of all games.
+  - Status `500`: Internal server error.
+
+#### Search Games
+
+- **GET** `/search-game`
+  - Query Parameters:
+    - `text`: Search term for name, description, or author.
+    - `category`: Filter by category.
+    - `multiplayer`: Filter by multiplayer availability (true/false).
+    - `minPrice`: Minimum price.
+    - `maxPrice`: Maximum price.
+    - `minRating`: Minimum average rating.
+    - `author`: Filter by author.
+
+- **Response:**
+  - Status `200`: Returns a list of matching games.
+  - Status `404`: No games found matching the query.
+  - Status `500`: Internal server error.
+
+### Password Management
+
+#### Forgot Password
+
+- **POST** `/forgot-password`
+  - Request Body:
+    ```json
+    {
+      "email": "string"
+    }
+    ```
+
+- **Response:**
+  - Status `200`: Reset password email sent.
+  - Status `400`: Email not found.
+
+#### Reset Password
+
+- **GET** `/reset-password`
+  - Query Parameter:
+    - `token`: JWT token for password reset.
+
+- **Response:**
+  - Status `200`: Password reset successfully.
+  - Status `400`: Invalid token.
+
+### Discord Image Upload
+
+- **POST** `/upload`
+  - Form Data:
+    - `images`: File(s) to upload (max 10 files).
+
+- **Response:**
+  - Status `200`: Returns URLs of uploaded images.
+  - Status `400`: No files uploaded.
+  - Status `500`: Internal server error during image upload.
+
+## Conclusion
+
+The Wrench Game Store API provides robust functionalities for managing a game store, including user management, game management, and integration with Discord. Follow the above steps to set up the API and start using its features!
