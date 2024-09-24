@@ -280,6 +280,35 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 		res.status(500).json({ error: "Failed to upload the game." });
 	}
 });
+
+
+
+
+app.post('/get-game-by-id', async (req, res) => {
+    const id = req.body.id;
+
+    if (!id) {
+        return res.status(400).send({ error: 'Peli _id vaaditaan.' });
+    }
+
+    try {
+        // Muuta peliId ObjectId-tyypiksi
+        const peli = await Games.findById( id ).exec();
+
+        if (!peli) {
+            return res.status(404).send({ error: 'Peliä ei löytynyt.' });
+        }
+
+        res.status(200).send(peli);
+    } catch (error) {
+        console.error('Virhe pelin hakemisessa:', error);
+        res.status(500).send({ error: 'Virhe pelin hakemisessa.' });
+    }
+});
+  
+
+
+
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
