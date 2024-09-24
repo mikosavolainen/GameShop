@@ -34,11 +34,11 @@ export default function GameDisplay({classname, discount, price, size, gameName,
         <Link className={`group ${grids} ${classname}`} href="/game/jtemporaryid">
           <img className={`rounded-3xl ${size !== "large" && "transition-all duration-150 group-hover:mt-[-4px] group-hover:mb-[4px] "} ${size == "wide" ? "mr-6" : ""}`} src={test_image_wrench} alt="Game" width={`${size == "wide" ? "362": ""}`}/>
           <div className="flex flex-col">
-            <h4 className="text-wrench-neutral-white text-xl font-semibold mt-3 mb-2 transition-all duration-150 group-hover:text-wrench-purple-1">{displayedName}</h4>
+            <h4 className="text-wrench-neutral-white text-xl font-semibold mt-3 mb-3 transition-all duration-150 group-hover:text-wrench-purple-1">{displayedName}</h4>
             <div>
               { categories.map((category) => <Label category={category as string} key={(Math.random() + 1).toString(36).substring(7)} />)}
             </div>
-            <p className="text-wrench-neutral-white text-left mt-2 text-base">{displayedDescription}</p>
+            <p className="text-wrench-neutral-white text-left mt-3 text-base">{displayedDescription}</p>
             {size == "large" && (
                 <div className="flex flex-auto items-end">
                   <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
@@ -49,15 +49,15 @@ export default function GameDisplay({classname, discount, price, size, gameName,
                     <Button type="button" icon="edit" text="Edit review"></Button>
                   )}
                   {/* <Button href="/game?id=temporaryid" className="mr-4" type="link" style="purple" icon="add" text="Add to cart"/>         I think this is unnecessary*/} 
-                  <span className={`${discount ? "line-through text-wrench-neutral-2 pr-2" : "text-wrench-neutral-white"} text-left text-base py-1`} style={{fontFamily: `"Trispace", sans-serif`}}>{price} €</span>
-                  {discount && <span className="text-wrench-neutral-white text-left text-base py-1" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
+                  <span className={`${discount ? "line-through text-wrench-neutral-2 pr-2" : "text-wrench-neutral-white"} text-left text-base pt-3`} style={{fontFamily: `"Trispace", sans-serif`}}>{price} €</span>
+                  {discount && <span className="text-wrench-neutral-white text-left text-base pt-3" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
                 </div>
             )}
             {size !== "large" && (
               <>
-                <div className="flex flex-auto items-end mb-2">
-                  <span className={`${discount ? "line-through text-wrench-neutral-2 pr-2" : "text-wrench-neutral-white"} text-left text-base py-1`} style={{fontFamily: `"Trispace", sans-serif`}}>{price} €</span>
-                  {discount && <span className="text-wrench-neutral-white text-left text-base py-1" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
+                <div className="flex flex-auto items-end mb-3">
+                  <span className={`${discount ? "line-through text-wrench-neutral-2 pr-2" : "text-wrench-neutral-white"} text-left text-base pt-3`} style={{fontFamily: `"Trispace", sans-serif`}}>{price} €</span>
+                  {discount && <span className="text-wrench-neutral-white text-left text-base pt-3" style={{fontFamily: `"Trispace", sans-serif`}}>{discount} €</span>}
                 </div>
                 <div className="flex flex-auto items-end" onClick={(e) => e.preventDefault()}>
                   <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>

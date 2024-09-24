@@ -1,11 +1,11 @@
 import { Link } from "wouter";
-import Button from "./Button";
-import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
+import Button from "../Button";
+import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
-import default_pfp from "../assets/default_pfp.jpg"
-import { AuthContext } from "../wrappers/AuthWrapper";
-import { signOutHelper } from "../lib/AuthFunctions";
+import default_pfp from "../../assets/default_pfp.jpg"
+import { AuthContext } from "../../wrappers/AuthWrapper";
+import { signOutHelper } from "../../lib/AuthFunctions";
 
 export default function MobileMenu({opened}: {opened: boolean}) {
   const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)

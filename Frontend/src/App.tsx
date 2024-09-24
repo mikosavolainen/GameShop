@@ -1,6 +1,6 @@
 import { Route, Switch, useLocation } from "wouter";
 import './App.css'
-import Header from './components/Header.tsx'
+import Header from "./components/Parts/Header.tsx";
 import Search from './components/Search.tsx'
 import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
@@ -8,11 +8,11 @@ import New from './components/New.tsx'
 import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
 import { useContext, useEffect, useState } from "react";
 import Categories from './components/Categories.tsx'
-import Footer from "./components/footer.tsx";
+import Footer from "./components/Parts/Footer.tsx";
 import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchFilter from "./components/SearchFilter.tsx";
-import MobileMenu from "./components/MobileMenu.tsx";
+import MobileMenu from "./components/Parts/MobileMenu.tsx";
 import AuthWrapper from "./wrappers/AuthWrapper.tsx";
 import GamePage from "./components/Game/GamePage.tsx";
 import UserPageContent from "./components/UserPageContent.tsx";

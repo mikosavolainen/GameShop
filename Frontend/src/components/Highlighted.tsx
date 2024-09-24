@@ -95,7 +95,7 @@ export default function Highlighted() {
       <div className="grid grid-cols-5 gap-3">
         {testData.map((data, i) => (
           <button onClick={() => {slide(i); setTimer(0)}} className="bg-wrench-neutral-dark border-0 pb-2 pt-6 group">
-            <div className={`rounded-full group-hover:bg-wrench-neutral-2 h-1 relative ${sliderPage === i ? `bg-wrench-neutral-3 border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'} shadow-[inset_0_1px_0_rgba(216,191,216,0.15)]`}>
+            <div className={`rounded-full transition-all duration-150 group-hover:bg-wrench-neutral-2 h-1 relative ${sliderPage === i ? `bg-wrench-neutral-3 border-none` : 'border-wrench-neutral-3 bg-wrench-neutral-3'} shadow-[inset_0_1px_0_rgba(216,191,216,0.15)]`}>
               { sliderPage === i && <div className={`rounded-full bg-wrench-purple h-1 absolute drop-shadow-glow shadow-[inset_0_1px_0_rgba(216,191,216,0.15)]`} style={{width: timer/100+"%"}}></div> }
               { sliderPage > i && <div className={`rounded-full bg-wrench-purple h-1 absolute drop-shadow-glow w-full shadow-[inset_0_1px_0_rgba(216,191,216,0.15)]`}></div> }
             </div>

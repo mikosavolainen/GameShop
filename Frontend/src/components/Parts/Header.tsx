@@ -1,13 +1,13 @@
 import { Link, useRoute } from "wouter";
-import Button from "./Button";
-import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
+import Button from "../Button";
+import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import Modal from "./Modal";
-import AuthForms from "./ModalPages/AuthForms";
-import { AuthContext } from "../wrappers/AuthWrapper";
-import { signOutHelper } from "../lib/AuthFunctions";
-import default_pfp from "../assets/default_pfp.jpg"
+import Modal from "../Modal";
+import AuthForms from "../ModalPages/AuthForms";
+import { AuthContext } from "../../wrappers/AuthWrapper";
+import { signOutHelper } from "../../lib/AuthFunctions";
+import default_pfp from "../../assets/default_pfp.jpg"
 import { AnimatePresence, motion } from "framer-motion"
 import { useDetectClickOutside } from "react-detect-click-outside";
 
