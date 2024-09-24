@@ -136,38 +136,87 @@ app.post("/get-all-games", async (req, res) => {
 });
 
 
-
-
-
 app.get("/search-game", async (req, res) => {
-	const { text , } = req.query;
+	const {
+		text,
+		category,
+		multiplayer,
+		minPrice,
+		maxPrice,
+		minRating,
+		author,
+	} = req.query;
 
-	if (text) {
-		try {
-			// Use a regex pattern for fuzzy searching (case-insensitive and partial matches)
+	try {
+		// Build a dynamic query object
+		const query = {};
+
+		// Text search (name, desc, author)
+		if (text) {
 			const regex = new RegExp(text, "i"); // 'i' for case-insensitive
-
-			const result = await Games.find({
-				$or: [
-					{ name: { $regex: regex } },
-					{ desc: { $regex: regex } },
-					{ author: { $regex: regex } },
-				],
-			});
-
-			if (result.length > 0) {
-				return res.status(200).json(result);
-			} else {
-				return res.status(404).send("No game found matching the query");
-			}
-		} catch (err) {
-			console.error(err);
-			return res.status(500).send("Internal Server Error");
+			query.$or = [
+				{ name: { $regex: regex } },
+				{ desc: { $regex: regex } },
+				{ author: { $regex: regex } },
+			];
 		}
-	}
 
-	return res.status(400).send("No query provided");
+		// Filter by category
+		if (category) {
+			query.category = category;
+		}
+
+		// Filter by multiplayer (true/false)
+		if (multiplayer !== undefined) {
+			query.multiplayer = multiplayer === "true"; // ensure it's treated as a boolean
+		}
+
+		// Price range filter
+		if (minPrice || maxPrice) {
+			query.price = {};
+			if (minPrice) {
+				query.price.$gte = parseFloat(minPrice); // Greater than or equal to minPrice
+			}
+			if (maxPrice) {
+				query.price.$lte = parseFloat(maxPrice); // Less than or equal to maxPrice
+			}
+		}
+
+		// Filter by author
+		if (author) {
+			query.author = { $regex: new RegExp(author, "i") }; // Fuzzy search on author
+		}
+
+		// Perform aggregation to calculate average rating and apply the minimum rating filter
+		const aggregationPipeline = [
+			{ $match: query }, // Apply all other query filters first
+			{
+				$addFields: {
+					averageRating: { $avg: "$ratings" }, // Calculate the average of the ratings array
+				},
+			},
+			{
+				$match: {
+					averageRating: { $gte: parseFloat(minRating) || 0 }, // Filter based on minRating (default 0 if not provided)
+				},
+			},
+		];
+
+		// Execute the aggregation pipeline
+		const result = await Games.aggregate(aggregationPipeline);
+
+		// Check if any games were found
+		if (result.length > 0) {
+			return res.status(200).json(result);
+		} else {
+			return res.status(404).send("No games found matching the query");
+		}
+	} catch (err) {
+		console.error(err);
+		return res.status(500).send("Internal Server Error");
+	}
 });
+
 
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
@@ -188,7 +237,49 @@ app.get("/confirm", async (req, res) => {
 		return res.status(400).send("Confirmation token is missing.");
 	}
 });
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, "games/"); // Destination folder for game uploads
+	},
+	filename: function (req, file, cb) {
+		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+		cb(null, uniqueSuffix + "-" + file.originalname); // Save with unique name
+	},
+});
 
+const upload2 = multer({ storage: storage });
+
+app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
+	const { name, desc, author, category, price, multiplayer } = req.body;
+
+	if (!req.file) {
+		return res.status(400).json({ error: "Game file is required." });
+	}
+
+	const gameFilePath = req.file.path; // Path to the uploaded game file
+
+	try {
+		const newGame = new Games({
+			name,
+			desc,
+			author,
+			category: category.split(","), // Assuming category is comma-separated string
+			price,
+			multiplayer: multiplayer === "true",
+			gamefileloc: gameFilePath,
+			Picturefileloc: "", // Add picture later if needed
+		});
+
+		await newGame.save();
+		res.status(201).json({
+			message: "Game uploaded successfully!",
+			game: newGame,
+		});
+	} catch (error) {
+		console.error("Error uploading game:", error);
+		res.status(500).json({ error: "Failed to upload the game." });
+	}
+});
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
