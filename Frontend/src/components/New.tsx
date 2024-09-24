@@ -1,4 +1,6 @@
 import GameDisplay from './GameDisplay'
+import test_image_wrench from "../assets/test_image_wrench.png"
+import test_image_wrench_2 from "../assets/test_image_wrench_2.png"
 
 export default function Popular() {
   return (
@@ -13,6 +15,7 @@ export default function Popular() {
           description="Test test test test test test test test test test test test test test test test test test test Test test test test test test test test test test test test test test test test test test test Test test test test test test test test test test test test test test test test test test test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
         <GameDisplay
           classname="pb-5"
@@ -21,6 +24,7 @@ export default function Popular() {
           description="Test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
         <GameDisplay
           classname="pb-5"
@@ -29,6 +33,7 @@ export default function Popular() {
           description="Test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
         <GameDisplay
           classname="pb-5"
@@ -37,6 +42,7 @@ export default function Popular() {
           description="Test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
         <GameDisplay
           classname="pb-5"
@@ -45,6 +51,7 @@ export default function Popular() {
           description="Test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
         <GameDisplay
           classname="pb-5"
@@ -53,6 +60,7 @@ export default function Popular() {
           description="Test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
         <GameDisplay
           classname="pb-5"
@@ -61,6 +69,7 @@ export default function Popular() {
           description="Test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
         <GameDisplay
           classname="pb-5"
@@ -69,6 +78,7 @@ export default function Popular() {
           description="Test"
           size="small"
           categories={['Cool']}
+          images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
         />
       </div>
     </>
