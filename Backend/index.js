@@ -51,9 +51,11 @@ const gamesSchema = new mongoose.Schema({
 	multiplayer: { type: String },
 	Picturefileloc: { type: String },
 });
+
 gamesSchema.plugin(mongoose_fuzzy_searching, {
 	fields: ["name", "desc", "author"],
 });
+
 const games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
@@ -189,13 +191,21 @@ app.post("/get-all-games", async (req, res) => {
 	}
 });
 
-app.get("/get-game", async (req, res) => {
+app.get("/search-game", async (req, res) => {
 	const { text } = req.query;
 
 	if (text) {
 		try {
 			// Use a regex pattern for fuzzy searching (case-insensitive and partial matches)
-			const result = await games.fuzzySearch(text);
+			const regex = new RegExp(text, "i"); // 'i' for case-insensitive
+
+			const result = await games.find({
+				$or: [
+					{ name: { $regex: regex } },
+					{ desc: { $regex: regex } },
+					{ author: { $regex: regex } },
+				],
+			});
 
 			if (result.length > 0) {
 				return res.status(200).json(result);
