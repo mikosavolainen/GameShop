@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
 	phonenumber: { type: Number },
 	password: { type: String, required: true },
 	confirmedemail: { type: Boolean, default: false },
+	joindate: { type: Date, default: Date.now },
 });
 const users = mongoose.model("users", userSchema);
 
@@ -305,18 +306,29 @@ app.post('/get-game-by-id', async (req, res) => {
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	const existingUser = await User.findOne({ username });
+	
+	// Tarkista onko käyttäjä jo olemassa
+	const existingUser = await users.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
+	
+	// Salasana hashataan
 	const hashedPassword = await bcrypt.hash(password, 10);
+	
+	// Luo uusi käyttäjä ja lisää rekisteröintiajan
 	const newUser = new users({
 		username,
 		password: hashedPassword,
 		email,
 		phonenumber,
+		joindate: new Date(), // Lisää rekisteröintiaika tähän
 	});
+	
+	// Tallenna käyttäjä tietokantaan
 	await newUser.save();
+	
+	// Luo vahvistuslinkki
 	const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	const Confirmation = `
     <!DOCTYPE html>
@@ -390,7 +402,11 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
         </div>
     </body>
     </html>`;
+	
+	// Lähetä vahvistusviesti
 	await sendMail(Confirmation, "Email Confirmation", email);
+	
+	// Lähetä vastaus
 	res.status(243).send("Done");
 });
 
