@@ -21,7 +21,7 @@ const Checkbox = ({ label, id, name, className, error, required = false}: { labe
             text-white text-[12px] leading-none
           "
         >
-          <i className="material-icons !text-[16px]">checked</i>
+          <i className="material-symbols-rounded !text-[16px]">checked</i>
         </span>
       </div>
       {error && <p className="text-wrench-accent-gold mt-1">{error}</p>}

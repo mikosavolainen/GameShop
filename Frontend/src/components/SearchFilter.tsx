@@ -16,24 +16,24 @@ export default function SearchFilter(){
             <Search />
             <div className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl p-3 mt-4">
                 <button className="px-3 h-[20px] align-middle" onClick={() => setSelectedSorting("wide")}>
-                <span className={`${selectedSorting == "wide" ? `text-wrench-neutral-white` : `text-wrench-neutral-2`} material-icons cursor-pointer`}>
+                <span className={`${selectedSorting == "wide" ? `text-wrench-neutral-white` : `text-wrench-neutral-2`} material-symbols-rounded cursor-pointer`}>
                     view_agenda
                 </span>
                 </button >
                 <button className="pr-3 h-[20px] align-middle" onClick={() => setSelectedSorting("grid")}>
-                <span className={`${selectedSorting == "grid" ? `text-wrench-neutral-white` : `text-wrench-neutral-2`} material-icons cursor-pointer`}>
+                <span className={`${selectedSorting == "grid" ? `text-wrench-neutral-white` : `text-wrench-neutral-2`} material-symbols-rounded cursor-pointer`}>
                     grid_view
                 </span>
                 </button >
 
                 <button onClick={() => setSortSwitch(!sortSwitch)} className="pr-3 h-[20px] align-middle">
                 {sortSwitch && (
-                <span className="text-wrench-neutral-white material-icons cursor-pointer">
+                <span className="text-wrench-neutral-white material-symbols-rounded cursor-pointer">
                     arrow_downward
                 </span>
                 )}
                 {sortSwitch == false && (
-                <span className="text-wrench-neutral-white material-icons cursor-pointer">
+                <span className="text-wrench-neutral-white material-symbols-rounded cursor-pointer">
                     arrow_upward
                 </span>
                 )}
@@ -46,7 +46,7 @@ export default function SearchFilter(){
                 </select>
             </div>
             <div className="border border-wrench-neutral-3 rounded-2xl mt-4 pb-6">
-                <p className="px-6 mt-4"><span className="pr-2 align-middle w-[22px] h-[22px] text-wrench-neutral-white material-icons pointer-events-none">filter_alt</span>Filters</p>
+                <p className="px-6 mt-4"><span className="pr-2 align-middle w-[22px] h-[22px] text-wrench-neutral-white material-symbols-rounded pointer-events-none">filter_alt</span>Filters</p>
                 <p className="px-6 mt-4">Categories</p>
                 <div className="flex py-3 mr-4">
                 <Input outerClassName="pl-6 pr-3" type="text" style="dark" size="small" icon="search" placeholder="placeholder"/>

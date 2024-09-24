@@ -55,7 +55,7 @@ export default function Button({
         }
       })()} bg-white inline-block rounded-full relative ${ !disabled && 'shadow-[inset_0_1px_0_rgba(216,191,216,0.15)]' } active:shadow-none ${className}`}
     >
-      <span className="material-icons block absolute left-2 top-[47%] -translate-y-1/2 pointer-events-none !text-[16px]">
+      <span className="material-symbols-rounded block absolute left-2 top-[47%] -translate-y-1/2 pointer-events-none !text-[16px]">
         {icon}
       </span>
       {(() => {

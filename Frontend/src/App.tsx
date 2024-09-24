@@ -17,6 +17,7 @@ import AuthWrapper from "./wrappers/AuthWrapper.tsx";
 import GamePage from "./components/Game/GamePage.tsx";
 import UserPageContent from "./components/UserPageContent.tsx";
 import Button from "./components/Button.tsx";
+import PopularCategories from "./components/PopularCategories.tsx";
 
 const queryClient = new QueryClient()
 
@@ -64,8 +65,9 @@ function HomePage() {
   return (
     <>
       <div className="content-layout-margin mb-16 md:mb-0 md:mt-16">
-        <p className='text-5xl text-wrench-neutral-white pt-40 font-bold'>1 200 500+ games of any kind</p>
+        <h1 className='text-5xl text-wrench-neutral-white pt-40 font-bold mb-3'>1 200 500+ games of any kind</h1>
         <Search inLanding/>
+        <PopularCategories />
         <Highlighted />
         <Popular />
         <New />
