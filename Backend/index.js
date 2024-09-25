@@ -140,7 +140,7 @@ app.post("/get-all-owned-games", async (req, res) => {
 	}
 });
 
-app.post("/get-all-games", async (req, res) => {
+app.get("/get-all-games", async (req, res) => {
 	try {
 		const game = await Games.find();
 		return res.json(game);
@@ -287,7 +287,7 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 	}
 });
 
-app.post("/get-game-by-id", async (req, res) => {
+app.get("/get-game-by-id", async (req, res) => {
 	const id = req.body.id;
 
 	if (!id) {
@@ -433,7 +433,7 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	res.json({ token });
 });
 
-app.post("/reset-password", async (req, res) => {
+app.get("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
 	try {
 		const x = jwt.verify(token, SECRET_KEY);
