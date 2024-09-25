@@ -29,6 +29,7 @@ export default function Popular() {
             size="small"
             categories={r.category}
             images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
+            id={r._id}
           />
         )) }
       </div>

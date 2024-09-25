@@ -9,6 +9,7 @@ export default function Popular() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           discount={20}
@@ -19,6 +20,7 @@ export default function Popular() {
         />
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           description="Test"
@@ -28,6 +30,7 @@ export default function Popular() {
         />
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           description="Test"
@@ -37,6 +40,7 @@ export default function Popular() {
         />
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           description="Test"
@@ -46,6 +50,7 @@ export default function Popular() {
         />
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           description="Test"
@@ -55,6 +60,7 @@ export default function Popular() {
         />
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           description="Test"
@@ -64,6 +70,7 @@ export default function Popular() {
         />
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           description="Test"
@@ -73,6 +80,7 @@ export default function Popular() {
         />
         <GameDisplay
           classname="pb-5"
+          id="test"
           gameName="gameName"
           price={40}
           description="Test"

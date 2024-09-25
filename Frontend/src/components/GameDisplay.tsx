@@ -5,7 +5,7 @@ import { Link } from "wouter"
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
 import { useContext, useState } from "react";
 
-export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review, images}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string, images: any[]}){
+export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review, images, id}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string, images: any[], id: string}){
     const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
     const [srcIndex, setSrcIndex] = useState<number>(0)
     let grids = ""
@@ -42,7 +42,7 @@ export default function GameDisplay({classname, discount, price, size, gameName,
 
     return(
       <>
-        <Link className={`group ${grids} ${classname}`} href="/game/jtemporaryid">
+        <Link className={`group ${grids} ${classname}`} href={"/game/"+id}>
           <div className="relative">
             <img className={`rounded-3xl ${size !== "large" && "transition-all duration-150 group-hover:mt-[-4px] group-hover:mb-[4px]"} ${size == "wide" ? "mr-6" : ""}`} src={images[srcIndex]} alt="Game" width={`${size == "wide" ? "362": ""}`} onMouseMove={handleMouseMove} onMouseLeave={() => setSrcIndex(0)} />
             <div className="hidden group-hover:flex group-hover:gap-1 absolute left-1/2 -translate-x-1/2 bottom-2">

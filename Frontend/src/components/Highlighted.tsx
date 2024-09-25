@@ -83,6 +83,7 @@ export default function Highlighted() {
           {testData.map((data, index) => (
             <div className="min-w-full" key={index}>
               <GameDisplay
+                id="test"
                 discount={data.discount}
                 price={data.price}
                 size="large"

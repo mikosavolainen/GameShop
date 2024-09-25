@@ -18,6 +18,7 @@ import GamePage from "./components/Game/GamePage.tsx";
 import UserPageContent from "./components/UserPageContent.tsx";
 import Button from "./components/Button.tsx";
 import PopularCategories from "./components/PopularCategories.tsx";
+import MobileNotifications from "./components/Parts/MobileNotifications.tsx";
 
 const queryClient = new QueryClient()
 
@@ -38,6 +39,7 @@ function App() {
 function MainContent() {
   const { scrollbarCompensation } = useContext(AuthenticationModalContext)
   const [mobileMenu, setMobileMenu] = useState(false)
+  const [mobileNotifications, setMobileNotifications] = useState(false)
 
   const  pathname = useLocation();
 
@@ -55,8 +57,9 @@ function MainContent() {
         <Route path="/download" component={DownloadPage} />
         <Route path="/user/:user" component={UserPage} />
       </Switch>
-      <MobileMenu opened={mobileMenu} />
-      <MobileNavigationBar setMobileMenu={setMobileMenu} />
+      <MobileMenu opened={mobileMenu} setOpened={setMobileMenu} />
+      <MobileNotifications opened={mobileNotifications} setOpened={setMobileNotifications} />
+      <MobileNavigationBar setMobileMenu={setMobileMenu} setMobileNotifications={setMobileNotifications} />
     </div>
   )
 }
