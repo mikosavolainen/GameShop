@@ -5,6 +5,8 @@ import Checkbox from "./Checkbox"
 import Button from "./Button"
 import GameDisplay from "./GameDisplay"
 import { useSearch } from "wouter"
+import image1 from "../assets/test_image_wrench.png"
+import image2 from "../assets/test_image_wrench_2.png"
 export default function SearchFilter(){
     const [sortSwitch, setSortSwitch] = useState(true)
     const [selectedSorting, setSelectedSorting] = useState("grid")
@@ -82,22 +84,24 @@ export default function SearchFilter(){
                 <button className="mx-4">312</button>
                 <button>&gt;</button>
             </div>
-            <div className={`${selectedSorting == "wide" ? `` : `grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4`}`}>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
-                <GameDisplay classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+            <div className={`${selectedSorting == "wide" ? `` : `grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8`}`}>                
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
+                <GameDisplay images={[image1, image2, image1, image1, image1]} classname="pb-5" gameName="gameName" price={40} description="Test" size={selectedSorting == "wide" ? `wide` : `small`} categories={["Cool"]}/>
             </div>
             <div className="flex my-4">
                 <button>&lt;</button>
