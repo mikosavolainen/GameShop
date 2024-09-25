@@ -7,6 +7,7 @@ import Button from "../Button";
 import { Interweave } from "interweave";
 import Reviews from "./Reviews";
 import RatingStars from "./RatingStars";
+import axios from "axios";
 
 const images = [
   { src: test_image_wrench, alt: 'Test alt', type: "image" },
@@ -29,6 +30,7 @@ export default function GamePage() {
   const imageScrollInnerRef = useRef<HTMLDivElement | null>(null);
   const [imageScrollLeftOffset, setImageScrollLeftOffset] = useState(0)
   const imageListItem = useRef<HTMLButtonElement | null>(null)
+  const [res, setRes] = useState<any | null>(null)
   useEffect(() => {
     const handleResize = () => {
       if(imageScrollRef.current && imageListItem.current && imageScrollInnerRef.current){
@@ -48,6 +50,10 @@ export default function GamePage() {
   useEffect(() => {
     async function fetch() { // function to fetch game information
       console.log(params.id)
+      const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
+      const { data } = await axios.post(`${apiUrl}/get-game-by-id`, { id: params.id }); // idk why post is used on server side instead of get but ok
+      console.log(data)
+      setRes(data)
     }
     fetch()
   }, [])
@@ -89,7 +95,7 @@ export default function GamePage() {
           </div>
         </div>
         <div>
-          <h1 className="text-4xl font-semibold mb-4">Game name</h1>
+          <h1 className="text-4xl font-semibold mb-4">{res?.name}</h1>
           <div className="mb-4">
             <Label category="something" />
             <Label category="something" />
@@ -99,14 +105,14 @@ export default function GamePage() {
           <Button type="button" size="big" style="purple" text="Add to cart" icon="shopping_cart" className="mb-4" />
           <div className="mb-4 text-lg">
             <span style={{fontFamily: `"Trispace", sans-serif`}} className="line-through text-wrench-neutral-2 mr-4">98.20 &euro;</span>
-            <span style={{fontFamily: `"Trispace", sans-serif`}}>123.45 &euro;</span>
+            <span style={{fontFamily: `"Trispace", sans-serif`}}>{res?.price} &euro;</span>
           </div>
           <span>Also something about VAT here like if we are going to pay taxes</span>
         </div>
       </div>
       <div>
         <h2 className="text-2xl mt-6 mb-2 font-semibold">About this game</h2>
-        <Interweave content="This string contains <b>HTML</b> and will safely be rendered!" />
+        <Interweave content={res?.desc} />
       </div>
       <div>
         <h2 className="text-2xl mt-6 mb-2 font-semibold">Reviews</h2>

@@ -9,7 +9,6 @@ import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappe
 import { useContext, useEffect, useState } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/Parts/Footer.tsx";
-import MobileNavigationBar from "./components/MobileNavigationBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchFilter from "./components/SearchFilter.tsx";
 import MobileMenu from "./components/Parts/MobileMenu.tsx";
@@ -19,6 +18,7 @@ import UserPageContent from "./components/UserPageContent.tsx";
 import Button from "./components/Button.tsx";
 import PopularCategories from "./components/PopularCategories.tsx";
 import MobileNotifications from "./components/Parts/MobileNotifications.tsx";
+import MobileNavigationBar from "./components/Parts/MobileNavigationBar.tsx";
 
 const queryClient = new QueryClient()
 
