@@ -54,11 +54,13 @@ export default function SearchFilter(){
                 <Input outerClassName="pl-6 pr-3" type="text" style="dark" size="small" icon="search" placeholder="placeholder"/>
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
-                <Checkbox label="Action" id="0" className="px-6 py-2" required={false}/>
-                <Checkbox label="Adventure" id="1" className="px-6 py-2" required={false}/>
-                <Checkbox label="RPG" id="2" className="px-6 py-2" required={false}/>
-                <Checkbox label="Simulation" id="3" className="px-6 py-2" required={false}/>
-                <Checkbox label="Strategy" id="4" className="px-6 py-2" required={false}/>
+                <div className="overflow-y-scroll max-h-60">
+                    <Checkbox label="Action" id="0" className="px-6 py-2" required={false}/>
+                    <Checkbox label="Adventure" id="1" className="px-6 py-2" required={false}/>
+                    <Checkbox label="RPG" id="2" className="px-6 py-2" required={false}/>
+                    <Checkbox label="Simulation" id="3" className="px-6 py-2" required={false}/>
+                    <Checkbox label="Strategy" id="4" className="px-6 py-2" required={false}/>
+                </div>
 
                 <p className="px-6 mt-4">Price</p>
                 <Checkbox label="On sale" id="10" className="px-6 my-2" required={false}/>
@@ -68,11 +70,12 @@ export default function SearchFilter(){
                 <Input outerClassName="pl-6 pr-3" type="text" style="dark" size="small" icon="search" placeholder="placeholder"/>
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
+                <div className="overflow-y-scroll max-h-60">
                 <Checkbox label="A developer studio" id="5" className="px-6 py-2" required={false}/>
                 <Checkbox label="A studio test" id="6" className="px-6 py-2" required={false}/>
                 <Checkbox label="Basically, a developer name" id="7" className="px-6 py-2" required={false}/>
                 <Checkbox label="Developer name" id="8" className="px-6 py-2" required={false}/>
-                <Checkbox label="Studio developer, developer" id="9" className="px-6 py-2" required={false}/>
+                </div>
             </div>
             </div>
             <div className="mr-10 ml-10 w-[70%]">
