@@ -68,7 +68,7 @@ export default function GamePage() {
 
   useEffect(() => {
     while(true) {
-      const clock = setTimeout(() => setChosenImage(chosenImage < images.length ? chosenImage + 1 : 0), 5000)
+      const clock = setTimeout(() => setChosenImage(chosenImage + 1 < images.length ? chosenImage + 1 : 0), 5000)
       return () => clearTimeout(clock)
     }
   }, [setChosenImage, chosenImage])
