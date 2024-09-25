@@ -3,7 +3,7 @@ import Label from "./Label"
 import Button from "./Button"
 import { Link } from "wouter"
 import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review, images}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string, images: any[]}){
     const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
@@ -39,6 +39,7 @@ export default function GameDisplay({classname, discount, price, size, gameName,
       // Set hover part to 0-4 depending on the mouse's vertical position
       setSrcIndex(part);
     };
+
     return(
       <>
         <Link className={`group ${grids} ${classname}`} href="/game/jtemporaryid">

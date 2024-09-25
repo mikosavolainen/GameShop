@@ -66,6 +66,13 @@ export default function GamePage() {
     return () => clearTimeout(timer);
   }, [chosenImage, images]);
 
+  useEffect(() => {
+    while(true) {
+      const clock = setTimeout(() => setChosenImage(chosenImage < images.length ? chosenImage + 1 : 0), 5000)
+      return () => clearTimeout(clock)
+    }
+  }, [setChosenImage, chosenImage])
+
   return(
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 overflow-hidden">
       <div className="flex flex-col xl:flex-row gap-8 mt-16">

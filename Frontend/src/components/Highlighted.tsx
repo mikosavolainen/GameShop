@@ -96,7 +96,7 @@ export default function Highlighted() {
         </div>
       </div>
       <div className="grid grid-cols-5 gap-3 mt-2">
-        {testData.map((data, i) => (
+        {testData.map((_, i) => (
           <button onClick={() => {
             if(i !== sliderPage) {
               slide(i)
