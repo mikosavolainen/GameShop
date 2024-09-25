@@ -27,11 +27,11 @@ body{
   min-height: 100vh;
 }
   .scrollbar::-webkit-scrollbar {
-    @apply w-[20px] h-[20px];
+    @apply w-2.5;
   }
 
   .scrollbar::-webkit-scrollbar-track {
-    @apply bg-wrench-neutral-3 rounded-full;
+    @apply bg-wrench-neutral-5 rounded-full;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {

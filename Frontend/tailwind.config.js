@@ -10,6 +10,7 @@ export default {
       "wrench-neutral-2":     "#878787",
       "wrench-neutral-3":     "#505050",
       "wrench-neutral-4":     "#1F1F1F",
+      "wrench-neutral-5": "#303030",
       "wrench-neutral-dark":  "#1C1C1C",
       "wrench-accent-gold":   "#FFD700",
       "wrench-turquoise": "#40E0D0",
