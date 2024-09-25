@@ -10,10 +10,24 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 const csvParser = require("csv-parser");
-const path = require('path');
+const path = require("path");
 const multer = require("multer");
+require("dotenv").config();
 
-const SECRET_KEY ="Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
+const { Client, GatewayIntentBits } = require("discord.js");
+
+const client = new Client({
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+});
+
+client.once("ready", () => {
+	console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.login(process.env.DISCORD_TOKEN);
+
+const SECRET_KEY =
+	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,11 +58,10 @@ const gamesSchema = new mongoose.Schema({
 	author: { type: String },
 	category: { type: [String] },
 	price: { type: Number },
-	ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' }],
+	ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
 	multiplayer: { type: Boolean },
 	Picturefileloc: { type: String },
 });
-
 
 const Games = mongoose.model("games", gamesSchema);
 
@@ -90,7 +103,6 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-
 // Sähköpostin lähettäminen
 async function sendMail(Msg, sub, email) {
 	try {
@@ -108,7 +120,9 @@ async function sendMail(Msg, sub, email) {
 }
 
 app.get("/", (req, res) => {
-	res.redirect("lol.tyhjyys.com");
+	log("Someone tried to go to /");
+	
+	res.redirect("https://lol.tyhjyys.com");
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
@@ -134,7 +148,6 @@ app.post("/get-all-games", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
-
 
 app.get("/search-game", async (req, res) => {
 	const {
@@ -217,12 +230,12 @@ app.get("/search-game", async (req, res) => {
 	}
 });
 
-
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
 	if (jwts) {
 		try {
 			const { username } = jwt.verify(jwts, SECRET_KEY);
+			log(`${username} just confirmed email`);
 			await users.findOneAndUpdate(
 				{ username },
 				{ confirmedemail: true }
@@ -250,8 +263,9 @@ const storage = multer.diskStorage({
 const upload2 = multer({ storage: storage });
 
 app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
-	const { name, desc, author, category, price, multiplayer } = req.body;
-
+	const { name, desc, author, category, price, multiplayer, token } = req.body;
+	const tokens = await jwt.verify(token, SECRET_KEY) 
+    log(`${tokens.username} just uploaded game ${name}`);
 	if (!req.file) {
 		return res.status(400).json({ error: "Game file is required." });
 	}
@@ -281,33 +295,27 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 	}
 });
 
+app.post("/get-game-by-id", async (req, res) => {
+	const id = req.body.id;
 
+	if (!id) {
+		return res.status(400).send({ error: "Peli _id vaaditaan." });
+	}
 
+	try {
+		// Muuta peliId ObjectId-tyypiksi
+		const peli = await Games.findById(id).exec();
 
-app.post('/get-game-by-id', async (req, res) => {
-    const id = req.body.id;
+		if (!peli) {
+			return res.status(404).send({ error: "Peliä ei löytynyt." });
+		}
 
-    if (!id) {
-        return res.status(400).send({ error: 'Peli _id vaaditaan.' });
-    }
-
-    try {
-        // Muuta peliId ObjectId-tyypiksi
-        const peli = await Games.findById( id ).exec();
-
-        if (!peli) {
-            return res.status(404).send({ error: 'Peliä ei löytynyt.' });
-        }
-
-        res.status(200).send(peli);
-    } catch (error) {
-        console.error('Virhe pelin hakemisessa:', error);
-        res.status(500).send({ error: 'Virhe pelin hakemisessa.' });
-    }
+		res.status(200).send(peli);
+	} catch (error) {
+		console.error("Virhe pelin hakemisessa:", error);
+		res.status(500).send({ error: "Virhe pelin hakemisessa." });
+	}
 });
-  
-
-
 
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
@@ -398,6 +406,7 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
     </body>
     </html>`;
 	await sendMail(Confirmation, "Email Confirmation", email);
+	log(`${username} just registered`);
 	res.status(243).send("Done");
 });
 
@@ -417,6 +426,7 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	}
 	username = user.username;
 	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
+	log(`${username} just logged in`);
 	res.json({ token });
 });
 
@@ -531,84 +541,89 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
-require('dotenv').config();
-
-const { Client, GatewayIntentBits } = require('discord.js');
-
-
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages
-    ]
-});
-
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-});
-
-client.login(process.env.DISCORD_TOKEN);
 
 const upload = multer({
-    dest: 'uploads/',
-    limits: { fileSize: 8 * 1024 * 1024 }
+	dest: "uploads/",
+	limits: { fileSize: 8 * 1024 * 1024 },
+});
+async function log(msg) {
+	const channel = await client.channels.fetch(
+		process.env.DISCORD_LOG_CHANNEL
+	);
+	try {
+		const sentMessage = await channel.send({
+			content: `${msg}`,
+		});
+	} catch (error) {
+		console.error(`Failed to send msg`, error);
+	}
+}
+
+app.post("/upload", upload.array("images", 10), async (req, res) => {
+	if (!req.files || req.files.length === 0) {
+		return res.status(400).json({ error: "No files uploaded." });
+	}
+
+	try {
+		const channel = await client.channels.fetch(
+			process.env.DISCORD_CHANNEL_ID
+		);
+		if (!channel) {
+			return res
+				.status(500)
+				.json({ error: "Discord channel not found." });
+		}
+
+		const imageUrls = [];
+
+		for (const file of req.files) {
+			const filePath = path.join(__dirname, file.path);
+
+			try {
+				const sentMessage = await channel.send({
+					content: `Heh uusi kuva :D: ${file.originalname}`,
+					files: [
+						{
+							attachment: filePath,
+							name: file.originalname,
+						},
+					],
+				});
+
+				const imageUrl = sentMessage.attachments.first().url;
+				imageUrls.push(imageUrl);
+
+				fs.unlinkSync(filePath);
+			} catch (error) {
+				console.error(
+					`Failed to upload image: ${file.originalname}`,
+					error
+				);
+				fs.unlinkSync(filePath);
+			}
+		}
+
+		if (imageUrls.length === 0) {
+			return res
+				.status(500)
+				.json({ error: "Failed to upload any images." });
+		}
+
+		res.json({ urls: imageUrls });
+	} catch (err) {
+		console.error("Error uploading images to Discord:", err);
+		res.status(500).json({
+			error: "Internal server error during image upload.",
+		});
+	}
 });
 
-app.post('/upload', upload.array('images', 10), async (req, res) => {
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: 'No files uploaded.' });
-    }
-
-    try {
-        const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
-        if (!channel) {
-            return res.status(500).json({ error: 'Discord channel not found.' });
-        }
-
-        const imageUrls = [];
-
-        for (const file of req.files) {
-            const filePath = path.join(__dirname, file.path);
-
-            try {
-                const sentMessage = await channel.send({
-                    content: `Heh uusi kuva :D: ${file.originalname}`,
-                    files: [{
-                        attachment: filePath,
-                        name: file.originalname
-                    }]
-                });
-
-                const imageUrl = sentMessage.attachments.first().url;
-                imageUrls.push(imageUrl);
-
-                fs.unlinkSync(filePath);
-            } catch (error) {
-                console.error(`Failed to upload image: ${file.originalname}`, error);
-                fs.unlinkSync(filePath);  
-            }
-        }
-
-        if (imageUrls.length === 0) {
-            return res.status(500).json({ error: 'Failed to upload any images.' });
-        }
-
-        res.json({ urls: imageUrls });
-
-    } catch (err) {
-        console.error('Error uploading images to Discord:', err);
-        res.status(500).json({ error: 'Internal server error during image upload.' });
-    }
-});
-
-
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
-
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port Localhost:${PORT}`);
 });
