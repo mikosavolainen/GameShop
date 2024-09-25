@@ -56,7 +56,7 @@ export default function UserPageContent() {
   function Library() {
     return (
       <>
-        <div className="grid sm:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-8">
           <GameDisplay
             classname="pb-5"
             gameName="gameName"

@@ -42,9 +42,18 @@ export default function GameDisplay({classname, discount, price, size, gameName,
     return(
       <>
         <Link className={`group ${grids} ${classname}`} href="/game/jtemporaryid">
-          <img className={`rounded-3xl ${size !== "large" && "transition-all duration-150 group-hover:mt-[-4px] group-hover:mb-[4px] "} ${size == "wide" ? "mr-6" : ""}`} src={images[srcIndex]} alt="Game" width={`${size == "wide" ? "362": ""}`} onMouseMove={handleMouseMove} />
+          <div className="relative">
+            <img className={`rounded-3xl ${size !== "large" && "transition-all duration-150 group-hover:mt-[-4px] group-hover:mb-[4px]"} ${size == "wide" ? "mr-6" : ""}`} src={images[srcIndex]} alt="Game" width={`${size == "wide" ? "362": ""}`} onMouseMove={handleMouseMove} onMouseLeave={() => setSrcIndex(0)} />
+            <div className="hidden group-hover:flex group-hover:gap-1 absolute left-1/2 -translate-x-1/2 bottom-2">
+              { Array.from({ length: 5 }).map((_, i) =>(
+                  <svg key={i} height="8" width="8" xmlns="http://www.w3.org/2000/svg">
+                    <circle r="3.6" cx="4" cy="4" className={srcIndex === i ? "fill-wrench-neutral-white/60" : "fill-wrench-neutral-white/20"} />
+                  </svg>
+                )) }
+            </div>
+          </div>
           <div className="flex flex-col">
-            <h4 className="text-wrench-neutral-white text-xl font-semibold mt-4 mb-4 transition-all duration-150 group-hover:text-wrench-purple-1">{displayedName}</h4>
+            <h4 className="text-wrench-neutral-white text-2xl font-semibold mt-4 mb-4 transition-all duration-150 group-hover:text-wrench-purple-1">{displayedName}</h4>
             <div>
               { categories.map((category) => <Label category={category as string} key={(Math.random() + 1).toString(36).substring(7)} />)}
             </div>

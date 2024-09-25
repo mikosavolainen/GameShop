@@ -6,7 +6,7 @@ export default function Popular() {
   return (
     <>
       <h2 className="text-xl font-semibold mt-12 mb-4">Newest</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
         <GameDisplay
           classname="pb-5"
           gameName="gameName"
