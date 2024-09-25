@@ -1,22 +1,22 @@
 const Checkbox = ({ label, id, name, className, error, required = false}: { label: string, id: string, name?: string, className?: string, error?: string, required: boolean}) => {
   return (
     <div className={`${className}`}>
-      <div className={`flex items-center gap-2 relative`}>
+      <div className={`flex items-center gap-2 relative hover:cursor-pointer`}>
         <input
           type="checkbox"
           id={id}
           className="
-            peer relative shrink-0 appearance-none w-[20px] h-[20px] border border-box border-wrench-neutral-2 rounded bg-white
-            checked:bg-blue-800 checked:border-wrench-purple-2 checked:bg-wrench-purple
+            peer relative shrink-0 appearance-none size-[18px] border border-box border-wrench-neutral-2 rounded bg-white
+            checked:bg-blue-800 checked:border-wrench-purple-2 checked:bg-wrench-purple hover:cursor-pointer
           "
           name={name}
         />
-        <label htmlFor={id}>{label}{required && <span className="text-red-500">*</span>}</label>
+        <label htmlFor={id} className="hover:cursor-pointer">{label}{required && <span className="text-red-500">*</span>}</label>
         
         {/* Check icon */}
         <span
           className="
-            absolute top-1 left-0.5
+            absolute top-1 left-[1px]
             hidden peer-checked:block pointer-events-none
             text-white text-[12px] leading-none
           "
