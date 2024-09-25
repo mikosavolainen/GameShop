@@ -10,7 +10,7 @@ name,desc,gamefileloc,author,category,price,ratings,multiplayer,Picturefileloc
 "Myst","Klassinen seikkailupeli, jossa pelaaja tutkii saarta ja ratkoo pulmia","/games/myst.exe","Cyan","['Adventure', 'Puzzle']",11.99,"[4, 5, 4]",no,"/images/myst.jpg"
 "Tie Fighter","Tähtien sota -teemainen avaruussimulaatio, jossa pelaaja lentää keisarikunnan tähtihävittäjillä","/games/tie_fighter.exe","LucasArts","['Simulation', 'Action']",9.99,"[5, 4, 5]",no,"/images/tie_fighter.jpg"
 "Command & Conquer","Reaaliaikainen strategiapeli, jossa taistellaan Global Defense Initiativen ja Brotherhood of Nodin välillä","/games/command_and_conquer.exe","Westwood Studios","['Strategy']",14.99,"[5, 5, 4]",yes,"/images/command_and_conquer.jpg"
-"Diablo","Toimintaroolipeli, jossa pelaaja taistelee pimeyden voimia vastaan","/games/diablo.exe","Blizzard Entertainment","['RPG', 'Action']",19.99,"[5, 4, 5]",no,"/images/diablo.jpg"
+"Diablo","Toimintaroolipeli, jossa pelaaja taistelee pimeyden voimia vastaan""/games/diablo.exe","Blizzard Entertainment",['RPG', 'Action'],19.99,"[5, 4, 5]",no,"/images/diablo.jpg"
 "RollerCoaster Tycoon","Simulaatiopeli, jossa rakennetaan ja hallitaan huvipuistoa","/games/rollercoaster_tycoon.exe","Chris Sawyer Productions","['Simulation']",9.99,"[5, 5, 4]",no,"/images/rollercoaster_tycoon.jpg"
 "Descent","Kolmiulotteinen ensimmäisen persoonan avaruusammuntapeli, jossa pelaaja lentää futuristisella aluksella","/games/descent.exe","Parallax Software","['Shooter']",7.99,"[4, 4, 5]",yes,"/images/descent.jpg"
 "Heroes of Might and Magic III","Vuoropohjainen strategiapeli, jossa pelaajat hallitsevat sankareita ja armeijoita taistelussa","/games/homm3.exe","New World Computing","['Strategy', 'Fantasy']",14.99,"[5, 5, 4]",no,"/images/homm3.jpg"

@@ -8,6 +8,23 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const fs = require("fs");
+const csvParser = require("csv-parser");
+const path = require("path");
+const multer = require("multer");
+require("dotenv").config();
+
+const { Client, GatewayIntentBits } = require("discord.js");
+
+const client = new Client({
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+});
+
+client.once("ready", () => {
+	console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.login(process.env.DISCORD_TOKEN);
 
 const SECRET_KEY =
 	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
@@ -31,6 +48,7 @@ const userSchema = new mongoose.Schema({
 	phonenumber: { type: Number },
 	password: { type: String, required: true },
 	confirmedemail: { type: Boolean, default: false },
+	joindate: { type: Date, default: Date.now },
 });
 const users = mongoose.model("users", userSchema);
 
@@ -39,13 +57,14 @@ const gamesSchema = new mongoose.Schema({
 	desc: { type: String },
 	gamefileloc: { type: String },
 	author: { type: String },
-	category: { type: Array },
+	category: { type: [String] },
 	price: { type: Number },
-	ratings: { type: Array },
-	multiplayer: { type: String },
+	ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
+	multiplayer: { type: Boolean },
 	Picturefileloc: { type: String },
 });
-const games = mongoose.model("games", gamesSchema);
+
+const Games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
 	game: { type: String },
@@ -57,12 +76,15 @@ const ReviewsSchema = new mongoose.Schema({
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const LibrarySchema = new mongoose.Schema({
-  owner: { type: String},
-  game: { type: String },
-
+	owner: { type: String },
+	games: { type: Array },
 });
 const Library = mongoose.model("Library", LibrarySchema);
 
+const NewsletterSchema = new mongoose.Schema({
+	email: String,
+});
+const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema);
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -99,32 +121,112 @@ async function sendMail(Msg, sub, email) {
 }
 
 app.get("/", (req, res) => {
-	res.json("hello world");
+	log("Someone tried to go to /");
+	
+	res.redirect("https://lol.tyhjyys.com");
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
-  try {
-    const ownerId = req.body.owner; 
-    if (!ownerId) {
-      return res.status(400).send("Owner ID is required");
-    }
-   
-    const games = await Library.find({ owner: ownerId });
-
-    res.json(games);
-  } catch (error) {
-    console.error("Error fetching games:", error);
-    res.status(500).send("Internal Server Error");
-  }
+	try {
+		const token = await jwt.verify(req.body.token, SECRET_KEY);
+		if (!token) {
+			return res.status(400).send("Owner ID is required");
+		}
+		const games = await Library.find({ owner: token.username });
+		res.json(games);
+	} catch (error) {
+		console.error("Error fetching games:", error);
+		res.status(500).send("Internal Server Error");
+	}
 });
-
 
 app.post("/get-all-games", async (req, res) => {
 	try {
-		const game = await games.find();
+		const game = await Games.find();
 		return res.json(game);
 	} catch (error) {
 		console.error("Error fetching games:", error);
+		return res.status(500).send("Internal Server Error");
+	}
+});
+
+app.get("/search-game", async (req, res) => {
+	const {
+		text,
+		category,
+		multiplayer,
+		minPrice,
+		maxPrice,
+		minRating,
+		author,
+	} = req.query;
+
+	try {
+		// Build a dynamic query object
+		const query = {};
+
+		// Text search (name, desc, author)
+		if (text) {
+			const regex = new RegExp(text, "i"); // 'i' for case-insensitive
+			query.$or = [
+				{ name: { $regex: regex } },
+				{ desc: { $regex: regex } },
+				{ author: { $regex: regex } },
+			];
+		}
+
+		// Filter by category
+		if (category) {
+			query.category = category;
+		}
+
+		// Filter by multiplayer (true/false)
+		if (multiplayer !== undefined) {
+			query.multiplayer = multiplayer === "true"; // ensure it's treated as a boolean
+		}
+
+		// Price range filter
+		if (minPrice || maxPrice) {
+			query.price = {};
+			if (minPrice) {
+				query.price.$gte = parseFloat(minPrice); // Greater than or equal to minPrice
+			}
+			if (maxPrice) {
+				query.price.$lte = parseFloat(maxPrice); // Less than or equal to maxPrice
+			}
+		}
+
+		// Filter by author
+		if (author) {
+			query.author = { $regex: new RegExp(author, "i") }; // Fuzzy search on author
+		}
+
+		// Perform aggregation to calculate average rating and apply the minimum rating filter
+		const aggregationPipeline = [
+			{ $match: query }, // Apply all other query filters first
+			{
+				$addFields: {
+					averageRating: { $avg: "$ratings" }, // Calculate the average of the ratings array
+				},
+			},
+			{
+				$match: {
+					averageRating: { $gte: parseFloat(minRating) || 0 }, // Filter based on minRating (default 0 if not provided)
+				},
+			},
+		];
+
+		// Execute the aggregation pipeline
+		const result = await Games.aggregate(aggregationPipeline);
+
+		// Check if any games were found
+		if (result.length > 0) {
+			return res.status(200).json(result);
+		} else {
+			return res.status(404).send("No games found matching the query");
+		}
+	} catch (err) {
+		console.error(err);
 		return res.status(500).send("Internal Server Error");
 	}
 });
@@ -134,6 +236,7 @@ app.get("/confirm", async (req, res) => {
 	if (jwts) {
 		try {
 			const { username } = jwt.verify(jwts, SECRET_KEY);
+			log(`${username} just confirmed email`);
 			await users.findOneAndUpdate(
 				{ username },
 				{ confirmedemail: true }
@@ -148,24 +251,99 @@ app.get("/confirm", async (req, res) => {
 		return res.status(400).send("Confirmation token is missing.");
 	}
 });
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, "games/"); // Destination folder for game uploads
+	},
+	filename: function (req, file, cb) {
+		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+		cb(null, uniqueSuffix + "-" + file.originalname); // Save with unique name
+	},
+});
+
+const upload2 = multer({ storage: storage });
+
+app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
+	const { name, desc, author, category, price, multiplayer, token } = req.body;
+	const tokens = await jwt.verify(token, SECRET_KEY) 
+    log(`${tokens.username} just uploaded game ${name}`);
+	if (!req.file) {
+		return res.status(400).json({ error: "Game file is required." });
+	}
+
+	const gameFilePath = req.file.path; // Path to the uploaded game file
+
+	try {
+		const newGame = new Games({
+			name,
+			desc,
+			author,
+			category: category.split(","), // Assuming category is comma-separated string
+			price,
+			multiplayer: multiplayer === "true",
+			gamefileloc: gameFilePath,
+			Picturefileloc: "", // Add picture later if needed
+		});
+
+		await newGame.save();
+		res.status(201).json({
+			message: "Game uploaded successfully!",
+			game: newGame,
+		});
+	} catch (error) {
+		console.error("Error uploading game:", error);
+		res.status(500).json({ error: "Failed to upload the game." });
+	}
+});
+
+app.post("/get-game-by-id", async (req, res) => {
+	const id = req.body.id;
+
+	if (!id) {
+		return res.status(400).send({ error: "Peli _id vaaditaan." });
+	}
+
+	try {
+		// Muuta peliId ObjectId-tyypiksi
+		const peli = await Games.findById(id).exec();
+
+		if (!peli) {
+			return res.status(404).send({ error: "Peliä ei löytynyt." });
+		}
+
+		res.status(200).send(peli);
+	} catch (error) {
+		console.error("Virhe pelin hakemisessa:", error);
+		res.status(500).send({ error: "Virhe pelin hakemisessa." });
+	}
+});
 
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	const existingUser = await users.findOne({
-		$or: [{ username: username }, { email: email }],
-	});
+	
+	// Tarkista onko käyttäjä jo olemassa
+	const existingUser = await users.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
+	
+	// Salasana hashataan
 	const hashedPassword = await bcrypt.hash(password, 10);
+	
+	// Luo uusi käyttäjä ja lisää rekisteröintiajan
 	const newUser = new users({
 		username,
 		password: hashedPassword,
 		email,
 		phonenumber,
+		joindate: new Date(), // Lisää rekisteröintiaika tähän
 	});
+	
+	// Tallenna käyttäjä tietokantaan
 	await newUser.save();
+	
+	// Luo vahvistuslinkki
 	const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	const Confirmation = `
     <!DOCTYPE html>
@@ -239,46 +417,57 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
         </div>
     </body>
     </html>`;
+	
+	// Lähetä vahvistusviesti
 	await sendMail(Confirmation, "Email Confirmation", email);
+	log(`${username} just registered`);
 	res.status(243).send("Done");
 });
 
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
-	const { username, password } = req.body;
+	var { username, password } = req.body;
 	const user = await users.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
+	if (!user) {
+		return res.status(401).send("no user or email find");
+	}
+	if (!user.confirmedemail) {
+		return res.status(403).send("email is not verified");
+	}
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
 	}
-  if (!user.confirmedemail) {
-		return res.status(403).send("email is not verified");
-	}
-	var uname = user.username;
-	const token = jwt.sign({ uname }, SECRET_KEY, { expiresIn: "1h" });
+	username = user.username;
+	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
+	log(`${username} just logged in`);
 	res.json({ token });
 });
+
 app.post("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
-	const x = jwt.verify(token, SECRET_KEY);
-	if (x) {
-		const newpass = await bcrypt.hash(password, 10);
-		await users.findOneAndUpdate({ email: x.email }, { password: newpass });
-		return res.status(200).send("RESTED");
+	try {
+		const x = jwt.verify(token, SECRET_KEY);
+		if (x) {
+			const newpass = await bcrypt.hash(password, 10);
+			await users.findOneAndUpdate(
+				{ email: x.email },
+				{ password: newpass }
+			);
+			return res.status(200).send("RESETED");
+		}
+	} catch (error) {
+		res.status(400).send("invalid token");
 	}
 });
+
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });
 
 	if (!user) {
-		return res.status(400).send("didnt find email");
+		res.status(400).send("didnt find email");
 	}
-	if (!user.confirmedemail) {
-		return res.status(401).send("You need to confirm your email");
-	}
-	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "15min" });
-
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -362,13 +551,93 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	await sendMail(confirmation, "Password reset", email);
 	return res.status(200).send("reset password email send");
 });
-app.post("/upload", async (req, res) => {
-	if (req.file) {
-		// Upload logic here
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+
+const upload = multer({
+	dest: "uploads/",
+	limits: { fileSize: 8 * 1024 * 1024 },
+});
+async function log(msg) {
+	const channel = await client.channels.fetch(
+		process.env.DISCORD_LOG_CHANNEL
+	);
+	try {
+		const sentMessage = await channel.send({
+			content: `${msg}`,
+		});
+	} catch (error) {
+		console.error(`Failed to send msg`, error);
+	}
+}
+
+app.post("/upload", upload.array("images", 10), async (req, res) => {
+	if (!req.files || req.files.length === 0) {
+		return res.status(400).json({ error: "No files uploaded." });
+	}
+
+	try {
+		const channel = await client.channels.fetch(
+			process.env.DISCORD_CHANNEL_ID
+		);
+		if (!channel) {
+			return res
+				.status(500)
+				.json({ error: "Discord channel not found." });
+		}
+
+		const imageUrls = [];
+
+		for (const file of req.files) {
+			const filePath = path.join(__dirname, file.path);
+
+			try {
+				const sentMessage = await channel.send({
+					content: `Heh uusi kuva :D: ${file.originalname}`,
+					files: [
+						{
+							attachment: filePath,
+							name: file.originalname,
+						},
+					],
+				});
+
+				const imageUrl = sentMessage.attachments.first().url;
+				imageUrls.push(imageUrl);
+
+				fs.unlinkSync(filePath);
+			} catch (error) {
+				console.error(
+					`Failed to upload image: ${file.originalname}`,
+					error
+				);
+				fs.unlinkSync(filePath);
+			}
+		}
+
+		if (imageUrls.length === 0) {
+			return res
+				.status(500)
+				.json({ error: "Failed to upload any images." });
+		}
+
+		res.json({ urls: imageUrls });
+	} catch (err) {
+		console.error("Error uploading images to Discord:", err);
+		res.status(500).json({
+			error: "Internal server error during image upload.",
+		});
 	}
 });
 
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port Localhost:${PORT}`);
 });
