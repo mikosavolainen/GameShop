@@ -288,14 +288,14 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 });
 
 app.get("/get-game-by-id", async (req, res) => {
-	const id = req.body.id;
+	const id = req.query.id;
 
 	if (!id) {
 		return res.status(400).send({ error: "Peli _id vaaditaan." });
 	}
 
 	try {
-		const peli = await Games.findById(id).exec();
+		const peli = await Games.findById(id);
 
 		if (!peli) {
 			return res.status(404).send({ error: "Peliä ei löytynyt." });
