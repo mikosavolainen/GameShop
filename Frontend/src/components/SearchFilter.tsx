@@ -54,7 +54,7 @@ export default function SearchFilter(){
                 <Input outerClassName="pl-6 pr-3" type="text" style="dark" size="small" icon="search" placeholder="placeholder"/>
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
-                <div className="scrollbar overflow-y-scroll max-h-60">
+                <div className="scrollbar overflow-y-scroll max-h-60 mr-4">
                     <Checkbox label="Action" id="0" className="px-6 py-2" required={false}/>
                     <Checkbox label="Adventure" id="1" className="px-6 py-2" required={false}/>
                     <Checkbox label="RPG" id="2" className="px-6 py-2" required={false}/>
@@ -79,7 +79,7 @@ export default function SearchFilter(){
                 <Input outerClassName="pl-6 pr-3" type="text" style="dark" size="small" icon="search" placeholder="placeholder"/>
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
-                <div className="scrollbar overflow-y-scroll max-h-60">
+                <div className="scrollbar overflow-y-scroll max-h-60 mr-4">
                 <Checkbox label="A developer studio" id="5" className="px-6 py-2" required={false}/>
                 <Checkbox label="A studio test" id="6" className="px-6 py-2" required={false}/>
                 <Checkbox label="Basically, a developer name" id="7" className="px-6 py-2" required={false}/>
