@@ -162,12 +162,10 @@ app.get("/search-game", async (req, res) => {
 	} = req.query;
 
 	try {
-		// Build a dynamic query object
 		const query = {};
-
-		// Text search (name, desc, author)
+		
 		if (text) {
-			const regex = new RegExp(text, "i"); // 'i' for case-insensitive
+			const regex = new RegExp(text, "i"); 
 			query.$or = [
 				{ name: { $regex: regex } },
 				{ desc: { $regex: regex } },
@@ -175,51 +173,44 @@ app.get("/search-game", async (req, res) => {
 			];
 		}
 
-		// Filter by category
 		if (category) {
 			query.category = category;
 		}
 
-		// Filter by multiplayer (true/false)
 		if (multiplayer !== undefined) {
-			query.multiplayer = multiplayer === "true"; // ensure it's treated as a boolean
+			query.multiplayer = multiplayer === "true";
 		}
 
-		// Price range filter
 		if (minPrice || maxPrice) {
 			query.price = {};
 			if (minPrice) {
-				query.price.$gte = parseFloat(minPrice); // Greater than or equal to minPrice
+				query.price.$gte = parseFloat(minPrice); 
 			}
 			if (maxPrice) {
-				query.price.$lte = parseFloat(maxPrice); // Less than or equal to maxPrice
+				query.price.$lte = parseFloat(maxPrice); 
 			}
 		}
 
-		// Filter by author
 		if (author) {
-			query.author = { $regex: new RegExp(author, "i") }; // Fuzzy search on author
+			query.author = { $regex: new RegExp(author, "i") }; 
 		}
 
-		// Perform aggregation to calculate average rating and apply the minimum rating filter
 		const aggregationPipeline = [
-			{ $match: query }, // Apply all other query filters first
+			{ $match: query }, 
 			{
 				$addFields: {
-					averageRating: { $avg: "$ratings" }, // Calculate the average of the ratings array
+					averageRating: { $avg: "$ratings" }, 
 				},
 			},
 			{
 				$match: {
-					averageRating: { $gte: parseFloat(minRating) || 0 }, // Filter based on minRating (default 0 if not provided)
+					averageRating: { $gte: parseFloat(minRating) || 0 }, 
 				},
 			},
 		];
 
-		// Execute the aggregation pipeline
 		const result = await Games.aggregate(aggregationPipeline);
 
-		// Check if any games were found
 		if (result.length > 0) {
 			return res.status(200).json(result);
 		} else {
@@ -253,11 +244,11 @@ app.get("/confirm", async (req, res) => {
 });
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, "games/"); // Destination folder for game uploads
+		cb(null, "games/"); 
 	},
 	filename: function (req, file, cb) {
 		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-		cb(null, uniqueSuffix + "-" + file.originalname); // Save with unique name
+		cb(null, uniqueSuffix + "-" + file.originalname); 
 	},
 });
 
@@ -271,18 +262,18 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 		return res.status(400).json({ error: "Game file is required." });
 	}
 
-	const gameFilePath = req.file.path; // Path to the uploaded game file
+	const gameFilePath = req.file.path; 
 
 	try {
 		const newGame = new Games({
 			name,
 			desc,
 			author,
-			category: category.split(","), // Assuming category is comma-separated string
+			category: category.split(","), 
 			price,
 			multiplayer: multiplayer === "true",
 			gamefileloc: gameFilePath,
-			Picturefileloc: "", // Add picture later if needed
+			Picturefileloc: "", 
 		});
 
 		await newGame.save();
@@ -304,7 +295,6 @@ app.post("/get-game-by-id", async (req, res) => {
 	}
 
 	try {
-		// Muuta peliId ObjectId-tyypiksi
 		const peli = await Games.findById(id).exec();
 
 		if (!peli) {
@@ -330,17 +320,16 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	
 	// Salasana hashataan
 	const hashedPassword = await bcrypt.hash(password, 10);
-	
-	// Luo uusi käyttäjä ja lisää rekisteröintiajan
+
 	const newUser = new users({
 		username,
 		password: hashedPassword,
 		email,
 		phonenumber,
-		joindate: new Date(), // Lisää rekisteröintiaika tähän
+		joindate: new Date(),
 	});
 	
-	// Tallenna käyttäjä tietokantaan
+
 	await newUser.save();
 	
 	// Luo vahvistuslinkki
