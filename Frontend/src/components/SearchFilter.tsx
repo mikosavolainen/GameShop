@@ -11,7 +11,7 @@ import image2 from "../assets/test_image_wrench_2.png"
 export default function SearchFilter(){
     const [, setLocation] = useLocation()
     const [searchValue, setSearchValue] = useState("")
-    const [selectedCategories, setSelectedCategories] = useState([""])
+    const [checkboxes, setCheckboxes] = useState([false, false, false, false, false, false, false, false, false, false])
     const [sortSwitch, setSortSwitch] = useState(true)
     const [selectedSorting, setSelectedSorting] = useState("grid")
     const searchString = useSearch()
@@ -26,13 +26,11 @@ export default function SearchFilter(){
     
         fetch()
       }, [searchString])
-      const handleCheckboxCheck = (category: string) => {
-        console.log(category)
-        
-        // const categories = selectedCategories
-        // categories.push(category)
-        // setSelectedCategories(categories)
-        // console.log(selectedCategories)
+      const handleCheckboxCheck = (id: number) => {
+        const checkbox = checkboxes
+        checkbox[id] = !checkbox[id]
+        console.log(checkbox)
+        setCheckboxes(checkbox)
       }
       const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setSearchValue(event.target.value)
@@ -92,17 +90,17 @@ export default function SearchFilter(){
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
                 <div className="scrollbar overflow-y-scroll max-h-60 mr-4">
-                    <Checkbox label="Shooter" id="0" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck("shooter")}/>
-                    <Checkbox label="Simulation" id="1" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Strategy" id="2" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Sci-fi" id="3" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Adventure" id="4" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Puzzle" id="5" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Action" id="6" className="px-6 py-2" required={false}/>
-                    <Checkbox label="RPG" id="7" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Fantasy" id="8" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Stealth" id="9" className="px-6 py-2" required={false}/>
-                    <Checkbox label="Multiplayer" id="10" className="px-6 py-2" required={false}/>
+                    <Checkbox label="Shooter" id="0" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(0)}/>
+                    <Checkbox label="Simulation" id="1" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(1)}/>
+                    <Checkbox label="Strategy" id="2" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(2)}/>
+                    <Checkbox label="Sci-fi" id="3" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(3)}/>
+                    <Checkbox label="Adventure" id="4" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(4)}/>
+                    <Checkbox label="Puzzle" id="5" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(5)}/>
+                    <Checkbox label="Action" id="6" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(6)}/>
+                    <Checkbox label="RPG" id="7" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(7)}/>
+                    <Checkbox label="Fantasy" id="8" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(8)}/>
+                    <Checkbox label="Stealth" id="9" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(9)}/>
+                    <Checkbox label="Multiplayer" id="10" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(10)}/>
                 </div>
 
                 <p className="px-6 mt-4">Price</p>
@@ -114,10 +112,10 @@ export default function SearchFilter(){
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
                 <div className="scrollbar overflow-y-scroll max-h-60 mr-4">
-                <Checkbox label="A developer studio" id="11" className="px-6 py-2" required={false}/>
-                <Checkbox label="A studio test" id="12" className="px-6 py-2" required={false}/>
-                <Checkbox label="Basically, a developer name" id="13" className="px-6 py-2" required={false}/>
-                <Checkbox label="Developer name" id="14" className="px-6 py-2" required={false}/>
+                <Checkbox label="A developer studio" id="12" className="px-6 py-2" required={false}/>
+                <Checkbox label="A studio test" id="13" className="px-6 py-2" required={false}/>
+                <Checkbox label="Basically, a developer name" id="14" className="px-6 py-2" required={false}/>
+                <Checkbox label="Developer name" id="15" className="px-6 py-2" required={false}/>
                 </div>
             </div>
             </div>
