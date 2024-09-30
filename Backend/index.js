@@ -412,7 +412,19 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	log(`${username} just registered`);
 	res.status(243).send("Done");
 });
-
+app.get("/get-user-data", async (req, res) => {
+	const { username} = req.query
+	if (username) {
+		try {
+			const user = users.findOne({ username })
+			return res.json(user)
+		} catch (error) {
+			console.log(error)
+			return res.status(400).send("error getting data ")
+		}
+	}
+	return res.status(401).send("...")
+})
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	var { username, password } = req.body;
 	const user = await users.findOne({
