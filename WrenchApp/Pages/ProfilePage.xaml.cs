@@ -34,7 +34,7 @@ namespace WrenchApp.Pages
 
         private void Game_Screen(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new GameScreen());
+            this.NavigationService.Navigate(new GameScreen("1"));
         }
     }
 }

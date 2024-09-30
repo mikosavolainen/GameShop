@@ -36,6 +36,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Column="0" Grid.Row="0">
@@ -75,39 +76,36 @@
                            Text="This is a shortform description, so a shorter version that more accurately explains what the app does in a smaller format.
                            I am yapping on purpose. I am trying to fill this space up as to make this description look better."/>
 
-                <TextBlock Text="Creator: Unknown" Foreground="White" FontSize="20" Margin="0 0 0 20"/>
+                <TextBlock Name="Publisher" Text="Publisher: Unknown" Foreground="White" FontSize="20" Margin="0 0 0 20"/>
 
-                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1" MouseDown="AddToCart" Cursor="Hand">
-                    <TextBlock Foreground="White" FontSize="20" Padding="30 20" Text="Add to Cart" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1" MouseDown="AddToCart">
+                    <TextBlock Foreground="White" FontSize="20" Padding="30 20" Text="Add to Cart" VerticalAlignment="Center" HorizontalAlignment="Center" Cursor="Hand"/>
                 </Border>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0 100 0 0">
                 <TextBlock Text="About" FontSize="40" Foreground="White" Margin="0 0 0 20"/>
-                <RichTextBox Foreground="White">
-                    <FlowDocument>
-                        <Paragraph FontSize="25">
-                            This shit is a demo of an extended description. It will contain a bunch of text that will be written all here. I am trying to fill this up as much as possible. I am now going to copy paste the large akmount of text that Nikolai wrote: "Test description of the game, so we can see how it will appear in the future application! 
-                            On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it 
-                            fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
-                            <LineBreak/>
-                            <LineBreak/>
-                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! 
-                            On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
-                            <LineBreak/>
-                            <LineBreak/>
-                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
-                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
-                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,Test description of the game, so we can see how it will appear in the future application! 
-                            On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
-                            Test description of the game, so we can see how it will appear in the future application! On the main block on the left side, there is usually a longer text, so that it fills more space and that the whole recommended block won’t look weird. In fact,
-                        </Paragraph>
-                    </FlowDocument>
-                </RichTextBox>
+                <TextBlock Foreground="White" FontSize="25" Name="LongDesc" Margin="0 0 0 20"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="2" Margin="0 100 0 0" Grid.ColumnSpan="2">
-                <TextBlock Text="Reviews" FontSize="40" Foreground="White" Margin="0 0 0 10"/>
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                <TextBlock Text="Leave a Review" Foreground="White" FontSize="40" Margin="00 10 0 10"/>
+                <RichTextBox Height="200" BorderBrush="Gray" BorderThickness="2" IsReadOnly="False" FontSize="20" Foreground="White"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Rating:" Foreground="White" FontSize="25" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                    <TextBlock Name="star1" MouseLeftButtonDown="Review_Score" Tag="1" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
+                    <TextBlock Name="star2" MouseLeftButtonDown="Review_Score" Tag="2" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
+                    <TextBlock Name="star3" MouseLeftButtonDown="Review_Score" Tag="3" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
+                    <TextBlock Name="star4" MouseLeftButtonDown="Review_Score" Tag="4" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
+                    <TextBlock Name="star5" MouseLeftButtonDown="Review_Score" Tag="5" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
+                </StackPanel>
+                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1" Cursor="Hand" Margin="0 10 0 0">
+                    <TextBlock Foreground="White" FontSize="20" Padding="30 20" Text="Publish Review" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Margin="0 20 0 0" Grid.ColumnSpan="2">
+                <TextBlock Text="Reviews from other users" Foreground="White" FontSize="40" Margin="00 10 0 10"/>
                 <Grid Margin="20 0 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -201,7 +199,7 @@
                 </Grid>
             </StackPanel>
 
-            <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="50 200 50 75">
+            <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="50 200 50 75">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -212,8 +210,8 @@
                 <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Label Content="wrench" Foreground="White" FontSize="25"/>
                     <TextBlock Text="© Wrench LLC 2024&#x0a;Los Angeles, Sigma street 69, apt 420F&#x0a;Ohio 696969" 
-                    Foreground="#878787" 
-                    FontSize="15"/>
+                   Foreground="#878787" 
+                   FontSize="15"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 15 0">

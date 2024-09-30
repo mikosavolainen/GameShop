@@ -95,60 +95,64 @@ namespace WrenchApp
                     ConfigurationManager.AppSettings["username"] = username;
                     Window mainWindow = new MainWindow();                   
                     mainWindow.Show();                                  
-                    this.Close();                                      
-                }                                                    
-
-
-                var formContent = new FormUrlEncodedContent(new[]
+                    this.Close();           
+                    
+                }  else
                 {
-                    new KeyValuePair<string, string>("username", username),
-                    new KeyValuePair<string, string>("password", password)
-                });
+                    var formContent = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("username", username),
+                        new KeyValuePair<string, string>("password", password)
+                    });
 
-                // Create a new HttpClient to handle the request
-                HttpClient httpClient = new HttpClient();
+                    // Create a new HttpClient to handle the request
+                    HttpClient httpClient = new HttpClient();
 
-                // Send a Get request to the specified URL
-
-                try
-                {
-                    // Attempt to send login request
-                    HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/login", formContent);
+                    // Send a Post request to the specified URL
 
                     try
                     {
-                        // Ensure response is ok and extract the jwt token
-                        response.EnsureSuccessStatusCode();
-                        string responseBody = await response.Content.ReadAsStringAsync();
+                        // Attempt to send login request
+                        HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/login", formContent);
 
-                        // WRITE CODE ON SAVING JWT AUTH AND USERNAME
-                        ConfigurationManager.AppSettings["username"] = username;
-                        ConfigurationManager.AppSettings["JWT"] = responseBody;
-
-                        if (!autologin)
+                        try
                         {
-                            Create_Credential(username, password);
+                            // Ensure response is ok and extract the jwt token
+                            response.EnsureSuccessStatusCode();
+                            string responseBody = await response.Content.ReadAsStringAsync();
+
+                            // WRITE CODE ON SAVING JWT AUTH AND USERNAME
+                            ConfigurationManager.AppSettings["username"] = username;
+                            ConfigurationManager.AppSettings["JWT"] = responseBody;
+
+                            if (!autologin)
+                            {
+                                Create_Credential(username, password);
+                            }
+
+                            // Open main window
+                            Window mainWindow = new MainWindow();
+                            mainWindow.Show();
+                            this.Close();
+                        }
+                        catch
+                        {
+                            if (autologin == true)
+                            {
+                                MessageBox.Show("Login information has changed, please log in again.", "Error");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Incorrect information.", "Error");
+                            }
                         }
 
-                        // Open main window
-                        Window mainWindow = new MainWindow();
-                        mainWindow.Show();
-                        this.Close();
-                    } catch
-                    {
-                        if (autologin == true)
-                        {
-                            MessageBox.Show("Login information has changed, please log in again.", "Error");
-                        } else
-                        {
-                            MessageBox.Show("Incorrect information.", "Error");
-                        }
                     }
-
-                } catch (Exception e)
-                {
-                    MessageBox.Show(e.ToString());
-                }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.ToString());
+                    }
+                }                                                   
             }
         }
 

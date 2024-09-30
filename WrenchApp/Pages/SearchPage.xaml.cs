@@ -39,23 +39,40 @@ namespace WrenchApp.Pages
             Searchbox.Text = search;
             order = "descending";
 
-            GetGames();
+            GetGames("0", "200");
         }
 
-        async private void GetGames()
+        async private void GetGames(string minprice, string maxprice)
         {
             // Create httpClient
             HttpClient httpClient = new HttpClient();
 
-            // Attempt to get all games
-            HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/get-all-games", null);
+            try
+            {
+                // Attempt to get all games
+                HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/search-game?minPrice={minprice}&maxPrice={maxprice}&text={Searchbox.Text}");
 
-            // Ensure response is ok
-            response.EnsureSuccessStatusCode();
-            string responseBody = await response.Content.ReadAsStringAsync();
-            games = JArray.Parse(responseBody);
+                // Ensure response is ok
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                games = JArray.Parse(responseBody);
 
-            DisplayGames(games);
+                DisplayGames(games);
+
+            } catch
+            {
+                GameHolder.Children.Clear();
+
+                var notfound = new TextBlock
+                {
+                    Style = (Style)FindResource("RowTitle")
+                };
+
+                notfound.Text = "No games found with matching price point!";
+
+                GameHolder.Children.Add(notfound);
+                FoundResults.Text = "0 Results";
+            }
         }
 
         private void AddTag(string tagname)
@@ -74,15 +91,19 @@ namespace WrenchApp.Pages
         {
             passedfilter = false;
             GameHolder.Children.Clear();
+            int i = 0;
 
             foreach (JObject item in games)
             {
+                i += 1;
+                FoundResults.Text = $"{i} Results";
+
                 // Create outer StackPanel
                 var outerStackPanel = new StackPanel
                 {
                     Style = (Style)FindResource("RowHolder")
                 };
-                outerStackPanel.MouseDown += Game_Screen;
+                outerStackPanel.MouseDown += (s, e) => Game_Screen(item["_id"].ToString());
 
                 // Create Image
                 var image = new Image
@@ -163,6 +184,11 @@ namespace WrenchApp.Pages
             }
         }
 
+        private void priceChange(object sender, MouseButtonEventArgs e)
+        {
+            GetGames(minPrice.Value.ToString(), maxPrice.Value.ToString());
+        }
+
         private void changeOrder(object sender, EventArgs e)
         {
             if (order == "descending")
@@ -177,11 +203,14 @@ namespace WrenchApp.Pages
             }
         }
 
-        private void Game_Screen(object sender, RoutedEventArgs e)
+        private void Game_Screen(string id)
         {
-            this.NavigationService.Navigate(new GameScreen());
+            this.NavigationService.Navigate(new GameScreen(id));
+        }
+
+        private void FilterUpdate(object sender, RoutedEventArgs e)
+        {
+            GetGames("0", "200");
         }
     }
-
-
 }
