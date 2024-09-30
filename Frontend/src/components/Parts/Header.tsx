@@ -52,7 +52,7 @@ export default function Header() {
         <div className="flex items-center space-x-4">
           {user ? (
             <>
-              <Link href="/" className="hover:text-wrench-purple-1 block material-symbols-rounded text-xl">shopping_basket</Link>
+              <Link href="/checkout" className="hover:text-wrench-purple-1 block material-symbols-rounded text-xl">shopping_basket</Link>
               <div className="relative" ref={outsideNotificationsRef}>
                 <button onClick={() => setNotificationsDropdown(prev => !prev)} className="hover:text-wrench-purple-1 block material-symbols-rounded text-xl">notifications</button>
                 <AnimatePresence>

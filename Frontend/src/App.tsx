@@ -20,6 +20,7 @@ import PopularCategories from "./components/PopularCategories.tsx";
 import MobileNotifications from "./components/Parts/MobileNotifications.tsx";
 import MobileNavigationBar from "./components/Parts/MobileNavigationBar.tsx";
 import Settings from "./components/Settings.tsx";
+import Checkout from "./components/Checkout.tsx";
 
 const queryClient = new QueryClient()
 
@@ -58,6 +59,7 @@ function MainContent() {
         <Route path="/download" component={DownloadPage} />
         <Route path="/user/:user" component={UserPage} />
         <Route path="/settings" component={Settings} />
+        <Route path="/checkout" component={Checkout} />
         <Route path="*" component={NotFound} />
       </Switch>
       <MobileMenu opened={mobileMenu} setOpened={setMobileMenu} />
