@@ -97,9 +97,7 @@ export default function GamePage() {
         <div>
           <h1 className="text-4xl font-semibold mb-4">{res?.name}</h1>
           <div className="mb-4">
-            <Label category="something" />
-            <Label category="something" />
-            <Label category="something" />
+            {res?.category.map((cat: string) => <Label category={cat} key="cat" />)}
           </div>
           <div className="flex align-middle mb-4"><span className="mt-1 mr-1.5">4.2/5.0</span><RatingStars rating={4.2} /></div>
           <Button type="button" size="big" style="purple" text="Add to cart" icon="shopping_cart" className="mb-4" />
