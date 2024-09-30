@@ -19,6 +19,8 @@ import Button from "./components/Button.tsx";
 import PopularCategories from "./components/PopularCategories.tsx";
 import MobileNotifications from "./components/Parts/MobileNotifications.tsx";
 import MobileNavigationBar from "./components/Parts/MobileNavigationBar.tsx";
+import Settings from "./components/Settings.tsx";
+import Checkout from "./components/Checkout.tsx";
 
 const queryClient = new QueryClient()
 
@@ -56,6 +58,9 @@ function MainContent() {
         <Route path="/search" component={SearchPage} />
         <Route path="/download" component={DownloadPage} />
         <Route path="/user/:user" component={UserPage} />
+        <Route path="/settings" component={Settings} />
+        <Route path="/checkout" component={Checkout} />
+        <Route path="*" component={NotFound} />
       </Switch>
       <MobileMenu opened={mobileMenu} setOpened={setMobileMenu} />
       <MobileNotifications opened={mobileNotifications} setOpened={setMobileNotifications} />
@@ -118,4 +123,15 @@ function UserPage(){
     </div>
   )
 }
+
+const NotFound = () => {
+  return (
+    <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
+      <h1 className='text-5xl text-wrench-neutral-white pt-40 font-bold'>404 Not Found</h1>
+      <h2 className="mt-4 text-xl mb-64">Fast and easy downloads & instant access</h2>
+      <Footer />
+    </div>
+  )
+}
+
 export default App

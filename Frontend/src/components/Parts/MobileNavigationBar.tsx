@@ -35,9 +35,9 @@ export default function MobileNavigationBar({setMobileMenu, setMobileNotificatio
         <i className="material-symbols-rounded group-active:text-wrench-purple-1">search</i>
         <span className="block text-xs group-active:text-wrench-purple-1">Search</span>
       </Link>
-      <Link href="/" className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => {setMobileMenu(!true);setMobileNotifications(!true)}}>
+      <Link href="/checkout" className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => {setMobileMenu(!true);setMobileNotifications(!true)}}>
         <i className="material-symbols-rounded group-active:text-wrench-purple-1">shopping_basket</i>
-        <span className="block text-xs group-active:text-wrench-purple-1">Basket</span>
+        <span className="block text-xs group-active:text-wrench-purple-1">Checkout</span>
       </Link>
       <button className="flex flex-col items-center gap-0.5 w-[15%] group" onClick={() => {setMobileMenu(!true);setMobileNotifications(!false)}}>
         <i className="material-symbols-rounded group-active:text-wrench-purple-1">notifications</i>
