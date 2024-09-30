@@ -20,7 +20,7 @@ export default function Popular() {
     <>
       <h2 className="text-xl font-semibold mt-12 mb-4">Popular</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
-        { res.map((r: any) => (
+        { res.map((r: { name: string, price: number, desc: string, category: [], _id: string }) => (
           <GameDisplay
             classname="pb-5"
             gameName={r.name}
