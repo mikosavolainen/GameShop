@@ -56,7 +56,7 @@ export default function Input({
             return "bg-wrench-neutral-4";
         }
       })()} border-wrench-neutral-3 rounded-full overflow-hidden ${className}`}>
-        <span className="text-wrench-neutral-3 material-icons block absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+        <span className={`${style === "dark" ? "text-wrench-neutral-3" : "text-wrench-neutral-2"} material-symbols-rounded block absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none !text-[20px]`}>
           {icon}
         </span>
         <input
@@ -70,7 +70,7 @@ export default function Input({
               case "small":
                 return "text-base p-1 pl-10";
               case "big":
-                return "text-lg p-2 pl-11";
+                return "text-lg px-2 py-1.5 pl-11";
             }
           })()} ${(() => {
             switch (style) {

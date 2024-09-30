@@ -97,6 +97,7 @@ export default function PasswordReset() {
         {errors.global && <div className="text-wrench-accent-gold">{errors.global}</div>}
         <Button type="submit" icon="restart_alt" size="big" style="purple" className="block w-full mt-4" text="Reset" />
       </form>
+      <Button type="button" icon="login" size="big" style="neutral" className="block w-full mt-4" text="Sign in" onClick={() => setModalPage("signIn")} />
     </>
   );
 }
