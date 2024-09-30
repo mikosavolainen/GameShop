@@ -113,7 +113,7 @@ export default function Modal({
             )}
             <div className="relative m-12">
               <button
-                className="material-icons block absolute right-0 t-0"
+                className="material-symbols-rounded block absolute right-0 t-0"
                 onClick={closeModal}
               >
                 <span className="text-3xl text-wrench-neutral-white">

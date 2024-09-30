@@ -5,6 +5,7 @@ import SignUpForm from "./SignUpForm";
 import PasswordReset from "./PasswordReset";
 import PasswordResetSuccess from "./PasswordResetSuccess";
 import SetNewPasswordForm from "./SetNewPasswordForm";
+import ReviewForm from "./ReviewForm";
 
 export default function AuthForms() {
   const { modalPage } = useContext(AuthenticationModalContext)
@@ -19,6 +20,8 @@ export default function AuthForms() {
       return <PasswordResetSuccess />
     case "setNewPassword":
       return <SetNewPasswordForm />
+    case "review":
+      return <ReviewForm />
     default:
       return <></>
   }
