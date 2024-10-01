@@ -2,7 +2,7 @@
 
 ## Setup / installation
 
-1. Close the ropository
+1. Clone the ropository
   ```bash
   git clone https://github.com/your-repository/wrench-platform.git
   cd wrench-platform
@@ -25,15 +25,16 @@ npm run dev
   cd backend
   npm i
   ```
-6. Create required .env file in the backend directory
+6. Run MongoDB locally or configure a remote instance.
+7. Create required .env file in the backend directory
   ```env
   DISCORD_TOKEN=your_discord_bot_token
   DISCORD_LOG_CHANNEL=your_discord_log_channel_id
   MONGODB_URI=mongodb://your_mongodb_uri
   SECRET_KEY=your_jwt_secret_key
   ```
-7. Start backend server
+8. Start backend server
   ```bash
   npm run start
   ```
-8. Open http://localhost:5173 on a web browser
+9. Open http://localhost:5173 on a web browser
