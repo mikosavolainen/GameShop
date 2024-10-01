@@ -68,10 +68,10 @@ const gamesSchema = new mongoose.Schema({
 const Games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
-	game: { type: String },
-	date: { type: Number },
-	writer: { type: String },
-	ratings: { type: Array },
+	game: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
+	date: { type: Date, default: Date.now },
+	writer: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
+	rating: {type: Number },
 	desc: { type: String },
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
@@ -123,8 +123,7 @@ async function sendMail(Msg, sub, email) {
 
 app.get("/", (req, res) => {
 	log("Someone tried to go to /");
-
-	res.redirect("https://lol.tyhjyys.com");
+	return res.redirect("https://lol.tyhjyys.com");
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
@@ -134,10 +133,10 @@ app.post("/get-all-owned-games", async (req, res) => {
 			return res.status(400).send("Owner ID is required");
 		}
 		const games = await Library.find({ owner: token.username });
-		res.json(games);
+		return res.json(games);
 	} catch (error) {
 		console.error("Error fetching games:", error);
-		res.status(500).send("Internal Server Error");
+		return res.status(500).send("Internal Server Error");
 	}
 });
 
@@ -274,7 +273,7 @@ app.post("/update-desc", async (req, res) => {
 		}
 
 		// Respond with the updated user data
-		res.status(200).send({
+		return res.status(200).send({
 			message: "Description updated successfully!",
 			user: updatedUser,
 		});
@@ -286,7 +285,7 @@ app.post("/update-desc", async (req, res) => {
 			return res.status(401).send("Invalid token.");
 		}
 
-		res.status(500).send("Internal Server Error");
+		return res.status(500).send("Internal Server Error");
 	}
 });
 
@@ -326,13 +325,13 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 		});
 
 		await newGame.save();
-		res.status(201).json({
+		return res.status(201).json({
 			message: "Game uploaded successfully!",
 			game: newGame,
 		});
 	} catch (error) {
 		console.error("Error uploading game:", error);
-		res.status(500).json({ error: "Failed to upload the game." });
+		return res.status(500).json({ error: "Failed to upload the game." });
 	}
 });
 
@@ -350,10 +349,10 @@ app.get("/get-game-by-id", async (req, res) => {
 			return res.status(404).send({ error: "Peliä ei löytynyt." });
 		}
 
-		res.status(200).send(peli);
+		return res.status(200).send(peli);
 	} catch (error) {
 		console.error("Virhe pelin hakemisessa:", error);
-		res.status(500).send({ error: "Virhe pelin hakemisessa." });
+		return res.status(500).send({ error: "Virhe pelin hakemisessa." });
 	}
 });
 
@@ -674,10 +673,10 @@ app.post("/upload", upload.array("images", 10), async (req, res) => {
 				.json({ error: "Failed to upload any images." });
 		}
 
-		res.json({ urls: imageUrls });
+		return res.json({ urls: imageUrls });
 	} catch (err) {
 		console.error("Error uploading images to Discord:", err);
-		res.status(500).json({
+		return res.status(500).json({
 			error: "Internal server error during image upload.",
 		});
 	}
