@@ -5,7 +5,7 @@ import { Link } from "wouter"
 import { ModalContext } from "../wrappers/ModalWrapper";
 import { useContext, useState } from "react";
 
-export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review, images, id}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string, images: any[], id: string}){
+export default function GameDisplay({classname, discount, price, size, gameName, categories, description, review, images, id}:{review?: "none" | "send" | "edit", classname?: string, discount?: number | null, price: number, size: "small" | "large" | "wide", gameName: string, categories: (string | undefined)[], description: string, images: string[], id: string}){
     const { setModalOpen, setModalPage } = useContext(ModalContext)
     const [srcIndex, setSrcIndex] = useState<number>(0)
     let grids = ""

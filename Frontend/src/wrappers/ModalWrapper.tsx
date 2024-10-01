@@ -32,7 +32,7 @@ export default function ModalWrapper({children}: {children: ReactNode}) {
       setScrollbarCompensation(width)
     else
       setScrollbarCompensation(0)
-  }, [modalOpen, setScrollbarCompensation])
+  }, [modalOpen, setScrollbarCompensation, width])
 
   return (
     <ModalContext.Provider value={{

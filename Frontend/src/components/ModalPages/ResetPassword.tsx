@@ -92,7 +92,7 @@ export default function ResetPassword() {
   
   useEffect(() => {
     setFormData(prev => ({ ...prev, token: (new URLSearchParams(searchString)).get("token") as string }))
-  }, [])
+  }, [searchString])
 
   return(
     <>

@@ -63,7 +63,7 @@ function MainContent() {
         <Route path="*" component={NotFound} />
       </Switch>
       <MobileMenu opened={mobileMenu} setOpened={setMobileMenu} />
-      <MobileNotifications opened={mobileNotifications} setOpened={setMobileNotifications} />
+      <MobileNotifications opened={mobileNotifications}/*  setOpened={setMobileNotifications} */ />
       <MobileNavigationBar setMobileMenu={setMobileMenu} setMobileNotifications={setMobileNotifications} />
     </div>
   )

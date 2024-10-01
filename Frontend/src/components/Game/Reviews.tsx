@@ -16,7 +16,7 @@ export default function Reviews({gameId}: {gameId: string}) {
       console.log(data)
     }
     fetch()
-  }, [])
+  }, [gameId])
   return(
     <>
       <select className="text-wrench-neutal-white bg-wrench-neutral-dark">
@@ -26,7 +26,7 @@ export default function Reviews({gameId}: {gameId: string}) {
         <option>Sort by rating (old to new)</option>
       </select>
       <div className="grid grid-cols-2 gap-12 my-6">
-        { reviews.map((review: any) => <Review username={review.writer[0].username as string} date={review.date} rating={review.rating} content={review.desc} />) }
+        { reviews.map((review: { writer: { username: string }[], date: Date, rating: number, desc: string }) => <Review username={review.writer[0].username as string} date={review.date} rating={review.rating} content={review.desc} />) }
       </div>
       <div className="flex items-center my-12">
         <Button className="mx-auto" type="button" style="neutral" size="small" text="Load more" icon="keyboard_arrow_down" /* onClick={() => fetchMoreReviews()} */ />

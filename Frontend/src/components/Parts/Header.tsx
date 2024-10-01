@@ -30,7 +30,7 @@ export default function Header() {
       setModalOpen(true)
       setLocation("/?"+searchString)
     }
-  }, [setNewPasswordRouteMatch])
+  }, [setNewPasswordRouteMatch, searchString, setLocation, setModalPage, setModalOpen])
 
   return(
     <>

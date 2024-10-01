@@ -3,7 +3,6 @@ import {
   useEffect,
   useRef,
   MouseEvent,
-  useState,
   useContext,
 } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -20,27 +19,13 @@ export default function Modal({
   children?: ReactNode
 }) {
   const scrollPosition = useRef(0)
-  const [scrollTop, setScrollTop] = useState(0)
 
   const { modalLoading } = useContext(ModalContext)
-
-  const handleScroll = () => {
-    setScrollTop(window.scrollY)
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
 
   useEffect(() => {
     const disableScroll = () => {
       // Save the current scroll position
-      scrollPosition.current = scrollTop
+      scrollPosition.current = window.scrollY
 
       // Set body to fixed position at the current scroll position
       document.body.style.position = 'fixed'
@@ -70,18 +55,18 @@ export default function Modal({
     }
   }, [open])
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeModal()
-  }
-
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeModal()
+    }
+
     window.addEventListener('keydown', handleKeyDown)
 
     // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [closeModal])
 
   return (
     <AnimatePresence>
