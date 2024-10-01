@@ -2,8 +2,11 @@
 
 ## Setup / installation
 
+0. Required applications for installation:
+  - [Node.js](https://nodejs.org/en/download/package-manager/current)
+  - [Git](https://git-scm.com/downloads)
+
 1. Clone the ropository
-  ```bash
   git clone https://github.com/your-repository/wrench-platform.git
   cd wrench-platform
   ```
