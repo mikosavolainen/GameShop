@@ -49,10 +49,8 @@ export default function GamePage() {
   const params = useParams();
   useEffect(() => {
     async function fetch() { // function to fetch game information
-      console.log(params.id)
       const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
-      const { data } = await axios.post(`${apiUrl}/get-game-by-id`, { id: params.id }); // idk why post is used on server side instead of get but ok
-      console.log(data)
+      const { data } = await axios.get(`${apiUrl}/get-game-by-id`, { params: { id: params.id } }); // idk why post is used on server side instead of get but ok
       setRes(data)
     }
     fetch()
@@ -114,7 +112,7 @@ export default function GamePage() {
       </div>
       <div>
         <h2 className="text-2xl mt-6 mb-2 font-semibold">Reviews</h2>
-        <Reviews />
+        <Reviews gameId={params.id as string} />
       </div>
     </div>
   )

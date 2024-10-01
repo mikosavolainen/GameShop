@@ -3,9 +3,10 @@ import default_pfp from "../../assets/default_pfp.jpg"
 import RatingStars from "./RatingStars"
 import { Interweave } from "interweave"
 import Button from "../Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios"
 
-export default function Reviews() {
+export default function Reviews({gameId}: {gameId: string}) {
   const [reviews, setReviews] = useState(
     [
       { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
@@ -16,6 +17,14 @@ export default function Reviews() {
       { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
     ]
   )
+  useEffect(() => {
+    async function fetch() { // function to fetch game information
+      const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
+      const { data } = await axios.get(`${apiUrl}/get-reviews`, { params: { id: gameId } }); // idk why post is used on server side instead of get but ok
+      console.log(data)
+    }
+    fetch()
+  }, [])
   const fetchMoreReviews = async () => {
     setReviews([])
   }
