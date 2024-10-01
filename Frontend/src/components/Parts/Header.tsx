@@ -1,4 +1,4 @@
-import { Link, useRoute } from "wouter";
+import { Link, useRoute, useSearch } from "wouter";
 import Button from "../Button";
 import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
 import { useContext, useEffect, useState } from "react";
@@ -22,12 +22,13 @@ export default function Header() {
   const outsideNotificationsRef = useDetectClickOutside({ onTriggered: () => setNotificationsDropdown(false) });
 
   const [setNewPasswordRouteMatch] = useRoute("/reset-password");
+  const searchString = useSearch()
 
   useEffect(() => {
-    if(setNewPasswordRouteMatch){
-      setModalPage("setNewPassword")
+    if(setNewPasswordRouteMatch && searchString){
+      setModalPage("resetPassword")
       setModalOpen(true)
-      setLocation("/")
+      setLocation("/?"+searchString)
     }
   }, [setNewPasswordRouteMatch])
 

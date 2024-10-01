@@ -2,6 +2,7 @@ import Input from "./Input"
 import { useLocation } from "wouter";
 import { useState } from "react"
 import Button from "./Button";
+
 export default function Search({inLanding}:{inLanding?:boolean}){
     const [, setLocation] = useLocation()
     // const [searchBlock, setSearchBlock] = useState(false)

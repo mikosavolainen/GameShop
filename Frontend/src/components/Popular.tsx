@@ -9,8 +9,7 @@ export default function Popular() {
   useEffect(() => {
     const fetch = async () => {
       const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
-      const { data } = await axios.post(`${apiUrl}/get-all-games`); // idk why post is used on server side instead of get but ok
-      console.log(data)
+      const { data } = await axios.get(`${apiUrl}/get-all-games`); // idk why post is used on server side instead of get but ok
       setRes(data)
     }
 
@@ -20,7 +19,7 @@ export default function Popular() {
     <>
       <h2 className="text-xl font-semibold mt-12 mb-4">Popular</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
-        { res.map((r: any) => (
+        { res.map((r: { name: string, price: number, desc: string, category: [], _id: string }) => (
           <GameDisplay
             classname="pb-5"
             gameName={r.name}

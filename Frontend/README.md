@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# Wrench web client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup / installation
 
-Currently, two official plugins are available:
+0. Required applications for installation:
+  - [Node.js](https://nodejs.org/en/download/package-manager/current)
+  - [Git](https://git-scm.com/downloads)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. Clone the repository
+  ```bash
+  git clone https://github.com/your-repository/wrench-platform.git
+  cd wrench-platform
+  ```
+2. Install frontend depedencies
+  ```bash
+  cd frontend
+  npm i
+  ```
+3. Create required .env file in the frontend directory
+  ```env
+  VITE_SERVER_BASE_API_URL=http://localhost:Your backend port number
+  ```
+4. Start frontend development server
+```bash
+npm run dev
 ```
+5. In a new terminal: Install backend dependencies
+  ```bash
+  cd backend
+  npm i
+  ```
+6. Run MongoDB locally or configure a remote instance.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+7. Create required .env file in the backend directory
+  ```env
+  DISCORD_TOKEN=your_discord_bot_token
+  DISCORD_LOG_CHANNEL=your_discord_log_channel_id
+  MONGODB_URI=mongodb://your_mongodb_uri
+  SECRET_KEY=your_jwt_secret_key
+  ```
+8. Start backend server
+  ```bash
+  npm run start
+  ```
+9. Open http://localhost:5173 on a web browser
