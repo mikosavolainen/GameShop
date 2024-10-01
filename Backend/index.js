@@ -139,7 +139,8 @@ app.post("/get-all-owned-games", async (req, res) => {
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-		const games = await Library.find({ owner: token.username });
+		const user = users.findOne({username: token.username})
+		const games = await Library.find({ owner: user._id }).populate("games");
 		return res.json(games);
 	} catch (error) {
 		console.error("Error fetching games:", error);
@@ -161,6 +162,7 @@ app.post("/buy-game", async (req, res) => {
 	try {
 		const jwts = await jwt.verify(token, SECRET_KEY)
 		const is = await Library.find({ username: jwts.username })
+		console.log(is) 
 		if (is) {
 			await Library.findOneAndUpdate({ username: jwt.username }, { $push: { games: game_id } })
 			return res.status(200).send("bought")
@@ -172,7 +174,7 @@ app.post("/buy-game", async (req, res) => {
 				games: game_id
 			})
 			x.save()
-			return res.status(200).send("bought")
+			return res.status(201).send("bought")
 		}
 
 	} catch (error) {
@@ -228,12 +230,12 @@ app.get("/search-game", async (req, res) => {
 			{ $match: query },
 			{
 				$addFields: {
-					averageRating: { $avg: "$ratings" },
+					averageRating: { $avg: "$ratings" || null },
 				},
 			},
 			{
 				$match: {
-					averageRating: { $gte: parseFloat(minRating) || 0 },
+					averageRating: { $gte: parseFloat(minRating) || null },
 				},
 			},
 		];
