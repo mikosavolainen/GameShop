@@ -43,6 +43,7 @@ Wrench is game marketplace that includes user authentication, game management, r
 
    ```env
    DISCORD_TOKEN=your_discord_bot_token
+   DISCORD_CHANNEL_ID=your_image_channel_here
    DISCORD_LOG_CHANNEL=your_discord_log_channel_id
    MONGODB_URI=mongodb://your_mongodb_uri
    SECRET_KEY=your_jwt_secret_key

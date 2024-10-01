@@ -26,14 +26,13 @@ client.once("ready", () => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-const SECRET_KEY =
-	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
+const SECRET_KEY=(process.env.SECRET_KEY); // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench");
+mongoose.connect(process.env.MONGODB_URI);
 
 const db = mongoose.connection;
 
