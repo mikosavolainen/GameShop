@@ -11,7 +11,7 @@ import image2 from "../assets/test_image_wrench_2.png"
 export default function SearchFilter(){
     const [, setLocation] = useLocation()
     const [searchValue, setSearchValue] = useState("")
-    const [checkboxes, setCheckboxes] = useState([false, false, false, false, false, false, false, false, false, false])
+    const [checkboxes, setCheckboxes] = useState([false, false, false, false, false, false, false, false, false, false, false])
     const [sortSwitch, setSortSwitch] = useState(true)
     const [selectedSorting, setSelectedSorting] = useState("grid")
     const searchString = useSearch()
@@ -19,7 +19,7 @@ export default function SearchFilter(){
     useEffect(() => {
         const fetch = async () => {
           const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
-          const { data } = await axios.get(`${apiUrl}/search-game?text=${searchString.substring(2)}`); // idk why post is used on server side instead of get but ok
+          const { data } = await axios.get(`${apiUrl}/search-game?${searchString}`); // idk why post is used on server side instead of get but ok
           console.log(data)
           setRes(data)
         }
@@ -35,8 +35,20 @@ export default function SearchFilter(){
       const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setSearchValue(event.target.value)
     }
-    function redirect(value: string){
-        setLocation("/search?q="+value)
+    function search(value: string){
+        let categories: string = ""
+        if(checkboxes[0]){categories += "&category=Shooter"}
+        if(checkboxes[1]){categories += "&category=Simulation"}
+        if(checkboxes[2]){categories += "&category=Strategy"}
+        if(checkboxes[3]){categories += "&category=Sci-fi"}
+        if(checkboxes[4]){categories += "&category=Adventure"}
+        if(checkboxes[5]){categories += "&category=Puzzle"}
+        if(checkboxes[6]){categories += "&category=Action"}
+        if(checkboxes[7]){categories += "&category=RPG"}
+        if(checkboxes[8]){categories += "&category=Fantasy"}
+        if(checkboxes[9]){categories += "&category=Stealth"}
+        if(checkboxes[10]){categories += "&category=Multiplayer"}
+        setLocation(`/search?text=${value}${categories}`)
         event?.preventDefault()
     }
     return (
@@ -47,7 +59,7 @@ export default function SearchFilter(){
           <div className={`w-full flex`}>
             <Input outerClassName="grow" /*blur={focusInputChange} focus={focusInputChange}*/ type='text' style='light' size='big' icon='search' label='Search' placeholder='Start your search here' onChange={handleInputChange}/>
             <div className="content-end ml-1">
-            <Button size="big" style="purple" type="submit" icon="search" text="search" onClick={() => redirect(searchValue)}/>
+            <Button size="big" style="purple" type="submit" icon="search" text="search" onClick={() => search(searchValue)}/>
             </div>
             </div>
         </form>
@@ -120,7 +132,7 @@ export default function SearchFilter(){
             </div>
             </div>
             <div className="mr-10 ml-10 w-[70%]">
-            {searchString.substring(2) !== "" ? <p className="font-bold text-4xl">{res.length} results for {searchString.substring(2)}</p> : <p className="font-bold text-4xl">Showing all {searchString.substring(2)}</p>}
+            {searchString.substring(2) !== "" ? <p className="font-bold text-4xl">{res.length} results</p> : <p className="font-bold text-4xl">Showing all {searchString.substring(2)}</p>}
             {res.length > 20 && (
                 <div className="flex my-4">
                     <button>&lt;</button>
