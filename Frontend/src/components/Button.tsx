@@ -49,9 +49,9 @@ export default function Button({
           case 'neutral':
             return `${ disabled ? 'text-wrench-neutral-3' : 'border-wrench-neutral-2 text-wrench-neutral-white' }`
           case 'purple':
-            return `border-wrench-purple-2 ${ disabled ? 'text-wrench-neutral-2 bg-wrench-purple-2' : 'border-wrench-neutral-white bg-wrench-purple text-wrench-neutral-white' }`
+            return `border-wrench-purple-2 ${ disabled ? 'text-wrench-neutral-2 bg-wrench-purple-2' : 'bg-wrench-purple text-wrench-neutral-white' }`
           case 'coral':
-            return `border-wrench-coral-2 ${ disabled ? 'text-wrench-neutral-2 bg-wrench-coral-2' : 'border-wrench-neutral-white bg-wrench-coral text-wrench-neutral-white' }`
+            return `border-wrench-coral-2 ${ disabled ? 'text-wrench-neutral-2 bg-wrench-coral-2' : 'bg-wrench-coral text-wrench-neutral-white' }`
         }
       })()} bg-white inline-block rounded-full relative ${ !disabled && 'shadow-[inset_0_1px_0_rgba(216,191,216,0.15)]' } active:shadow-none ${className}`}
     >
