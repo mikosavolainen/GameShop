@@ -2,7 +2,7 @@ import { useLocation, useSearch } from "wouter"
 import Input from "../Input"
 import axios from "axios";
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import Button from "../Button";
@@ -10,7 +10,7 @@ import Button from "../Button";
 export default function ResetPassword() {
   const [, setLocation] = useLocation()
 
-  const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
+  const { setModalPage, setModalLoading } = useContext(ModalContext)
 
   // API request function
   const passwordReset = async (formData: { token: string, password: string, passwordRepeat: string }) => {

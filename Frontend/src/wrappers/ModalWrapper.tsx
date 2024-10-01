@@ -1,7 +1,7 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
 import useScrollbarSize from "react-scrollbar-size"
 
-export const AuthenticationModalContext = createContext<{
+export const ModalContext = createContext<{
   modalLoading: boolean,
   setModalLoading: Dispatch<SetStateAction<boolean>>,
   modalOpen: boolean,
@@ -21,7 +21,7 @@ export const AuthenticationModalContext = createContext<{
   setScrollbarCompensation: () => {}
 })
 
-export default function AuthenticationModalWrapper({children}: {children: ReactNode}) {
+export default function ModalWrapper({children}: {children: ReactNode}) {
   const [scrollbarCompensation, setScrollbarCompensation] = useState<number>(0)
   const { width } = useScrollbarSize();
   const [modalLoading, setModalLoading] = useState<boolean>(false)
@@ -35,7 +35,7 @@ export default function AuthenticationModalWrapper({children}: {children: ReactN
   }, [modalOpen, setScrollbarCompensation])
 
   return (
-    <AuthenticationModalContext.Provider value={{
+    <ModalContext.Provider value={{
       modalLoading,
       setModalLoading,
       modalOpen,
@@ -46,6 +46,6 @@ export default function AuthenticationModalWrapper({children}: {children: ReactN
       setScrollbarCompensation
     }}>
       {children}
-    </AuthenticationModalContext.Provider>
+    </ModalContext.Provider>
   )
 }

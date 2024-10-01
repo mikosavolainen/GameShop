@@ -8,7 +8,7 @@ import {
 } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import LoadingAnimation from './LoadingAnimation'
-import { AuthenticationModalContext } from '../wrappers/AuthenticationModalWrapper'
+import { ModalContext } from '../wrappers/ModalWrapper'
 
 export default function Modal({
   open = false,
@@ -22,7 +22,7 @@ export default function Modal({
   const scrollPosition = useRef(0)
   const [scrollTop, setScrollTop] = useState(0)
 
-  const { modalLoading } = useContext(AuthenticationModalContext)
+  const { modalLoading } = useContext(ModalContext)
 
   const handleScroll = () => {
     setScrollTop(window.scrollY)

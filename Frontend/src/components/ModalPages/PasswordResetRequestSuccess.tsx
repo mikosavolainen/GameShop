@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import Button from "../Button";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 
 export default function PasswordResetRequestSuccess() {
-  const { setModalPage } = useContext(AuthenticationModalContext)
+  const { setModalPage } = useContext(ModalContext)
   return(
     <>
       <h2 className="text-2xl mb-4">Reset link has been sent!</h2>

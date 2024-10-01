@@ -385,7 +385,7 @@ app.get("/get-game-by-id", async (req, res) => {
 
 app.get("/get-reviews", async (req, res) => {
 	try {
-	const id = req.body.id;
+	const id = req.query.id;
 
 	if (!id) {
 		return res.status(400).send({ error: "Peli id vaaditaan." });

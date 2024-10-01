@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import PasswordResetRequest from "./PasswordResetRequest";
@@ -8,8 +8,8 @@ import ReviewForm from "./ReviewForm";
 import ResetPassword from "./ResetPassword";
 import ResetPasswordSuccess from "./ResetPasswordSuccess";
 
-export default function AuthForms() {
-  const { modalPage } = useContext(AuthenticationModalContext)
+export default function ModalPages() {
+  const { modalPage } = useContext(ModalContext)
   switch(modalPage) {
     case "signIn":
       return <LoginForm />

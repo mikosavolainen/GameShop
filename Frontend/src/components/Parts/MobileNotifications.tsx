@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 
 export default function MobileNotifications({opened, setOpened}: {opened: boolean, setOpened: Dispatch<SetStateAction<boolean>>}) {
-/*   const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
+/*   const { setModalOpen, setModalPage } = useContext(ModalContext)
   const { user, setUser } = useContext(AuthContext) */
   const scrollPosition = useRef(0)
   const [scrollTop, setScrollTop] = useState(0)

@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import Button from "../Button";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import default_pfp from "../../assets/default_pfp.jpg"
@@ -8,7 +8,7 @@ import { AuthContext } from "../../wrappers/AuthWrapper";
 import { signOutHelper } from "../../lib/AuthFunctions";
 
 export default function MobileMenu({opened, setOpened}: {opened: boolean, setOpened: Dispatch<SetStateAction<boolean>>}) {
-  const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
+  const { setModalOpen, setModalPage } = useContext(ModalContext)
   const { user, setUser } = useContext(AuthContext)
   const scrollPosition = useRef(0)
   const [scrollTop, setScrollTop] = useState(0)

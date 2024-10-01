@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 import { z } from "zod";
 import axios from "axios";
 import Input from "../Input";
@@ -7,7 +7,7 @@ import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function PasswordResetRequest() {
-  const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
+  const { setModalPage, setModalLoading } = useContext(ModalContext)
 
   // API request function
   const passwordResetRequest = async (formData: { email: string }) => {

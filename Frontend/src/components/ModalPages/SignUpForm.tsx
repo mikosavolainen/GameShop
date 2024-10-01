@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 import { z } from "zod";
 import axios from "axios";
 import Input from "../Input";
@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Checkbox from "../Checkbox";
 
 export default function SignUpForm() {
-  const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
+  const { setModalPage, setModalLoading } = useContext(ModalContext)
 
   // API request function
   const registerRequest = async (formData: { username: string; password: string }) => {
