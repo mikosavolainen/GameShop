@@ -1,3 +1,30 @@
+# Wrench web client
+
+## Setup / installation
+
+1. Close the ropository
+   ```bash
+   git clone https://github.com/your-repository/wrench-platform.git
+   cd wrench-platform
+   ```
+2. Install frontend depedencies
+  ```bash
+  cd frontend
+  npm i
+  ```
+3. Start frontend development server
+```bash
+npm run dev
+```
+4. In a new terminal: Install backend dependencies
+  ```bash
+  cd backend
+  npm i
+  ```
+5. Start backend server
+```bash
+npm run start
+```
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
