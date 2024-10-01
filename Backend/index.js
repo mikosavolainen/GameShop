@@ -398,7 +398,6 @@ app.get("/get-reviews", async (req, res) => {
 	console.error("Virhe haettaessa arvosteluja:", error);
 	return res.status(500).send({ error: "Something does not work on the server." });
 }
-
 });
 
 
