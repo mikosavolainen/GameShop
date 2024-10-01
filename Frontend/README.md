@@ -18,7 +18,7 @@
   ```
 3. Create required .env file in the frontend directory
   ```env
-  VITE_SERVER_BASE_API_URL=http://localhost:5000
+  VITE_SERVER_BASE_API_URL=http://localhost:Your backend port number
   ```
 4. Start frontend development server
 ```bash
