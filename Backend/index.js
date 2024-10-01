@@ -60,7 +60,7 @@ const gamesSchema = new mongoose.Schema({
 	author: { type: String },
 	category: { type: [String] },
 	price: { type: Number },
-	ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
+	ratings: {type: [Number]},
 	multiplayer: { type: Boolean },
 	Picturefileloc: { type: String },
 });
@@ -68,10 +68,10 @@ const gamesSchema = new mongoose.Schema({
 const Games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
-	game: { type: String },
-	date: { type: Number },
-	writer: { type: String },
-	ratings: { type: Array },
+	game: [{ type: mongoose.Schema.Types.ObjectId, ref: "games" }],
+	date: { type: Date, default: Date.now },
+	writer: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+	rating: { type: Number },
 	desc: { type: String },
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
@@ -123,8 +123,7 @@ async function sendMail(Msg, sub, email) {
 
 app.get("/", (req, res) => {
 	log("Someone tried to go to /");
-
-	res.redirect("https://lol.tyhjyys.com");
+	return res.redirect("https://lol.tyhjyys.com");
 });
 
 app.post("/get-all-owned-games", async (req, res) => {
@@ -134,10 +133,10 @@ app.post("/get-all-owned-games", async (req, res) => {
 			return res.status(400).send("Owner ID is required");
 		}
 		const games = await Library.find({ owner: token.username });
-		res.json(games);
+		return res.json(games);
 	} catch (error) {
 		console.error("Error fetching games:", error);
-		res.status(500).send("Internal Server Error");
+		return res.status(500).send("Internal Server Error");
 	}
 });
 
@@ -222,7 +221,35 @@ app.get("/search-game", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
-
+app.post("/add-review", async (req, res) => {
+	const { game_id, token , stars, desc } = req.body
+	if (!game_id || !token || !stars || !desc) {
+		return res.status(400).send("data is missing")
+	}
+	if (0 > stars > 5) {
+		return res.status(400).send("malformed data")
+	}
+	try {
+		const confirmed = jwt.verify(token, SECRET_KEY)
+		const user = await users.findOne({ username: confirmed.username })
+		const find = await Reviews.findOne({ game: game_id, writer: user._id })
+		if (find) {
+			return res.status(444).send("already reviewed")
+		}
+		const game = await Games.findOneAndUpdate({ _id: game_id }, { $push: { ratings: stars } });
+		const review = new Reviews({
+			game: game_id,
+			writer: user._id,
+			rating: stars,
+			desc: desc
+		})
+		review.save()
+		return res.status(200).send("thank you for your review")
+	} catch (error) {
+		console.log(error)
+		return res.status(400).send("NOPE")
+	}
+});
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
 	if (jwts) {
@@ -244,8 +271,7 @@ app.get("/confirm", async (req, res) => {
 	}
 });
 app.post("/update-desc", async (req, res) => {
-	const token = req.headers.authorization; // Extract the token from the Authorization header
-	const { newDescription } = req.body;
+	const { newDescription, token} = req.body;
 
 	// Check if the token and new description are provided
 	if (!token) {
@@ -274,7 +300,7 @@ app.post("/update-desc", async (req, res) => {
 		}
 
 		// Respond with the updated user data
-		res.status(200).send({
+		return res.status(200).send({
 			message: "Description updated successfully!",
 			user: updatedUser,
 		});
@@ -286,7 +312,7 @@ app.post("/update-desc", async (req, res) => {
 			return res.status(401).send("Invalid token.");
 		}
 
-		res.status(500).send("Internal Server Error");
+		return res.status(500).send("Internal Server Error");
 	}
 });
 
@@ -326,13 +352,13 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 		});
 
 		await newGame.save();
-		res.status(201).json({
+		return res.status(201).json({
 			message: "Game uploaded successfully!",
 			game: newGame,
 		});
 	} catch (error) {
 		console.error("Error uploading game:", error);
-		res.status(500).json({ error: "Failed to upload the game." });
+		return res.status(500).json({ error: "Failed to upload the game." });
 	}
 });
 
@@ -350,12 +376,30 @@ app.get("/get-game-by-id", async (req, res) => {
 			return res.status(404).send({ error: "Peliä ei löytynyt." });
 		}
 
-		res.status(200).send(peli);
+		return res.status(200).send(peli);
 	} catch (error) {
 		console.error("Virhe pelin hakemisessa:", error);
-		res.status(500).send({ error: "Virhe pelin hakemisessa." });
+		return res.status(500).send({ error: "Virhe pelin hakemisessa." });
 	}
 });
+
+app.get("/get-reviews", async (req, res) => {
+	try {
+	const id = req.body.id;
+
+	if (!id) {
+		return res.status(400).send({ error: "Peli id vaaditaan." });
+	}
+
+	const reviews = await Reviews.find({ game: id }).populate("writer");
+	return res.json(reviews);
+
+	} catch (error) {
+	console.error("Virhe haettaessa arvosteluja:", error);
+	return res.status(500).send({ error: "Something does not work on the server." });
+}
+});
+
 
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
@@ -674,10 +718,10 @@ app.post("/upload", upload.array("images", 10), async (req, res) => {
 				.json({ error: "Failed to upload any images." });
 		}
 
-		res.json({ urls: imageUrls });
+		return res.json({ urls: imageUrls });
 	} catch (err) {
 		console.error("Error uploading images to Discord:", err);
-		res.status(500).json({
+		return res.status(500).json({
 			error: "Internal server error during image upload.",
 		});
 	}
