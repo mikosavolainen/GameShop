@@ -44,6 +44,7 @@ db.once("open", () => {
 // User Schema
 const userSchema = new mongoose.Schema({
 	username: { type: String, required: true, unique: true },
+	description: { type: String, default: "" },
 	email: { type: String, required: true, unique: true },
 	phonenumber: { type: Number },
 	password: { type: String, required: true },
@@ -122,7 +123,7 @@ async function sendMail(Msg, sub, email) {
 
 app.get("/", (req, res) => {
 	log("Someone tried to go to /");
-	
+
 	res.redirect("https://lol.tyhjyys.com");
 });
 
@@ -140,7 +141,7 @@ app.post("/get-all-owned-games", async (req, res) => {
 	}
 });
 
-app.post("/get-all-games", async (req, res) => {
+app.get("/get-all-games", async (req, res) => {
 	try {
 		const game = await Games.find();
 		return res.json(game);
@@ -162,12 +163,10 @@ app.get("/search-game", async (req, res) => {
 	} = req.query;
 
 	try {
-		// Build a dynamic query object
 		const query = {};
 
-		// Text search (name, desc, author)
 		if (text) {
-			const regex = new RegExp(text, "i"); // 'i' for case-insensitive
+			const regex = new RegExp(text, "i");
 			query.$or = [
 				{ name: { $regex: regex } },
 				{ desc: { $regex: regex } },
@@ -175,51 +174,44 @@ app.get("/search-game", async (req, res) => {
 			];
 		}
 
-		// Filter by category
 		if (category) {
 			query.category = category;
 		}
 
-		// Filter by multiplayer (true/false)
 		if (multiplayer !== undefined) {
-			query.multiplayer = multiplayer === "true"; // ensure it's treated as a boolean
+			query.multiplayer = multiplayer === "true";
 		}
 
-		// Price range filter
 		if (minPrice || maxPrice) {
 			query.price = {};
 			if (minPrice) {
-				query.price.$gte = parseFloat(minPrice); // Greater than or equal to minPrice
+				query.price.$gte = parseFloat(minPrice);
 			}
 			if (maxPrice) {
-				query.price.$lte = parseFloat(maxPrice); // Less than or equal to maxPrice
+				query.price.$lte = parseFloat(maxPrice);
 			}
 		}
 
-		// Filter by author
 		if (author) {
-			query.author = { $regex: new RegExp(author, "i") }; // Fuzzy search on author
+			query.author = { $regex: new RegExp(author, "i") };
 		}
 
-		// Perform aggregation to calculate average rating and apply the minimum rating filter
 		const aggregationPipeline = [
-			{ $match: query }, // Apply all other query filters first
+			{ $match: query },
 			{
 				$addFields: {
-					averageRating: { $avg: "$ratings" }, // Calculate the average of the ratings array
+					averageRating: { $avg: "$ratings" },
 				},
 			},
 			{
 				$match: {
-					averageRating: { $gte: parseFloat(minRating) || 0 }, // Filter based on minRating (default 0 if not provided)
+					averageRating: { $gte: parseFloat(minRating) || 0 },
 				},
 			},
 		];
 
-		// Execute the aggregation pipeline
 		const result = await Games.aggregate(aggregationPipeline);
 
-		// Check if any games were found
 		if (result.length > 0) {
 			return res.status(200).json(result);
 		} else {
@@ -251,38 +243,86 @@ app.get("/confirm", async (req, res) => {
 		return res.status(400).send("Confirmation token is missing.");
 	}
 });
+app.post("/update-desc", async (req, res) => {
+	const token = req.headers.authorization; // Extract the token from the Authorization header
+	const { newDescription } = req.body;
+
+	// Check if the token and new description are provided
+	if (!token) {
+		return res.status(401).send("No token provided.");
+	}
+
+	if (!newDescription) {
+		return res.status(400).send("New description is required.");
+	}
+
+	try {
+		// Verify the token
+		const decoded = jwt.verify(token, secretKey);
+		const username = decoded.username; // Assuming the token contains the username
+
+		// Find the user by username and update the description
+		const updatedUser = await users.findOneAndUpdate(
+			{ username: username.toLowerCase() }, // Match the username from the token
+			{ description: newDescription }, // Update description
+			{ new: true } // Return the updated document
+		);
+
+		// If no user is found
+		if (!updatedUser) {
+			return res.status(404).send("User not found.");
+		}
+
+		// Respond with the updated user data
+		res.status(200).send({
+			message: "Description updated successfully!",
+			user: updatedUser,
+		});
+	} catch (error) {
+		console.error("Error updating description:", error);
+
+		// Handle token verification errors
+		if (error.name === "JsonWebTokenError") {
+			return res.status(401).send("Invalid token.");
+		}
+
+		res.status(500).send("Internal Server Error");
+	}
+});
+
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, "games/"); // Destination folder for game uploads
+		cb(null, "games/");
 	},
 	filename: function (req, file, cb) {
 		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-		cb(null, uniqueSuffix + "-" + file.originalname); // Save with unique name
+		cb(null, uniqueSuffix + "-" + file.originalname);
 	},
 });
 
 const upload2 = multer({ storage: storage });
 
 app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
-	const { name, desc, author, category, price, multiplayer, token } = req.body;
-	const tokens = await jwt.verify(token, SECRET_KEY) 
-    log(`${tokens.username} just uploaded game ${name}`);
+	const { name, desc, author, category, price, multiplayer, token } =
+		req.body;
+	const tokens = await jwt.verify(token, SECRET_KEY);
+	log(`${tokens.username} just uploaded game ${name}`);
 	if (!req.file) {
 		return res.status(400).json({ error: "Game file is required." });
 	}
 
-	const gameFilePath = req.file.path; // Path to the uploaded game file
+	const gameFilePath = req.file.path;
 
 	try {
 		const newGame = new Games({
 			name,
 			desc,
 			author,
-			category: category.split(","), // Assuming category is comma-separated string
+			category: category.split(","),
 			price,
 			multiplayer: multiplayer === "true",
 			gamefileloc: gameFilePath,
-			Picturefileloc: "", // Add picture later if needed
+			Picturefileloc: "",
 		});
 
 		await newGame.save();
@@ -296,16 +336,15 @@ app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
 	}
 });
 
-app.post("/get-game-by-id", async (req, res) => {
-	const id = req.body.id;
+app.get("/get-game-by-id", async (req, res) => {
+	const id = req.query.id;
 
 	if (!id) {
 		return res.status(400).send({ error: "Peli _id vaaditaan." });
 	}
 
 	try {
-		// Muuta peliId ObjectId-tyypiksi
-		const peli = await Games.findById(id).exec();
+		const peli = await Games.findById(id);
 
 		if (!peli) {
 			return res.status(404).send({ error: "Peliä ei löytynyt." });
@@ -321,28 +360,26 @@ app.post("/get-game-by-id", async (req, res) => {
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	
+
 	// Tarkista onko käyttäjä jo olemassa
 	const existingUser = await users.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
-	
+
 	// Salasana hashataan
 	const hashedPassword = await bcrypt.hash(password, 10);
-	
-	// Luo uusi käyttäjä ja lisää rekisteröintiajan
+
 	const newUser = new users({
 		username,
 		password: hashedPassword,
 		email,
 		phonenumber,
-		joindate: new Date(), // Lisää rekisteröintiaika tähän
+		joindate: new Date(),
 	});
-	
-	// Tallenna käyttäjä tietokantaan
+
 	await newUser.save();
-	
+
 	// Luo vahvistuslinkki
 	const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	const Confirmation = `
@@ -417,13 +454,26 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
         </div>
     </body>
     </html>`;
-	
+
 	// Lähetä vahvistusviesti
 	await sendMail(Confirmation, "Email Confirmation", email);
 	log(`${username} just registered`);
 	res.status(243).send("Done");
 });
-
+app.get("/get-user-data", async (req, res) => {
+	const { username } = req.query;
+	if (username) {
+		try {
+			const user = await users.findOne({ username: username });
+			user.password = "SHHH 🤫";
+			return res.status(200).send(user);
+		} catch (error) {
+			console.log(error);
+			return res.status(400).send("error getting data ");
+		}
+	}
+	return res.status(401).send("...");
+});
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	var { username, password } = req.body;
 	const user = await users.findOne({
@@ -441,10 +491,10 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	username = user.username;
 	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	log(`${username} just logged in`);
-	res.json({ token });
+	return res.json({ token });
 });
 
-app.post("/reset-password", async (req, res) => {
+app.get("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
 	try {
 		const x = jwt.verify(token, SECRET_KEY);
@@ -457,7 +507,7 @@ app.post("/reset-password", async (req, res) => {
 			return res.status(200).send("RESETED");
 		}
 	} catch (error) {
-		res.status(400).send("invalid token");
+		return res.status(400).send("invalid token");
 	}
 });
 
@@ -466,8 +516,9 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const user = await users.findOne({ email: email });
 
 	if (!user) {
-		res.status(400).send("didnt find email");
+		return res.status(400).send("didnt find email");
 	}
+	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -639,5 +690,5 @@ app.post("/upload", upload.array("images", 10), async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-	console.log(`Server is running on port Localhost:${PORT}`);
+	console.log(`Server is running on port http://localhost:${PORT}`);
 });
