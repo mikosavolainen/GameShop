@@ -32,7 +32,8 @@ npm run dev
   MONGODB_URI=mongodb://your_mongodb_uri
   SECRET_KEY=your_jwt_secret_key
   ```
-5. Start backend server
+7. Start backend server
   ```bash
   npm run start
   ```
+8. Open http://localhost:5173 on a web browser
