@@ -68,10 +68,10 @@ const gamesSchema = new mongoose.Schema({
 const Games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
-	game: [{ type: mongoose.Schema.Types.ObjectId, ref: "Games" }],
+	game: [{ type: mongoose.Schema.Types.ObjectId, ref: "games" }],
 	date: { type: Date, default: Date.now },
 	writer: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
-	rating: {type: Number },
+	rating: { type: Number },
 	desc: { type: String },
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
