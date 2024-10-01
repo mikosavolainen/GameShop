@@ -674,12 +674,6 @@ setInterval(async () => {
 		console.log(x[i].email);
 
 		await sendMail(newsletter, "You received our newsletter", x[i].email);
-
-		//await sendMail(
-		//	"you subscribed to our news letter.exe.virus",
-		//	"NO LOL",
-			//x[i].email
-		//);
 	}
 	console.log("sent");
 }, 1000 * 60 * 60 * 24);

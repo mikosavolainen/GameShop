@@ -84,6 +84,7 @@ Wrench is game marketplace that includes user authentication, game management, r
 ### Secret
 
 - **Get** `/get-user-data`: Gets user data by name
+- **POST** `/subscribe`: Subscribe newsletter
 
 ### Discord Integration
 
@@ -96,6 +97,7 @@ Wrench is game marketplace that includes user authentication, game management, r
 3. **Upload Games**: Post your games using the `/upload-game` endpoint.
 4. **Search Games**: Use `/search-game` to filter and browse the game library.
 5. **Discord Logging**: Events are automatically logged to a Discord channel.
+6. **Subscribe Newsletter**: Use /subscribe?email="Here user email" to subscribe automated Newsletter
 
 ## File Structure
 
