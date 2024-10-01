@@ -491,7 +491,7 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	username = user.username;
 	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	log(`${username} just logged in`);
-	res.json({ token });
+	return res.json({ token });
 });
 
 app.get("/reset-password", async (req, res) => {
@@ -507,7 +507,7 @@ app.get("/reset-password", async (req, res) => {
 			return res.status(200).send("RESETED");
 		}
 	} catch (error) {
-		res.status(400).send("invalid token");
+		return res.status(400).send("invalid token");
 	}
 });
 
@@ -516,7 +516,7 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const user = await users.findOne({ email: email });
 
 	if (!user) {
-		res.status(400).send("didnt find email");
+		return res.status(400).send("didnt find email");
 	}
 	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
 	confirmation = `<!DOCTYPE html>
