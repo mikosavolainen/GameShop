@@ -587,18 +587,103 @@ app.get("/reset-password", async (req, res) => {
 	}
 });
 setInterval(async () => {
+	newsletter = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset Confirmation</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            position: relative;
+            padding: 12px 35px;
+            margin-top: 20px;
+            font-size: 17px;
+            font-weight: 500;
+            color: #ffffff;
+            background: linear-gradient(145deg, #b0b0b0, #e0e0e0);
+            border: 2px solid #a6a6a6;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+            color: #333;
+            box-shadow: 0 0 15px rgba(128, 128, 128, 0.5);
+        }
+        .footer {
+                margin-top: 30px;
+                font-size: 12px;
+                color: #999;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our New Newsletter</h1>
+        <p>Hello,</p>
+        <p>You received our newsletter.</p>
+        <p>To read our newsletter, click the button below:</p>
+        <a href="https://lol.tyhjyys.com" class="button">Newsletter</a>
+        
+        <div class="footer">
+            <p>Thank you,<br>The Wrench Team</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+`;
+
 	const x = await NewsLetter.find();
 	console.log(x);
 	for (var i = 0; i <= x.length; i++) {
 		console.log(x[i].email);
-		await sendMail(
-			"you subscribed to our news letter.exe.virus",
-			"NO LOL",
-			x[i].email
-		);
+
+		await sendMail(newsletter, "You received our newsletter", x[i].email);
+
+		//await sendMail(
+		//	"you subscribed to our news letter.exe.virus",
+		//	"NO LOL",
+			//x[i].email
+		//);
 	}
 	console.log("sent");
 }, 1000 * 60 * 60 * 24);
+
+
+
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });
