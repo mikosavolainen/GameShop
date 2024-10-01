@@ -6,7 +6,7 @@ import Input from "../Input";
 import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function PasswordReset() {
+export default function PasswordResetRequest() {
   const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
 
   // API request function
