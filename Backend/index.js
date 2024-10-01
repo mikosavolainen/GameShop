@@ -60,7 +60,7 @@ const gamesSchema = new mongoose.Schema({
 	author: { type: String },
 	category: { type: [String] },
 	price: { type: Number },
-	ratings: {type: [Number]},
+	ratings: { type: [Number] },
 	multiplayer: { type: Boolean },
 	Picturefileloc: { type: String },
 });
@@ -125,7 +125,14 @@ app.get("/", (req, res) => {
 	log("Someone tried to go to /");
 	return res.redirect("https://lol.tyhjyys.com");
 });
-
+app.post("/subscribe", async (req, res) => {
+	const { email } = req.query;
+	const letter = new NewsLetter({
+		email: email,
+	});
+	letter.save();
+	return res.status(200).send("all good here");
+});
 app.post("/get-all-owned-games", async (req, res) => {
 	try {
 		const token = await jwt.verify(req.body.token, SECRET_KEY);
@@ -222,32 +229,35 @@ app.get("/search-game", async (req, res) => {
 	}
 });
 app.post("/add-review", async (req, res) => {
-	const { game_id, token , stars, desc } = req.body
+	const { game_id, token, stars, desc } = req.body;
 	if (!game_id || !token || !stars || !desc) {
-		return res.status(400).send("data is missing")
+		return res.status(400).send("data is missing");
 	}
 	if (0 > stars > 5) {
-		return res.status(400).send("malformed data")
+		return res.status(400).send("malformed data");
 	}
 	try {
-		const confirmed = jwt.verify(token, SECRET_KEY)
-		const user = await users.findOne({ username: confirmed.username })
-		const find = await Reviews.findOne({ game: game_id, writer: user._id })
+		const confirmed = jwt.verify(token, SECRET_KEY);
+		const user = await users.findOne({ username: confirmed.username });
+		const find = await Reviews.findOne({ game: game_id, writer: user._id });
 		if (find) {
-			return res.status(444).send("already reviewed")
+			return res.status(444).send("already reviewed");
 		}
-		const game = await Games.findOneAndUpdate({ _id: game_id }, { $push: { ratings: stars } });
+		const game = await Games.findOneAndUpdate(
+			{ _id: game_id },
+			{ $push: { ratings: stars } }
+		);
 		const review = new Reviews({
 			game: game_id,
 			writer: user._id,
 			rating: stars,
-			desc: desc
-		})
-		review.save()
-		return res.status(200).send("thank you for your review")
+			desc: desc,
+		});
+		review.save();
+		return res.status(200).send("thank you for your review");
 	} catch (error) {
-		console.log(error)
-		return res.status(400).send("NOPE")
+		console.log(error);
+		return res.status(400).send("NOPE");
 	}
 });
 app.get("/confirm", async (req, res) => {
@@ -271,7 +281,7 @@ app.get("/confirm", async (req, res) => {
 	}
 });
 app.post("/update-desc", async (req, res) => {
-	const { newDescription, token} = req.body;
+	const { newDescription, token } = req.body;
 
 	// Check if the token and new description are provided
 	if (!token) {
@@ -385,21 +395,21 @@ app.get("/get-game-by-id", async (req, res) => {
 
 app.get("/get-reviews", async (req, res) => {
 	try {
-	const id = req.query.id;
+		const id = req.query.id;
 
-	if (!id) {
-		return res.status(400).send({ error: "Peli id vaaditaan." });
-	}
+		if (!id) {
+			return res.status(400).send({ error: "Peli id vaaditaan." });
+		}
 
-	const reviews = await Reviews.find({ game: id }).populate("writer");
-	return res.json(reviews);
-
+		const reviews = await Reviews.find({ game: id }).populate("writer");
+		return res.json(reviews);
 	} catch (error) {
-	console.error("Virhe haettaessa arvosteluja:", error);
-	return res.status(500).send({ error: "Something does not work on the server." });
-}
+		console.error("Virhe haettaessa arvosteluja:", error);
+		return res
+			.status(500)
+			.send({ error: "Something does not work on the server." });
+	}
 });
-
 
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
@@ -554,7 +564,19 @@ app.get("/reset-password", async (req, res) => {
 		return res.status(400).send("invalid token");
 	}
 });
-
+setInterval(async () => {
+	const x = await NewsLetter.find();
+	console.log(x);
+	for (var i = 0; i <= x.length; i++) {
+		console.log(x[i].email);
+		await sendMail(
+			"you subscribed to our news letter.exe.virus",
+			"NO LOL",
+			x[i].email
+		);
+	}
+	console.log("sent");
+}, 1000 * 60 * 60 * 24);
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });

@@ -1,7 +1,7 @@
 
 # Wrench Platform
 
-Wrench is a multi-featured platform that includes user authentication, game management, reviews, file uploads, and Discord bot integration. This project leverages Node.js, Express, MongoDB, JWT-based authentication, and more to provide a robust platform for game enthusiasts.
+Wrench is game marketplace that includes user authentication, game management, reviews, file uploads, and Discord bot integration. This project leverages Node.js, Express, MongoDB, JWT-based authentication, and more to provide a robust platform for game enthusiasts.
 
 ## Features
 
@@ -80,6 +80,10 @@ Wrench is a multi-featured platform that includes user authentication, game mana
 - **POST** `/add-review`: Add a review to a game
 - **GET** `/get-reviews`: Get all reviews for a specific game
 
+### Secret
+
+- **Get** `/get-user-data`: Gets user data by name
+
 ### Discord Integration
 
 - Logs important events (user registrations, game uploads) to a specified Discord channel.
@@ -96,9 +100,9 @@ Wrench is a multi-featured platform that includes user authentication, game mana
 
 ```
 
-├── uploads/        # Uploaded files are stored here
+├── games/          # Uploaded files are stored here
 ├── .env            # Environment configuration
-├── index.js          # Main entry point
+├── index.js        # Main entry point
 ├── package.json    # Project dependencies and scripts
 ```
 
