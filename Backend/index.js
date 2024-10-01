@@ -60,7 +60,7 @@ const gamesSchema = new mongoose.Schema({
 	author: { type: String },
 	category: { type: [String] },
 	price: { type: Number },
-	ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
+	ratings: {type: [Number]},
 	multiplayer: { type: Boolean },
 	Picturefileloc: { type: String },
 });
@@ -232,11 +232,11 @@ app.post("/add-review", async (req, res) => {
 	try {
 		const confirmed = jwt.verify(token, SECRET_KEY)
 		const user = await users.findOne({ username: confirmed.username })
-		console.log(user)
 		const find = await Reviews.findOne({ game: game_id, writer: user._id })
 		if (find) {
 			return res.status(444).send("already reviewed")
 		}
+		const game = await Games.findOneAndUpdate({ _id: game_id }, { $push: { ratings: stars } });
 		const review = new Reviews({
 			game: game_id,
 			writer: user._id,
