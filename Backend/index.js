@@ -356,6 +356,27 @@ app.get("/get-game-by-id", async (req, res) => {
 	}
 });
 
+app.get("/get-reviews", async (req, res) => {
+	try {
+	const id = req.body.id;
+
+	if (!id) {
+		return res.status(400).send({ error: "Peli id vaaditaan." });
+	}
+
+	const reviews = await Reviews.find({ game: id }).populate("game");
+	return res.json(reviews);
+
+
+
+	} catch (error) {
+	console.error("Virhe haettaessa arvosteluja:", error);
+	return res.status(500).send({ error: "Something does not work on the server." });
+}
+
+});
+
+
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
