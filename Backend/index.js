@@ -16,6 +16,7 @@ require("dotenv").config();
 
 const { Client, GatewayIntentBits } = require("discord.js");
 
+
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
@@ -76,8 +77,8 @@ const ReviewsSchema = new mongoose.Schema({
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const LibrarySchema = new mongoose.Schema({
-	owner: { type: String },
-	games: { type: Array },
+	owner: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+	games: [{ type: mongoose.Schema.Types.ObjectId, ref: "games" }],
 });
 const Library = mongoose.model("Library", LibrarySchema);
 
@@ -155,7 +156,29 @@ app.get("/get-all-games", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
+app.post("/buy-game", async (req, res) => {
+	const { game_id, token } = req.body
+	try {
+		const jwts = await jwt.verify(token, SECRET_KEY)
+		const is = await Library.find({ username: jwts.username })
+		if (is) {
+			await Library.findOneAndUpdate({ username: jwt.username }, { $push: { games: game_id } })
+			return res.status(200).send("bought")
+		}
+		else {
+			const user = await users.findOne({username: jwts.username})
+			const x = new Library({
+				owner: user._id,
+				games: game_id
+			})
+			x.save()
+			return res.status(200).send("bought")
+		}
 
+	} catch (error) {
+		return res.status(200).send(error)
+	}
+})
 app.get("/search-game", async (req, res) => {
 	const {
 		text,
