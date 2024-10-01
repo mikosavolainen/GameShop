@@ -44,6 +44,7 @@ db.once("open", () => {
 // User Schema
 const userSchema = new mongoose.Schema({
 	username: { type: String, required: true, unique: true },
+	description: { type: String, default: "" },
 	email: { type: String, required: true, unique: true },
 	phonenumber: { type: Number },
 	password: { type: String, required: true },
@@ -122,7 +123,7 @@ async function sendMail(Msg, sub, email) {
 
 app.get("/", (req, res) => {
 	log("Someone tried to go to /");
-	
+
 	res.redirect("https://lol.tyhjyys.com");
 });
 
@@ -163,9 +164,9 @@ app.get("/search-game", async (req, res) => {
 
 	try {
 		const query = {};
-		
+
 		if (text) {
-			const regex = new RegExp(text, "i"); 
+			const regex = new RegExp(text, "i");
 			query.$or = [
 				{ name: { $regex: regex } },
 				{ desc: { $regex: regex } },
@@ -184,27 +185,27 @@ app.get("/search-game", async (req, res) => {
 		if (minPrice || maxPrice) {
 			query.price = {};
 			if (minPrice) {
-				query.price.$gte = parseFloat(minPrice); 
+				query.price.$gte = parseFloat(minPrice);
 			}
 			if (maxPrice) {
-				query.price.$lte = parseFloat(maxPrice); 
+				query.price.$lte = parseFloat(maxPrice);
 			}
 		}
 
 		if (author) {
-			query.author = { $regex: new RegExp(author, "i") }; 
+			query.author = { $regex: new RegExp(author, "i") };
 		}
 
 		const aggregationPipeline = [
-			{ $match: query }, 
+			{ $match: query },
 			{
 				$addFields: {
-					averageRating: { $avg: "$ratings" }, 
+					averageRating: { $avg: "$ratings" },
 				},
 			},
 			{
 				$match: {
-					averageRating: { $gte: parseFloat(minRating) || 0 }, 
+					averageRating: { $gte: parseFloat(minRating) || 0 },
 				},
 			},
 		];
@@ -242,38 +243,86 @@ app.get("/confirm", async (req, res) => {
 		return res.status(400).send("Confirmation token is missing.");
 	}
 });
+app.post("/update-desc", async (req, res) => {
+	const token = req.headers.authorization; // Extract the token from the Authorization header
+	const { newDescription } = req.body;
+
+	// Check if the token and new description are provided
+	if (!token) {
+		return res.status(401).send("No token provided.");
+	}
+
+	if (!newDescription) {
+		return res.status(400).send("New description is required.");
+	}
+
+	try {
+		// Verify the token
+		const decoded = jwt.verify(token, secretKey);
+		const username = decoded.username; // Assuming the token contains the username
+
+		// Find the user by username and update the description
+		const updatedUser = await users.findOneAndUpdate(
+			{ username: username.toLowerCase() }, // Match the username from the token
+			{ description: newDescription }, // Update description
+			{ new: true } // Return the updated document
+		);
+
+		// If no user is found
+		if (!updatedUser) {
+			return res.status(404).send("User not found.");
+		}
+
+		// Respond with the updated user data
+		res.status(200).send({
+			message: "Description updated successfully!",
+			user: updatedUser,
+		});
+	} catch (error) {
+		console.error("Error updating description:", error);
+
+		// Handle token verification errors
+		if (error.name === "JsonWebTokenError") {
+			return res.status(401).send("Invalid token.");
+		}
+
+		res.status(500).send("Internal Server Error");
+	}
+});
+
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, "games/"); 
+		cb(null, "games/");
 	},
 	filename: function (req, file, cb) {
 		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-		cb(null, uniqueSuffix + "-" + file.originalname); 
+		cb(null, uniqueSuffix + "-" + file.originalname);
 	},
 });
 
 const upload2 = multer({ storage: storage });
 
 app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
-	const { name, desc, author, category, price, multiplayer, token } = req.body;
-	const tokens = await jwt.verify(token, SECRET_KEY) 
-    log(`${tokens.username} just uploaded game ${name}`);
+	const { name, desc, author, category, price, multiplayer, token } =
+		req.body;
+	const tokens = await jwt.verify(token, SECRET_KEY);
+	log(`${tokens.username} just uploaded game ${name}`);
 	if (!req.file) {
 		return res.status(400).json({ error: "Game file is required." });
 	}
 
-	const gameFilePath = req.file.path; 
+	const gameFilePath = req.file.path;
 
 	try {
 		const newGame = new Games({
 			name,
 			desc,
 			author,
-			category: category.split(","), 
+			category: category.split(","),
 			price,
 			multiplayer: multiplayer === "true",
 			gamefileloc: gameFilePath,
-			Picturefileloc: "", 
+			Picturefileloc: "",
 		});
 
 		await newGame.save();
@@ -311,13 +360,13 @@ app.get("/get-game-by-id", async (req, res) => {
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	
+
 	// Tarkista onko käyttäjä jo olemassa
 	const existingUser = await users.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
-	
+
 	// Salasana hashataan
 	const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -328,10 +377,9 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 		phonenumber,
 		joindate: new Date(),
 	});
-	
 
 	await newUser.save();
-	
+
 	// Luo vahvistuslinkki
 	const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	const Confirmation = `
@@ -406,25 +454,26 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
         </div>
     </body>
     </html>`;
-	
+
 	// Lähetä vahvistusviesti
 	await sendMail(Confirmation, "Email Confirmation", email);
 	log(`${username} just registered`);
 	res.status(243).send("Done");
 });
 app.get("/get-user-data", async (req, res) => {
-	const { username} = req.query
+	const { username } = req.query;
 	if (username) {
 		try {
-			const user = users.findOne({ username })
-			return res.json(user)
+			const user = await users.findOne({ username: username });
+			user.password = "SHHH 🤫";
+			return res.status(200).send(user);
 		} catch (error) {
-			console.log(error)
-			return res.status(400).send("error getting data ")
+			console.log(error);
+			return res.status(400).send("error getting data ");
 		}
 	}
-	return res.status(401).send("...")
-})
+	return res.status(401).send("...");
+});
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	var { username, password } = req.body;
 	const user = await users.findOne({
@@ -469,6 +518,7 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	if (!user) {
 		res.status(400).send("didnt find email");
 	}
+	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
