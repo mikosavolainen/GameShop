@@ -70,7 +70,7 @@ Wrench is game marketplace that includes user authentication, game management, r
 - **GET** `/reset-password`: Reset password using token
 
 ### Games
-
+- **POST** `/upload`´: Upload a new game pictures (whit file upload)
 - **POST** `/upload-game`: Upload a new game (with file upload)
 - **GET** `/get-all-games`: Fetch all games
 - **GET** `/search-game`: Search for a game with filters (name, author, category, multiplayer, etc.)
