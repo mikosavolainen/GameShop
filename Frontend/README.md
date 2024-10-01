@@ -26,6 +26,7 @@ npm run dev
   npm i
   ```
 6. Run MongoDB locally or configure a remote instance.
+
 7. Create required .env file in the backend directory
   ```env
   DISCORD_TOKEN=your_discord_bot_token
