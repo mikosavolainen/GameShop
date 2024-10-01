@@ -60,7 +60,7 @@ const gamesSchema = new mongoose.Schema({
 	author: { type: String },
 	category: { type: [String] },
 	price: { type: Number },
-	ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
+	ratings: {type: [Number]},
 	multiplayer: { type: Boolean },
 	Picturefileloc: { type: String },
 });
@@ -68,10 +68,10 @@ const gamesSchema = new mongoose.Schema({
 const Games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
-	game: [{ type: mongoose.Schema.Types.ObjectId, ref: "Games" }],
+	game: [{ type: mongoose.Schema.Types.ObjectId, ref: "games" }],
 	date: { type: Date, default: Date.now },
 	writer: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
-	rating: {type: Number },
+	rating: { type: Number },
 	desc: { type: String },
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
@@ -221,7 +221,35 @@ app.get("/search-game", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
-
+app.post("/add-review", async (req, res) => {
+	const { game_id, token , stars, desc } = req.body
+	if (!game_id || !token || !stars || !desc) {
+		return res.status(400).send("data is missing")
+	}
+	if (0 > stars > 5) {
+		return res.status(400).send("malformed data")
+	}
+	try {
+		const confirmed = jwt.verify(token, SECRET_KEY)
+		const user = await users.findOne({ username: confirmed.username })
+		const find = await Reviews.findOne({ game: game_id, writer: user._id })
+		if (find) {
+			return res.status(444).send("already reviewed")
+		}
+		const game = await Games.findOneAndUpdate({ _id: game_id }, { $push: { ratings: stars } });
+		const review = new Reviews({
+			game: game_id,
+			writer: user._id,
+			rating: stars,
+			desc: desc
+		})
+		review.save()
+		return res.status(200).send("thank you for your review")
+	} catch (error) {
+		console.log(error)
+		return res.status(400).send("NOPE")
+	}
+});
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
 	if (jwts) {
@@ -243,8 +271,7 @@ app.get("/confirm", async (req, res) => {
 	}
 });
 app.post("/update-desc", async (req, res) => {
-	const token = req.headers.authorization; // Extract the token from the Authorization header
-	const { newDescription } = req.body;
+	const { newDescription, token} = req.body;
 
 	// Check if the token and new description are provided
 	if (!token) {
