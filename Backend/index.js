@@ -391,10 +391,8 @@ app.get("/get-reviews", async (req, res) => {
 		return res.status(400).send({ error: "Peli id vaaditaan." });
 	}
 
-	const reviews = await Reviews.find({ game: id }).populate("game");
+	const reviews = await Reviews.find({ game: id }).populate("writer");
 	return res.json(reviews);
-
-
 
 	} catch (error) {
 	console.error("Virhe haettaessa arvosteluja:", error);
