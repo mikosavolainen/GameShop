@@ -11,7 +11,7 @@ import image2 from "../assets/test_image_wrench_2.png"
 export default function SearchFilter(){
     const [, setLocation] = useLocation()
     const [searchValue, setSearchValue] = useState("")
-    const [checkboxes, setCheckboxes] = useState([false, false, false, false, false, false, false, false, false, false, false])
+    const [checkboxes, setCheckboxes] = useState([false])
     const [sortSwitch, setSortSwitch] = useState(true)
     const [selectedSorting, setSelectedSorting] = useState("grid")
     const searchString = useSearch()
@@ -29,7 +29,6 @@ export default function SearchFilter(){
       const handleCheckboxCheck = (id: number) => {
         const checkbox = checkboxes
         checkbox[id] = !checkbox[id]
-        console.log(checkbox)
         setCheckboxes(checkbox)
       }
       const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -48,6 +47,22 @@ export default function SearchFilter(){
         if(checkboxes[8]){categories += "&category=Fantasy"}
         if(checkboxes[9]){categories += "&category=Stealth"}
         if(checkboxes[10]){categories += "&category=Multiplayer"}
+
+        if(checkboxes[12]){categories += "&author=id Software"}
+        if(checkboxes[13]){categories += "&author=Maxis"}
+        if(checkboxes[14]){categories += "&author=Blizzard Entertainment"}
+        if(checkboxes[15]){categories += "&author=3D Realms"}
+        if(checkboxes[16]){categories += "&author=Ensemble Studios"}
+        if(checkboxes[17]){categories += "&author=Valve"}
+        if(checkboxes[18]){categories += "&author=Cyan"}
+        if(checkboxes[19]){categories += "&author=LucasArts"}
+        if(checkboxes[20]){categories += "&author=Westwood Studios"}
+        if(checkboxes[21]){categories += "&author=Chris Sawyer Årpdictopms"}
+        if(checkboxes[22]){categories += "&author=New World Computing"}
+        if(checkboxes[23]){categories += "&author=Bullfrog Productions"}
+        if(checkboxes[24]){categories += "&author=Looking Glass Studios"}
+        if(checkboxes[25]){categories += "&author=Epic Games"}
+        if(checkboxes[26]){categories += "&author=BioWare"}
         setLocation(`/search?text=${value}${categories}`)
         event?.preventDefault()
     }
@@ -116,7 +131,7 @@ export default function SearchFilter(){
                 </div>
 
                 <p className="px-6 mt-4">Price</p>
-                <Checkbox label="On sale" id="11" className="px-6 my-2" required={false}/>
+                <Checkbox label="On sale" id="11" className="px-6 my-2" required={false} onChange={() => handleCheckboxCheck(11)}/>
 
                 <p className="px-6 mt-4">Developers</p>
                 <div className="flex py-3 mr-4">
@@ -124,10 +139,21 @@ export default function SearchFilter(){
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
                 <div className="scrollbar overflow-y-scroll max-h-60 mr-4">
-                <Checkbox label="A developer studio" id="12" className="px-6 py-2" required={false}/>
-                <Checkbox label="A studio test" id="13" className="px-6 py-2" required={false}/>
-                <Checkbox label="Basically, a developer name" id="14" className="px-6 py-2" required={false}/>
-                <Checkbox label="Developer name" id="15" className="px-6 py-2" required={false}/>
+                <Checkbox label="id Software" id="12" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(12)}/>
+                <Checkbox label="Maxis" id="13" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(13)}/>
+                <Checkbox label="Blizzard Entertainment" id="14" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(14)}/>
+                <Checkbox label="3D Realms" id="15" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(15)}/>
+                <Checkbox label="Ensemble Studios" id="16" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(16)}/>
+                <Checkbox label="Valve" id="17" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(17)}/>
+                <Checkbox label="Cyan" id="18" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(18)}/>
+                <Checkbox label="LucasArts" id="19" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(19)}/>
+                <Checkbox label="Westwood Studios" id="20" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(20)}/>
+                <Checkbox label="Chris Sawyer Productions" id="21" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(21)}/>
+                <Checkbox label="New World Computing" id="22" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(22)}/>
+                <Checkbox label="Bullfrog Productions" id="23" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(23)}/>
+                <Checkbox label="Looking Glass Studios" id="24" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(24)}/>
+                <Checkbox label="Epic Games" id="25" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(25)}/>
+                <Checkbox label="BioWare" id="26" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(26)}/>
                 </div>
             </div>
             </div>
