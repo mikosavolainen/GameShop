@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useContext, useState } from 'react'
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react'
 import star_icon from '../../assets/Star icon.svg'
 import star_icon_golden from '../../assets/Star icon golden.svg'
 import Button from '../Button'
@@ -17,7 +17,7 @@ export default function ReviewForm() {
   }) => {
     setModalLoading(true)
     const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL // Ensure this environment variable is correctly set
-    const { data } = await axios.post(`${apiUrl}/login`, formData)
+    const { data } = await axios.post(`${apiUrl}/add-review`, formData)
     return data
   }
 
@@ -26,11 +26,11 @@ export default function ReviewForm() {
     content: z
       .string()
       .min(3, {
-        message: 'E-mail or username should be at least 3 characters long',
+        message: 'Content should be at least 50 characters long',
       }),
     rating: z
-      .string()
-      .min(3, { message: 'Password should be at least 3 characters long' }),
+      .number()
+      .min(3, { message: 'Rating should be at least 3 characters long' }),
   })
 
   const queryClient = useQueryClient()
@@ -95,6 +95,10 @@ export default function ReviewForm() {
   }
   const [rating, setRating] = useState(0) //0 is default you need to get thing from database
 
+  useEffect(() => {
+    handleChange
+  }, [rating, handleChange])
+
   function StarsButton({ rating }: { rating: number }) {
     return (
       <>
@@ -116,41 +120,31 @@ export default function ReviewForm() {
       </>
     )
   }
-  function StarReview() {
-    return (
-      <div className="mt-5">
-        <p>Leave a review:</p>
-        <div>
-          <div className="">
-            <div className="flex">
-              <StarsButton rating={rating} />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
   return (
     <>
       <h2 className="text-2xl mb-4">Review</h2>
-      <textarea
-        className={`bg-wrench-neutral-white w-full min-h-8 text-wrench-neutral-dark outline-none p-1 border border-wrench-neutral-3 focus:border-wrench-neutral-2`}
-        maxLength={250}
-        rows={5}
-        placeholder={'Write your review'}
-        name="content"
-      ></textarea>
-      <StarReview />
-      <div className="flex">
-        <Button
-          className="mt-5 mr-2"
-          size="big"
-          style="purple"
-          type="button"
-          text="Submit"
-          icon="send"
-        />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          className={`bg-wrench-neutral-white w-full min-h-8 text-wrench-neutral-dark outline-none p-1 border border-wrench-neutral-3 focus:border-wrench-neutral-2`}
+          maxLength={250}
+          rows={5}
+          placeholder={'Write your review'}
+          name="content"
+        ></textarea>
+        <div className="flex">
+          <StarsButton rating={rating} />
+        </div>
+        <div className="flex">
+          <Button
+            className="mt-5 mr-2"
+            size="big"
+            style="purple"
+            type="button"
+            text="Submit"
+            icon="send"
+          />
+        </div>
+      </form>
     </>
   )
 }
