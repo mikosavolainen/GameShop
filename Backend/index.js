@@ -8,16 +8,31 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
-const path = require('path');
-const fs = require('fs');
+const fs = require("fs");
+const csvParser = require("csv-parser");
+const path = require("path");
+const multer = require("multer");
+require("dotenv").config();
 
-const SECRET_KEY ="Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
+const { Client, GatewayIntentBits } = require("discord.js");
+
+const client = new Client({
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+});
+
+client.once("ready", () => {
+	console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.login(process.env.DISCORD_TOKEN);
+
+const SECRET_KEY = process.env.SECRET_KEY; // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench");
+mongoose.connect(process.env.MONGODB_URI);
 
 const db = mongoose.connection;
 
@@ -28,10 +43,12 @@ db.once("open", () => {
 // User Schema
 const userSchema = new mongoose.Schema({
 	username: { type: String, required: true, unique: true },
+	description: { type: String, default: "" },
 	email: { type: String, required: true, unique: true },
 	phonenumber: { type: Number },
 	password: { type: String, required: true },
 	confirmedemail: { type: Boolean, default: false },
+	joindate: { type: Date, default: Date.now },
 });
 const users = mongoose.model("users", userSchema);
 
@@ -40,33 +57,34 @@ const gamesSchema = new mongoose.Schema({
 	desc: { type: String },
 	gamefileloc: { type: String },
 	author: { type: String },
-	category: { type: Array },
+	category: { type: [String] },
 	price: { type: Number },
-	ratings: { type: Array },
-	multiplayer: { type: String },
-	Picturefileloc: { type: String },
+	ratings: { type: [Number] },
+	multiplayer: { type: Boolean },
+	Picturefileloc: { type: [String] },
 });
-const games = mongoose.model("games", gamesSchema);
+
+const Games = mongoose.model("games", gamesSchema);
 
 const ReviewsSchema = new mongoose.Schema({
-	game: { type: String },
-	date: { type: Number },
-	writer: { type: String },
-	ratings: { type: Array },
+	game: [{ type: mongoose.Schema.Types.ObjectId, ref: "games" }],
+	date: { type: Date, default: Date.now },
+	writer: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+	rating: { type: Number },
 	desc: { type: String },
 });
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const LibrarySchema = new mongoose.Schema({
-	owner: { type: String },
-	games: { type: Array },
+	owner: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+	games: [{ type: mongoose.Schema.Types.ObjectId, ref: "games" }],
 });
 const Library = mongoose.model("Library", LibrarySchema);
 
 const NewsletterSchema = new mongoose.Schema({
-    email: String
+	email: String,
 });
-const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema)
+const NewsLetter = mongoose.model("NewsLetter", NewsletterSchema);
 
 const convertUsernameToLowerCase = (req, res, next) => {
 	if (req.body.username) {
@@ -103,42 +121,180 @@ async function sendMail(Msg, sub, email) {
 }
 
 app.get("/", (req, res) => {
-	res.redirect(
-		"https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwio_8ngmceIAxUvGBAIHc5_HQ0QwqsBegQIERAG&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&usg=AOvVaw0aHtehaphMhOCAkCydRLZU&opi=89978449"
-	);
+	log("Someone tried to go to /");
+	return res.redirect("https://lol.tyhjyys.com");
 });
-
+app.post("/subscribe", async (req, res) => {
+	const { email } = req.query;
+	const letter = new NewsLetter({
+		email: email,
+	});
+	letter.save();
+	return res.status(200).send("all good here");
+});
 app.post("/get-all-owned-games", async (req, res) => {
 	try {
-		const token = await jwt.verify("req.body.token", SECRET_KEY);
+		const token = await jwt.verify(req.body.token, SECRET_KEY);
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-
-		const games = await Library.find({ owner: token.username });
-
-		res.json(games);
-	} catch (error) {
-		console.error("Error fetching games:", error);
-		res.status(500).send("Internal Server Error");
-	}
-});
-
-app.post("/get-all-games", async (req, res) => {
-	try {
-		const game = await games.find();
-		return res.json(game);
+		const user = users.findOne({ username: token.username });
+		const games = await Library.find({ owner: user._id }).populate("games");
+		return res.json(games);
 	} catch (error) {
 		console.error("Error fetching games:", error);
 		return res.status(500).send("Internal Server Error");
 	}
 });
 
+app.get("/get-all-games", async (req, res) => {
+	try {
+		const game = await Games.find();
+		return res.json(game);
+	} catch (error) {
+		console.error("Error fetching games:", error);
+		return res.status(500).send("Internal Server Error");
+	}
+});
+app.post("/buy-game", async (req, res) => {
+	const { game_id, token } = req.body;
+	try {
+		const jwts = await jwt.verify(token, SECRET_KEY);
+		const is = await Library.find({ username: jwts.username });
+		console.log(is);
+		if (is) {
+			await Library.findOneAndUpdate(
+				{ username: jwt.username },
+				{ $push: { games: game_id } }
+			);
+			return res.status(200).send("bought");
+		} else {
+			const user = await users.findOne({ username: jwts.username });
+			const x = new Library({
+				owner: user._id,
+				games: game_id,
+			});
+			x.save();
+			return res.status(201).send("bought");
+		}
+	} catch (error) {
+		return res.status(200).send(error);
+	}
+});
+app.get("/search-game", async (req, res) => {
+	const {
+		text,
+		category,
+		multiplayer,
+		minPrice,
+		maxPrice,
+		minRating,
+		author,
+		page,
+		limit
+	} = req.query;
+    const offset = (page - 1) * limit;
+	try {
+		const query = {};
+
+		if (text) {
+			const regex = new RegExp(text, "i");
+			query.$or = [
+				{ name: { $regex: regex } },
+				{ desc: { $regex: regex } },
+				{ author: { $regex: regex } },
+			];
+		}
+
+		if (category) {
+			query.category = category;
+		}
+
+		if (multiplayer !== undefined) {
+			query.multiplayer = multiplayer === "true";
+		}
+
+		if (minPrice || maxPrice) {
+			query.price = {};
+			if (minPrice) {
+				query.price.$gte = parseFloat(minPrice);
+			}
+			if (maxPrice) {
+				query.price.$lte = parseFloat(maxPrice);
+			}
+		}
+
+		if (author) {
+			query.author = { $regex: new RegExp(author, "i") };
+		}
+
+		const aggregationPipeline = [
+			{ $match: query },
+			{
+				$addFields: {
+					averageRating: { $avg: "$ratings" || null },
+				},
+			},
+			{
+				$match: {
+					$or: [
+						{ averageRating: { $gte: parseFloat(minRating) || 0 } }, // Games that meet the rating criteria
+						{ averageRating: null }, // Games without a rating
+					],
+				},
+			},
+		];
+
+		const result = await Games.aggregate(aggregationPipeline).skip(offset).limit(limit);
+
+		if (result.length > 0) {
+			return res.status(200).json(result);
+		} else {
+			return res.status(404).send("No games found matching the query");
+		}
+	} catch (err) {
+		console.error(err);
+		return res.status(500).send("Internal Server Error");
+	}
+});
+app.post("/add-review", async (req, res) => {
+	const { game_id, token, stars, desc } = req.body;
+	if (!game_id || !token || !stars || !desc) {
+		return res.status(400).send("data is missing");
+	}
+	if (0 > stars > 5) {
+		return res.status(400).send("malformed data");
+	}
+	try {
+		const confirmed = jwt.verify(token, SECRET_KEY);
+		const user = await users.findOne({ username: confirmed.username });
+		const find = await Reviews.findOne({ game: game_id, writer: user._id });
+		if (find) {
+			return res.status(444).send("already reviewed");
+		}
+		const game = await Games.findOneAndUpdate(
+			{ _id: game_id },
+			{ $push: { ratings: stars } }
+		);
+		const review = new Reviews({
+			game: game_id,
+			writer: user._id,
+			rating: stars,
+			desc: desc,
+		});
+		review.save();
+		return res.status(200).send("thank you for your review");
+	} catch (error) {
+		console.log(error);
+		return res.status(400).send("NOPE");
+	}
+});
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
 	if (jwts) {
 		try {
 			const { username } = jwt.verify(jwts, SECRET_KEY);
+			log(`${username} just confirmed email`);
 			await users.findOneAndUpdate(
 				{ username },
 				{ confirmedemail: true }
@@ -153,22 +309,161 @@ app.get("/confirm", async (req, res) => {
 		return res.status(400).send("Confirmation token is missing.");
 	}
 });
+app.post("/update-desc", async (req, res) => {
+	const { newDescription, token } = req.body;
+
+	// Check if the token and new description are provided
+	if (!token) {
+		return res.status(401).send("No token provided.");
+	}
+
+	if (!newDescription) {
+		return res.status(400).send("New description is required.");
+	}
+
+	try {
+		// Verify the token
+		const decoded = jwt.verify(token, secretKey);
+		const username = decoded.username; // Assuming the token contains the username
+
+		// Find the user by username and update the description
+		const updatedUser = await users.findOneAndUpdate(
+			{ username: username.toLowerCase() }, // Match the username from the token
+			{ description: newDescription }, // Update description
+			{ new: true } // Return the updated document
+		);
+
+		// If no user is found
+		if (!updatedUser) {
+			return res.status(404).send("User not found.");
+		}
+
+		// Respond with the updated user data
+		return res.status(200).send({
+			message: "Description updated successfully!",
+			user: updatedUser,
+		});
+	} catch (error) {
+		console.error("Error updating description:", error);
+
+		// Handle token verification errors
+		if (error.name === "JsonWebTokenError") {
+			return res.status(401).send("Invalid token.");
+		}
+
+		return res.status(500).send("Internal Server Error");
+	}
+});
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, "games/");
+	},
+	filename: function (req, file, cb) {
+		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+		cb(null, uniqueSuffix + "-" + file.originalname);
+	},
+});
+
+const upload2 = multer({ storage: storage });
+
+app.post("/upload", upload2.single("gamefile"), async (req, res) => {
+	const { name, desc, author, category, price, multiplayer, token } =
+		req.body;
+	const tokens = await jwt.verify(token, SECRET_KEY);
+	log(`${tokens.username} just uploaded game ${name}`);
+	if (!req.file) {
+		return res.status(400).json({ error: "Game file is required." });
+	}
+
+	const gameFilePath = req.file.path;
+
+	try {
+		const newGame = new Games({
+			name,
+			desc,
+			author,
+			category: category.split(","),
+			price,
+			multiplayer: multiplayer === "true",
+			gamefileloc: gameFilePath,
+			Picturefileloc: "",
+		});
+
+		await newGame.save();
+		return res.status(201).json({
+			message: "Game uploaded successfully!",
+			game: newGame,
+		});
+	} catch (error) {
+		console.error("Error uploading game:", error);
+		return res.status(500).json({ error: "Failed to upload the game." });
+	}
+});
+
+app.get("/get-game-by-id", async (req, res) => {
+	const id = req.query.id;
+
+	if (!id) {
+		return res.status(400).send({ error: "Peli _id vaaditaan." });
+	}
+
+	try {
+		const peli = await Games.findById(id);
+
+		if (!peli) {
+			return res.status(404).send({ error: "Peliä ei löytynyt." });
+		}
+
+		return res.status(200).send(peli);
+	} catch (error) {
+		console.error("Virhe pelin hakemisessa:", error);
+		return res.status(500).send({ error: "Virhe pelin hakemisessa." });
+	}
+});
+
+app.get("/get-reviews", async (req, res) => {
+	try {
+		const id = req.query.id;
+
+		if (!id) {
+			return res.status(400).send({ error: "Peli id vaaditaan." });
+		}
+
+		const reviews = await Reviews.find({ game: id }).populate("writer");
+		return res.json(reviews);
+	} catch (error) {
+		console.error("Virhe haettaessa arvosteluja:", error);
+		return res
+			.status(500)
+			.send({ error: "Something does not work on the server." });
+	}
+});
 
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
-	const existingUser = await User.findOne({ username });
+
+	// Tarkista onko käyttäjä jo olemassa
+	const existingUser = await users.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
+
+	// Salasana hashataan
 	const hashedPassword = await bcrypt.hash(password, 10);
+
 	const newUser = new users({
 		username,
 		password: hashedPassword,
 		email,
 		phonenumber,
+		joindate: new Date(),
 	});
+
 	await newUser.save();
+
+	// Luo vahvistuslinkki
 	const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	const Confirmation = `
     <!DOCTYPE html>
@@ -242,17 +537,33 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
         </div>
     </body>
     </html>`;
+
+	// Lähetä vahvistusviesti
 	await sendMail(Confirmation, "Email Confirmation", email);
+	log(`${username} just registered`);
 	res.status(243).send("Done");
 });
-
+app.get("/get-user-data", async (req, res) => {
+	const { username } = req.query;
+	if (username) {
+		try {
+			const user = await users.findOne({ username: username });
+			user.password = "SHHH 🤫";
+			return res.status(200).send(user);
+		} catch (error) {
+			console.log(error);
+			return res.status(400).send("error getting data ");
+		}
+	}
+	return res.status(401).send("...");
+});
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	var { username, password } = req.body;
 	const user = await users.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
 	if (!user) {
-		return res.status(401).send("no user or email find")
+		return res.status(401).send("no user or email find");
 	}
 	if (!user.confirmedemail) {
 		return res.status(403).send("email is not verified");
@@ -260,11 +571,13 @@ app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
 	}
-	username = user.username
+	username = user.username;
 	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
-	res.json({ token });
+	log(`${username} just logged in`);
+	return res.json({ token });
 });
-app.post("/reset-password", async (req, res) => {
+
+app.get("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
 	try {
 		const x = jwt.verify(token, SECRET_KEY);
@@ -277,16 +590,107 @@ app.post("/reset-password", async (req, res) => {
 			return res.status(200).send("RESETED");
 		}
 	} catch (error) {
-		res.status(400).send("invalid token");
+		return res.status(400).send("invalid token");
 	}
 });
+setInterval(async () => {
+	newsletter = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset Confirmation</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            position: relative;
+            padding: 12px 35px;
+            margin-top: 20px;
+            font-size: 17px;
+            font-weight: 500;
+            color: #ffffff;
+            background: linear-gradient(145deg, #b0b0b0, #e0e0e0);
+            border: 2px solid #a6a6a6;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+            color: #333;
+            box-shadow: 0 0 15px rgba(128, 128, 128, 0.5);
+        }
+        .footer {
+                margin-top: 30px;
+                font-size: 12px;
+                color: #999;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our New Newsletter</h1>
+        <p>Hello,</p>
+        <p>You received our newsletter.</p>
+        <p>To read our newsletter, click the button below:</p>
+        <a href="https://lol.tyhjyys.com" class="button">Newsletter</a>
+        
+        <div class="footer">
+            <p>Thank you,<br>The Wrench Team</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+`;
+
+	const x = await NewsLetter.find();
+	console.log(x);
+	for (var i = 0; i <= x.length; i++) {
+		console.log(x[i].email);
+
+		await sendMail(newsletter, "You received our newsletter", x[i].email);
+	}
+	console.log("sent");
+}, 1000 * 60 * 60 * 24);
+
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });
 
 	if (!user) {
-		res.status(400).send("didnt find email");
+		return res.status(400).send("didnt find email");
 	}
+	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -374,84 +778,121 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
-require('dotenv').config();
-const multer = require('multer');
-const { Client, GatewayIntentBits } = require('discord.js');
-
-
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages
-    ]
-});
-
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-});
-
-client.login(process.env.DISCORD_TOKEN);
 
 const upload = multer({
-    dest: 'uploads/',
-    limits: { fileSize: 8 * 1024 * 1024 }
+	dest: "uploads/",
+	limits: { fileSize: 8 * 1024 * 1024 },
 });
+async function log(msg) {
+	const channel = await client.channels.fetch(
+		process.env.DISCORD_LOG_CHANNEL
+	);
+	try {
+		const sentMessage = await channel.send({
+			content: `${msg}`,
+		});
+	} catch (error) {
+		console.error(`Failed to send msg`, error);
+	}
+}
 
-app.post('/upload', upload.array('images', 10), async (req, res) => {
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: 'No files uploaded.' });
+app.post("/upload-game", upload.fields([
+    { name: "images", maxCount: 10 }, 
+    { name: "gamefile", maxCount: 1 }
+]), async (req, res) => {
+
+    if (!req.files || !req.files.gamefile || req.files.gamefile.length === 0) {
+        return res.status(400).json({ error: "Game file is required." });
     }
 
+   
+    if (!req.files.images || req.files.images.length === 0) {
+        return res.status(400).json({ error: "No images uploaded." });
+    }
+
+    const { name, desc, author, category, price, multiplayer, token } = req.body;
+
+
     try {
+        const tokens = await jwt.verify(token, SECRET_KEY);
+        console.log(`${tokens.username} just uploaded game ${name}`);
+
+       
         const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
         if (!channel) {
-            return res.status(500).json({ error: 'Discord channel not found.' });
+            return res.status(500).json({ error: "Discord channel not found." });
         }
 
         const imageUrls = [];
 
-        for (const file of req.files) {
+        for (const file of req.files.images) {
             const filePath = path.join(__dirname, file.path);
 
             try {
                 const sentMessage = await channel.send({
                     content: `Heh uusi kuva :D: ${file.originalname}`,
-                    files: [{
-                        attachment: filePath,
-                        name: file.originalname
-                    }]
+                    files: [
+                        {
+                            attachment: filePath,
+                            name: file.originalname,
+                        },
+                    ],
                 });
 
                 const imageUrl = sentMessage.attachments.first().url;
-                imageUrls.push(imageUrl);
+                imageUrls.push(imageUrl);  
 
-                fs.unlinkSync(filePath);
+                fs.unlinkSync(filePath); 
             } catch (error) {
                 console.error(`Failed to upload image: ${file.originalname}`, error);
-                fs.unlinkSync(filePath);  
+                fs.unlinkSync(filePath);
             }
         }
 
+        
+        const gameFilePath = req.files.gamefile[0].path;
+
+        
+        const newGame = new Games({
+            name,
+            desc,
+            author,
+            category: category.split(","),  
+            price: parseFloat(price), 
+            multiplayer: multiplayer === "true", 
+            gamefileloc: gameFilePath,
+            Picturefileloc: imageUrls,  
+        });
+
+        await newGame.save();
+
+        
         if (imageUrls.length === 0) {
-            return res.status(500).json({ error: 'Failed to upload any images.' });
+            return res.status(500).json({ error: "Failed to upload any images." });
         }
 
-        res.json({ urls: imageUrls });
-
+        return res.status(201).json({
+            message: "Game and images uploaded successfully!",
+            game: newGame,
+            imageUrls: imageUrls,
+        });
     } catch (err) {
-        console.error('Error uploading images to Discord:', err);
-        res.status(500).json({ error: 'Internal server error during image upload.' });
+        console.error("Error uploading game and images:", err);
+        return res.status(500).json({
+            error: "Internal server error during upload.",
+        });
     }
 });
 
 
-////////////////////////////////////////BOTTI//////////////////////////////////////////
-////////////////////////////////////////BOTTI//////////////////////////////////////////
-////////////////////////////////////////BOTTI//////////////////////////////////////////
-////////////////////////////////////////BOTTI//////////////////////////////////////////
 
+
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
+////////////////////////////////////////BOTTI//////////////////////////////////////////
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port http://localhost:${PORT}`);
 });

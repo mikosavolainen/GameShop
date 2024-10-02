@@ -26,3 +26,18 @@ body{
   background-color: #1C1C1C;
   min-height: 100vh;
 }
+  .scrollbar::-webkit-scrollbar {
+    @apply w-2.5;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    @apply bg-wrench-neutral-5 rounded-full;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply border border-wrench-neutral-white bg-wrench-purple rounded-full;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-wrench-purple-2 rounded-full;
+  }

@@ -6,7 +6,7 @@ import Input from "../Input";
 import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function PasswordReset() {
+export default function PasswordResetRequest() {
   const { setModalPage, setModalLoading } = useContext(AuthenticationModalContext)
 
   // API request function
@@ -35,7 +35,7 @@ export default function PasswordReset() {
       // Handle success (e.g., store user data, redirect)
       queryClient.invalidateQueries({ queryKey: ['users'] });
       setModalLoading(false)
-      setModalPage("passwordResetSuccess")
+      setModalPage("passwordResetRequestSuccess")
     },
     onError: (error: { response?: { data?: string } }) => {
       // Set error message state
@@ -97,6 +97,7 @@ export default function PasswordReset() {
         {errors.global && <div className="text-wrench-accent-gold">{errors.global}</div>}
         <Button type="submit" icon="restart_alt" size="big" style="purple" className="block w-full mt-4" text="Reset" />
       </form>
+      <Button type="button" icon="login" size="big" style="neutral" className="block w-full mt-4" text="Sign in" onClick={() => setModalPage("signIn")} />
     </>
   );
 }

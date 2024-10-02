@@ -1,13 +1,13 @@
 import { Link } from "wouter";
-import Button from "./Button";
-import { AuthenticationModalContext } from "../wrappers/AuthenticationModalWrapper";
-import { useContext, useEffect, useRef, useState } from "react";
+import Button from "../Button";
+import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
-import default_pfp from "../assets/default_pfp.jpg"
-import { AuthContext } from "../wrappers/AuthWrapper";
-import { signOutHelper } from "../lib/AuthFunctions";
+import default_pfp from "../../assets/default_pfp.jpg"
+import { AuthContext } from "../../wrappers/AuthWrapper";
+import { signOutHelper } from "../../lib/AuthFunctions";
 
-export default function MobileMenu({opened}: {opened: boolean}) {
+export default function MobileMenu({opened, setOpened}: {opened: boolean, setOpened: Dispatch<SetStateAction<boolean>>}) {
   const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
   const { user, setUser } = useContext(AuthContext)
   const scrollPosition = useRef(0)
@@ -68,7 +68,7 @@ export default function MobileMenu({opened}: {opened: boolean}) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}>
             <div className="h-[calc(100vh-64px)]">
-              <Link href={user ? "/user/"+user.username : "#"} className="bg-wrench-neutral-4 border border-wrench-neutral-3 rounded-3xl m-8 block p-6">
+              <Link href={user ? "/user/"+user.username : "#"} className="bg-wrench-neutral-4 border border-wrench-neutral-3 rounded-3xl m-8 block p-6" onClick={() => setOpened(false)}>
                 <img alt="Default profile picture" src={default_pfp} className="size-16 rounded-full mb-6" />
                 <div className="flex justify-between mb-4">
                   <div>

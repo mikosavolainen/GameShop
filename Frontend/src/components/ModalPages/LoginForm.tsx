@@ -117,7 +117,7 @@ export default function LoginForm() {
           outerClassName="mb-4"
         />
         {errors.global && <div className="text-wrench-accent-gold">{errors.global}</div>}
-        <span>Forgot your password? <button type="button" onClick={() => setModalPage("passwordReset")}>Reset here!</button></span>
+        <span>Forgot your password? <button type="button" onClick={() => setModalPage("passwordResetRequest")} className="text-wrench-accent-gold">Reset here!</button></span>
         <Button type="submit" icon="login" size="big" style="purple" className="block w-full my-4" text="Sign in" />
       </form>
       <Button type="button" icon="add" size="big" style="neutral" className="block w-full" text="Sign up" onClick={() => setModalPage("signUp")} />
