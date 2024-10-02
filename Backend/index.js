@@ -16,7 +16,6 @@ require("dotenv").config();
 
 const { Client, GatewayIntentBits } = require("discord.js");
 
-
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
@@ -27,7 +26,7 @@ client.once("ready", () => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-const SECRET_KEY=(process.env.SECRET_KEY); // Heh meidän salainen avain :DD
+const SECRET_KEY = process.env.SECRET_KEY; // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -139,7 +138,7 @@ app.post("/get-all-owned-games", async (req, res) => {
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-		const user = users.findOne({username: token.username})
+		const user = users.findOne({ username: token.username });
 		const games = await Library.find({ owner: user._id }).populate("games");
 		return res.json(games);
 	} catch (error) {
@@ -158,29 +157,30 @@ app.get("/get-all-games", async (req, res) => {
 	}
 });
 app.post("/buy-game", async (req, res) => {
-	const { game_id, token } = req.body
+	const { game_id, token } = req.body;
 	try {
-		const jwts = await jwt.verify(token, SECRET_KEY)
-		const is = await Library.find({ username: jwts.username })
-		console.log(is) 
+		const jwts = await jwt.verify(token, SECRET_KEY);
+		const is = await Library.find({ username: jwts.username });
+		console.log(is);
 		if (is) {
-			await Library.findOneAndUpdate({ username: jwt.username }, { $push: { games: game_id } })
-			return res.status(200).send("bought")
-		}
-		else {
-			const user = await users.findOne({username: jwts.username})
+			await Library.findOneAndUpdate(
+				{ username: jwt.username },
+				{ $push: { games: game_id } }
+			);
+			return res.status(200).send("bought");
+		} else {
+			const user = await users.findOne({ username: jwts.username });
 			const x = new Library({
 				owner: user._id,
-				games: game_id
-			})
-			x.save()
-			return res.status(201).send("bought")
+				games: game_id,
+			});
+			x.save();
+			return res.status(201).send("bought");
 		}
-
 	} catch (error) {
-		return res.status(200).send(error)
+		return res.status(200).send(error);
 	}
-})
+});
 app.get("/search-game", async (req, res) => {
 	const {
 		text,
@@ -190,8 +190,10 @@ app.get("/search-game", async (req, res) => {
 		maxPrice,
 		minRating,
 		author,
+		page,
+		limit
 	} = req.query;
-
+    const offset = (page - 1) * limit;
 	try {
 		const query = {};
 
@@ -235,12 +237,15 @@ app.get("/search-game", async (req, res) => {
 			},
 			{
 				$match: {
-					averageRating: { $gte: parseFloat(minRating) || null },
+					$or: [
+						{ averageRating: { $gte: parseFloat(minRating) || 0 } }, // Games that meet the rating criteria
+						{ averageRating: null }, // Games without a rating
+					],
 				},
 			},
 		];
 
-		const result = await Games.aggregate(aggregationPipeline);
+		const result = await Games.aggregate(aggregationPipeline).skip(offset).limit(limit);
 
 		if (result.length > 0) {
 			return res.status(200).json(result);
@@ -677,8 +682,6 @@ setInterval(async () => {
 	}
 	console.log("sent");
 }, 1000 * 60 * 60 * 24);
-
-
 
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
