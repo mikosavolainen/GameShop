@@ -148,8 +148,10 @@ app.post("/get-all-owned-games", async (req, res) => {
 });
 
 app.get("/get-all-games", async (req, res) => {
+	const { page, limit } = req.query;
+	const offset = (page - 1) * limit;
 	try {
-		const game = await Games.find();
+		const game = await Games.find().skip(offset).limit(limit);
 		return res.json(game);
 	} catch (error) {
 		console.error("Error fetching games:", error);
@@ -191,9 +193,9 @@ app.get("/search-game", async (req, res) => {
 		minRating,
 		author,
 		page,
-		limit
+		limit,
 	} = req.query;
-    const offset = (page - 1) * limit;
+	const offset = (page - 1) * limit;
 	try {
 		const query = {};
 
@@ -245,7 +247,9 @@ app.get("/search-game", async (req, res) => {
 			},
 		];
 
-		const result = await Games.aggregate(aggregationPipeline).skip(offset).limit(limit);
+		const result = await Games.aggregate(aggregationPipeline)
+			.skip(offset)
+			.limit(limit);
 
 		if (result.length > 0) {
 			return res.status(200).json(result);
@@ -796,96 +800,104 @@ async function log(msg) {
 	}
 }
 
-app.post("/upload-game", upload.fields([
-    { name: "images", maxCount: 10 }, 
-    { name: "gamefile", maxCount: 1 }
-]), async (req, res) => {
+app.post(
+	"/upload-game",
+	upload.fields([
+		{ name: "images", maxCount: 10 },
+		{ name: "gamefile", maxCount: 1 },
+	]),
+	async (req, res) => {
+		if (
+			!req.files ||
+			!req.files.gamefile ||
+			req.files.gamefile.length === 0
+		) {
+			return res.status(400).json({ error: "Game file is required." });
+		}
 
-    if (!req.files || !req.files.gamefile || req.files.gamefile.length === 0) {
-        return res.status(400).json({ error: "Game file is required." });
-    }
+		if (!req.files.images || req.files.images.length === 0) {
+			return res.status(400).json({ error: "No images uploaded." });
+		}
 
-   
-    if (!req.files.images || req.files.images.length === 0) {
-        return res.status(400).json({ error: "No images uploaded." });
-    }
+		const { name, desc, author, category, price, multiplayer, token } =
+			req.body;
 
-    const { name, desc, author, category, price, multiplayer, token } = req.body;
+		try {
+			const tokens = await jwt.verify(token, SECRET_KEY);
+			console.log(`${tokens.username} just uploaded game ${name}`);
 
+			const channel = await client.channels.fetch(
+				process.env.DISCORD_CHANNEL_ID
+			);
+			if (!channel) {
+				return res
+					.status(500)
+					.json({ error: "Discord channel not found." });
+			}
 
-    try {
-        const tokens = await jwt.verify(token, SECRET_KEY);
-        console.log(`${tokens.username} just uploaded game ${name}`);
+			const imageUrls = [];
 
-       
-        const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
-        if (!channel) {
-            return res.status(500).json({ error: "Discord channel not found." });
-        }
+			for (const file of req.files.images) {
+				const filePath = path.join(__dirname, file.path);
 
-        const imageUrls = [];
+				try {
+					const sentMessage = await channel.send({
+						content: `Heh uusi kuva :D: ${file.originalname}`,
+						files: [
+							{
+								attachment: filePath,
+								name: file.originalname,
+							},
+						],
+					});
 
-        for (const file of req.files.images) {
-            const filePath = path.join(__dirname, file.path);
+					const imageUrl = sentMessage.attachments.first().url;
+					imageUrls.push(imageUrl);
 
-            try {
-                const sentMessage = await channel.send({
-                    content: `Heh uusi kuva :D: ${file.originalname}`,
-                    files: [
-                        {
-                            attachment: filePath,
-                            name: file.originalname,
-                        },
-                    ],
-                });
+					fs.unlinkSync(filePath);
+				} catch (error) {
+					console.error(
+						`Failed to upload image: ${file.originalname}`,
+						error
+					);
+					fs.unlinkSync(filePath);
+				}
+			}
 
-                const imageUrl = sentMessage.attachments.first().url;
-                imageUrls.push(imageUrl);  
+			const gameFilePath = req.files.gamefile[0].path;
 
-                fs.unlinkSync(filePath); 
-            } catch (error) {
-                console.error(`Failed to upload image: ${file.originalname}`, error);
-                fs.unlinkSync(filePath);
-            }
-        }
+			const newGame = new Games({
+				name,
+				desc,
+				author,
+				category: category.split(","),
+				price: parseFloat(price),
+				multiplayer: multiplayer === "true",
+				gamefileloc: gameFilePath,
+				Picturefileloc: imageUrls,
+			});
 
-        
-        const gameFilePath = req.files.gamefile[0].path;
+			await newGame.save();
 
-        
-        const newGame = new Games({
-            name,
-            desc,
-            author,
-            category: category.split(","),  
-            price: parseFloat(price), 
-            multiplayer: multiplayer === "true", 
-            gamefileloc: gameFilePath,
-            Picturefileloc: imageUrls,  
-        });
+			if (imageUrls.length === 0) {
+				return res
+					.status(500)
+					.json({ error: "Failed to upload any images." });
+			}
 
-        await newGame.save();
-
-        
-        if (imageUrls.length === 0) {
-            return res.status(500).json({ error: "Failed to upload any images." });
-        }
-
-        return res.status(201).json({
-            message: "Game and images uploaded successfully!",
-            game: newGame,
-            imageUrls: imageUrls,
-        });
-    } catch (err) {
-        console.error("Error uploading game and images:", err);
-        return res.status(500).json({
-            error: "Internal server error during upload.",
-        });
-    }
-});
-
-
-
+			return res.status(201).json({
+				message: "Game and images uploaded successfully!",
+				game: newGame,
+				imageUrls: imageUrls,
+			});
+		} catch (err) {
+			console.error("Error uploading game and images:", err);
+			return res.status(500).json({
+				error: "Internal server error during upload.",
+			});
+		}
+	}
+);
 
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
