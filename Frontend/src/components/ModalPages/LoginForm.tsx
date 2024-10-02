@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 import { z } from "zod";
 import axios from "axios";
 import Input from "../Input";
@@ -9,7 +9,7 @@ import { signInHelper } from "../../lib/AuthFunctions";
 import { AuthContext } from "../../wrappers/AuthWrapper";
 
 export default function LoginForm() {
-  const { setModalPage, setModalLoading, setModalOpen } = useContext(AuthenticationModalContext)
+  const { setModalPage, setModalLoading, setModalOpen } = useContext(ModalContext)
   const { setUser } = useContext(AuthContext)
 
   // API request function

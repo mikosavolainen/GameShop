@@ -5,7 +5,7 @@ import Search from './components/Search.tsx'
 import Highlighted from './components/Highlighted.tsx'
 import Popular from './components/Popular.tsx'
 import New from './components/New.tsx'
-import AuthenticationModalWrapper, { AuthenticationModalContext } from './wrappers/AuthenticationModalWrapper.tsx'
+import ModalWrapper, { ModalContext } from './wrappers/ModalWrapper.tsx'
 import { useContext, useEffect, useState } from "react";
 import Categories from './components/Categories.tsx'
 import Footer from "./components/Parts/Footer.tsx";
@@ -29,9 +29,9 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <AuthWrapper>
-          <AuthenticationModalWrapper>
+          <ModalWrapper>
             <MainContent />
-          </AuthenticationModalWrapper>
+          </ModalWrapper>
         </AuthWrapper>
       </QueryClientProvider>
     </>
@@ -39,7 +39,7 @@ function App() {
 }
 
 function MainContent() {
-  const { scrollbarCompensation } = useContext(AuthenticationModalContext)
+  const { scrollbarCompensation } = useContext(ModalContext)
   const [mobileMenu, setMobileMenu] = useState(false)
   const [mobileNotifications, setMobileNotifications] = useState(false)
 
@@ -63,7 +63,7 @@ function MainContent() {
         <Route path="*" component={NotFound} />
       </Switch>
       <MobileMenu opened={mobileMenu} setOpened={setMobileMenu} />
-      <MobileNotifications opened={mobileNotifications} setOpened={setMobileNotifications} />
+      <MobileNotifications opened={mobileNotifications}/*  setOpened={setMobileNotifications} */ />
       <MobileNavigationBar setMobileMenu={setMobileMenu} setMobileNotifications={setMobileNotifications} />
     </div>
   )

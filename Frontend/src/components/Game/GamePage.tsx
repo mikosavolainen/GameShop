@@ -30,7 +30,7 @@ export default function GamePage() {
   const imageScrollInnerRef = useRef<HTMLDivElement | null>(null);
   const [imageScrollLeftOffset, setImageScrollLeftOffset] = useState(0)
   const imageListItem = useRef<HTMLButtonElement | null>(null)
-  const [res, setRes] = useState<any | null>(null)
+  const [res, setRes] = useState<{ name: string, category: string[], price: number, desc: string } | null>(null)
   useEffect(() => {
     const handleResize = () => {
       if(imageScrollRef.current && imageListItem.current && imageScrollInnerRef.current){
@@ -54,7 +54,7 @@ export default function GamePage() {
       setRes(data)
     }
     fetch()
-  }, [])
+  }, [params.id])
 
   // some animations stuff, not the best but works
   const [currentSrc, setCurrentSrc] = useState(images[chosenImage].src);
@@ -68,7 +68,7 @@ export default function GamePage() {
     }, 200); // Adjust the timing to match your CSS animation duration
 
     return () => clearTimeout(timer);
-  }, [chosenImage, images]);
+  }, [chosenImage]);
 
   useEffect(() => {
     while(true) {

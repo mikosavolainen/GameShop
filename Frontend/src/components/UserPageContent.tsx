@@ -15,7 +15,7 @@ export default function UserPageContent() {
       console.log(params.user)
     }
     fetch()
-  }, [])
+  }, [params.user])
   const { user } = useContext(AuthContext) //this is for checking if user is logged in meaning if not logged in user cannot see the stff to change things.
   function Profile() {
     return (

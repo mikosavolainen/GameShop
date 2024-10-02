@@ -7,27 +7,16 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 
 export default function Reviews({gameId}: {gameId: string}) {
-  const [reviews, setReviews] = useState(
-    [
-      { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
-      { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
-      { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
-      { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
-      { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
-      { username: "username", date: new Date(), rating: 4, content: "This is a test review test testsetsefdgdfa asg qdgadsrcaesgas er asegf, edfgsdfg asdgsdfgag." },
-    ]
-  )
+  const [reviews, setReviews] = useState([])
   useEffect(() => {
     async function fetch() { // function to fetch game information
       const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
       const { data } = await axios.get(`${apiUrl}/get-reviews`, { params: { id: gameId } }); // idk why post is used on server side instead of get but ok
+      setReviews(data)
       console.log(data)
     }
     fetch()
-  }, [])
-  const fetchMoreReviews = async () => {
-    setReviews([])
-  }
+  }, [gameId])
   return(
     <>
       <select className="text-wrench-neutal-white bg-wrench-neutral-dark">
@@ -37,14 +26,10 @@ export default function Reviews({gameId}: {gameId: string}) {
         <option>Sort by rating (old to new)</option>
       </select>
       <div className="grid grid-cols-2 gap-12 my-6">
-        { reviews.map((review) => (
-          <>
-            <Review {...(review)} />
-          </>
-        )) }
+        { reviews.map((review: { writer: { username: string }[], date: Date, rating: number, desc: string }) => <Review username={review.writer[0].username as string} date={review.date} rating={review.rating} content={review.desc} />) }
       </div>
       <div className="flex items-center my-12">
-        <Button className="mx-auto" type="button" style="neutral" size="small" text="Load more" icon="keyboard_arrow_down" onClick={() => fetchMoreReviews()} />
+        <Button className="mx-auto" type="button" style="neutral" size="small" text="Load more" icon="keyboard_arrow_down" /* onClick={() => fetchMoreReviews()} */ />
       </div>
     </>
   )

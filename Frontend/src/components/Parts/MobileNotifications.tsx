@@ -1,29 +1,15 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 
-export default function MobileNotifications({opened, setOpened}: {opened: boolean, setOpened: Dispatch<SetStateAction<boolean>>}) {
-/*   const { setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
+export default function MobileNotifications({opened}: {opened: boolean}) {
+/*   const { setModalOpen, setModalPage } = useContext(ModalContext)
   const { user, setUser } = useContext(AuthContext) */
   const scrollPosition = useRef(0)
-  const [scrollTop, setScrollTop] = useState(0)
-
-  const handleScroll = () => {
-    setScrollTop(window.scrollY)
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
 
   useEffect(() => {
     const disableScroll = () => {
       // Save the current scroll position
-      scrollPosition.current = scrollTop
+      scrollPosition.current = window.scrollY
 
       // Set body to fixed position at the current scroll position
       document.body.style.position = 'fixed'

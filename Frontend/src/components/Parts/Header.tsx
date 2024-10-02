@@ -1,10 +1,10 @@
 import { Link, useRoute, useSearch } from "wouter";
 import Button from "../Button";
-import { AuthenticationModalContext } from "../../wrappers/AuthenticationModalWrapper";
+import { ModalContext } from "../../wrappers/ModalWrapper";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import Modal from "../Modal";
-import AuthForms from "../ModalPages/AuthForms";
+import ModalPages from "../ModalPages/ModalPages";
 import { AuthContext } from "../../wrappers/AuthWrapper";
 import { signOutHelper } from "../../lib/AuthFunctions";
 import default_pfp from "../../assets/default_pfp.jpg"
@@ -13,7 +13,7 @@ import { useDetectClickOutside } from "react-detect-click-outside";
 
 export default function Header() {
   const [, setLocation] = useLocation()
-  const { modalOpen, setModalOpen, setModalPage } = useContext(AuthenticationModalContext)
+  const { modalOpen, setModalOpen, setModalPage } = useContext(ModalContext)
   const { user, setUser } = useContext(AuthContext)
 
   const [dropdown, setDropdown] = useState<boolean>(false)
@@ -30,7 +30,7 @@ export default function Header() {
       setModalOpen(true)
       setLocation("/?"+searchString)
     }
-  }, [setNewPasswordRouteMatch])
+  }, [setNewPasswordRouteMatch, searchString, setLocation, setModalPage, setModalOpen])
 
   return(
     <>
@@ -38,7 +38,7 @@ export default function Header() {
         setModalOpen(false);
         // setTimeout(() => setModalPage("signIn"), 1000) // timeout so that the page changes after the animation
         }}>
-        <AuthForms />
+        <ModalPages />
       </Modal>
       <div className="hidden md:flex items-center w-full h-16 z-20 fixed left-0 right-0 top-0 bg-wrench-neutral-dark/85 backdrop-blur-3xl content-layout-padding">
         <div className="text-2xl font-semibold block">

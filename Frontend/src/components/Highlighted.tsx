@@ -66,7 +66,7 @@ export default function Highlighted() {
       setSliderPage(sliderPage + 1)
     }
     setTimer(0)
-  }, [timer, timerRunning])
+  }, [timer, timerRunning, sliderPage])
 
   function slide(number: number) {
     setSliderPage(number)

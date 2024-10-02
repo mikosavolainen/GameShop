@@ -11,44 +11,71 @@ import image2 from "../assets/test_image_wrench_2.png"
 export default function SearchFilter(){
     const [, setLocation] = useLocation()
     const [searchValue, setSearchValue] = useState("")
-    const [checkboxes, setCheckboxes] = useState([false, false, false, false, false, false, false, false, false, false, false])
+    const [end, setEnd] = useState("")
+    const [checkboxes, setCheckboxes] = useState([false])
     const [sortSwitch, setSortSwitch] = useState(true)
     const [selectedSorting, setSelectedSorting] = useState("grid")
     const searchString = useSearch()
+    const [cat, setCat] = useState<string[]>([])
+    const [dev, setDev] = useState<string[]>([])
     const [res, setRes] = useState([])
+
+        useEffect(() => {
+        const categories: string[] = []
+        const developers: string[] = []
+        const fetch = async () => {
+          const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
+          const { data } = await axios.get(`${apiUrl}/get-all-games`); // idk why post is used on server side instead of get but ok
+          console.log(data)
+          data.map((r: { category: [], author: string }) => {
+              developers.push(r.author)
+              r.category.map((v: string ) => categories.push(v))
+          })
+        const uniqueCategories = [...new Set(categories)]
+        const uniqueDevelopers = [...new Set(developers)]
+        console.log(uniqueCategories)
+          setCat(uniqueCategories)
+          setDev(uniqueDevelopers)
+        }
+    
+        fetch()
+      }, [])
     useEffect(() => {
         const fetch = async () => {
           const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
           const { data } = await axios.get(`${apiUrl}/search-game?${searchString}`); // idk why post is used on server side instead of get but ok
-          console.log(data)
           setRes(data)
         }
     
         fetch()
       }, [searchString])
-      const handleCheckboxCheck = (id: number) => {
+      const handleCheckboxCheck = (id: number, name?: string, dev?: boolean) => {
         const checkbox = checkboxes
         checkbox[id] = !checkbox[id]
-        console.log(checkbox)
         setCheckboxes(checkbox)
+        let endpoint = ""
+        if(!dev && checkboxes[id]){
+            endpoint = `&category=${name}`
+            setEnd(end+endpoint)
+        }
+        else if(!dev && !checkboxes[id]){
+            endpoint = `&category=${name}`
+            setEnd(end.replace(endpoint, ""))
+        }
+        else if(dev && checkboxes[id]){
+            endpoint = `&author=${name}`
+            setEnd(end+endpoint)
+        }
+        else if(dev && !checkboxes[id]){
+            endpoint = `&author=${name}`
+            setEnd(end.replace(endpoint, ""))
+        }
       }
       const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setSearchValue(event.target.value)
     }
     function search(value: string){
-        let categories: string = ""
-        if(checkboxes[0]){categories += "&category=Shooter"}
-        if(checkboxes[1]){categories += "&category=Simulation"}
-        if(checkboxes[2]){categories += "&category=Strategy"}
-        if(checkboxes[3]){categories += "&category=Sci-fi"}
-        if(checkboxes[4]){categories += "&category=Adventure"}
-        if(checkboxes[5]){categories += "&category=Puzzle"}
-        if(checkboxes[6]){categories += "&category=Action"}
-        if(checkboxes[7]){categories += "&category=RPG"}
-        if(checkboxes[8]){categories += "&category=Fantasy"}
-        if(checkboxes[9]){categories += "&category=Stealth"}
-        if(checkboxes[10]){categories += "&category=Multiplayer"}
-        setLocation(`/search?text=${value}${categories}`)
+        setLocation(`/search?text=${value}${end}`)
         event?.preventDefault()
     }
     return (
@@ -102,21 +129,13 @@ export default function SearchFilter(){
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
                 <div className="scrollbar overflow-y-scroll max-h-60 mr-4">
-                    <Checkbox label="Shooter" id="0" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(0)}/>
-                    <Checkbox label="Simulation" id="1" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(1)}/>
-                    <Checkbox label="Strategy" id="2" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(2)}/>
-                    <Checkbox label="Sci-fi" id="3" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(3)}/>
-                    <Checkbox label="Adventure" id="4" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(4)}/>
-                    <Checkbox label="Puzzle" id="5" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(5)}/>
-                    <Checkbox label="Action" id="6" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(6)}/>
-                    <Checkbox label="RPG" id="7" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(7)}/>
-                    <Checkbox label="Fantasy" id="8" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(8)}/>
-                    <Checkbox label="Stealth" id="9" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(9)}/>
-                    <Checkbox label="Multiplayer" id="10" className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(10)}/>
+                    { cat.map((r, index) => (
+                        <Checkbox label={r} id={r.toString()} className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(index, r.toString())}/>
+                )) }
                 </div>
 
                 <p className="px-6 mt-4">Price</p>
-                <Checkbox label="On sale" id="11" className="px-6 my-2" required={false}/>
+                <Checkbox label="On sale" id="11" className="px-6 my-2" required={false} onChange={() => handleCheckboxCheck(cat.length)}/>
 
                 <p className="px-6 mt-4">Developers</p>
                 <div className="flex py-3 mr-4">
@@ -124,10 +143,9 @@ export default function SearchFilter(){
                 <Button type="button" icon="restart_alt" text="Reset"/>
                 </div>
                 <div className="scrollbar overflow-y-scroll max-h-60 mr-4">
-                <Checkbox label="A developer studio" id="12" className="px-6 py-2" required={false}/>
-                <Checkbox label="A studio test" id="13" className="px-6 py-2" required={false}/>
-                <Checkbox label="Basically, a developer name" id="14" className="px-6 py-2" required={false}/>
-                <Checkbox label="Developer name" id="15" className="px-6 py-2" required={false}/>
+                { dev.map((r, index) => (
+                        <Checkbox label={r} id={r.toString()} className="px-6 py-2" required={false} onChange={() => handleCheckboxCheck(index+cat.length, r.toString(), true)}/>
+                )) }
                 </div>
             </div>
             </div>
