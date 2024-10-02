@@ -1,4 +1,4 @@
-const Checkbox = ({ label, id, name, className, error, required = false, onChange}: { label: string, id: string, name?: string, className?: string, error?: string, required: boolean, onChange?: React.MouseEventHandler<HTMLInputElement>}) => {
+const Checkbox = ({ label, id, name, className, error, required = false, onChange}: { label: string, id: string, name?: string, className?: string, error?: string, required?: boolean, onChange?: React.MouseEventHandler<HTMLInputElement>}) => {
   return (
     <div className={`${className}`}>
       <div className={`inline-flex items-center gap-2 relative hover:cursor-pointer`}>

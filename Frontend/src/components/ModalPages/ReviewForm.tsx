@@ -7,7 +7,7 @@ import axios from 'axios'
 import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 export default function ReviewForm() {
-  const { setModalPage, setModalLoading, setModalOpen } =
+  const { setModalLoading, setModalOpen } =
     useContext(ModalContext)
 
   // API request function
@@ -47,7 +47,7 @@ export default function ReviewForm() {
   // React Query mutation for POST request with proper types
   const mutation = useMutation({
     mutationFn: loginRequest,
-    onSuccess: (data) => {
+    onSuccess: () => {
       // Handle success (e.g., store user data, redirect)
       queryClient.invalidateQueries({ queryKey: ['users'] })
       setModalLoading(false)
@@ -122,6 +122,7 @@ export default function ReviewForm() {
   }
   return (
     <>
+    {errors}
       <h2 className="text-2xl mb-4">Review</h2>
       <form onSubmit={handleSubmit}>
         <textarea
