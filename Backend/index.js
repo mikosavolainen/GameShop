@@ -365,52 +365,6 @@ app.post("/update-desc", async (req, res) => {
 	}
 });
 
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "games/");
-	},
-	filename: function (req, file, cb) {
-		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-		cb(null, uniqueSuffix + "-" + file.originalname);
-	},
-});
-
-const upload2 = multer({ storage: storage });
-
-app.post("/upload", upload2.single("gamefile"), async (req, res) => {
-	const { name, desc, author, category, price, multiplayer, token } =
-		req.body;
-	const tokens = await jwt.verify(token, SECRET_KEY);
-	log(`${tokens.username} just uploaded game ${name}`);
-	if (!req.file) {
-		return res.status(400).json({ error: "Game file is required." });
-	}
-
-	const gameFilePath = req.file.path;
-
-	try {
-		const newGame = new Games({
-			name,
-			desc,
-			author,
-			category: category.split(","),
-			price,
-			multiplayer: multiplayer === "true",
-			gamefileloc: gameFilePath,
-			Picturefileloc: "",
-		});
-
-		await newGame.save();
-		return res.status(201).json({
-			message: "Game uploaded successfully!",
-			game: newGame,
-		});
-	} catch (error) {
-		console.error("Error uploading game:", error);
-		return res.status(500).json({ error: "Failed to upload the game." });
-	}
-});
-
 app.get("/get-game-by-id", async (req, res) => {
 	const id = req.query.id;
 
@@ -789,121 +743,103 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 
-const upload = multer({
-	dest: "uploads/",
-	limits: { fileSize: 8 * 1024 * 1024 },
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        if (file.fieldname === 'gamefile') {
+            cb(null, 'games/');  
+        } else if (file.fieldname === 'images') {
+            cb(null, 'uploads/');  
+        } else {
+            cb(new Error('Unknown file type'), false);
+        }
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    }
 });
-async function log(msg) {
-	const channel = await client.channels.fetch(
-		process.env.DISCORD_LOG_CHANNEL
-	);
-	try {
-		const sentMessage = await channel.send({
-			content: `${msg}`,
-		});
-	} catch (error) {
-		console.error(`Failed to send msg`, error);
-	}
-}
 
-app.post(
-	"/upload-game",
-	upload.fields([
-		{ name: "images", maxCount: 10 },
-		{ name: "gamefile", maxCount: 1 },
-	]),
-	async (req, res) => {
-		if (
-			!req.files ||
-			!req.files.gamefile ||
-			req.files.gamefile.length === 0
-		) {
-			return res.status(400).json({ error: "Game file is required." });
-		}
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 8 * 1024 * 1024 },  
+});
 
-		if (!req.files.images || req.files.images.length === 0) {
-			return res.status(400).json({ error: "No images uploaded." });
-		}
+app.post('/upload-game', upload.fields([
+    { name: 'images', maxCount: 10 },  
+    { name: 'gamefile', maxCount: 1 }   
+]), async (req, res) => {
 
-		const { name, desc, author, category, price, multiplayer, token } =
-			req.body;
+    if (!req.files || !req.files.gamefile || req.files.gamefile.length === 0) {
+        return res.status(400).json({ error: 'Game file is required.' });
+    }
+    if (!req.files.images || req.files.images.length === 0) {
+        return res.status(400).json({ error: 'No images uploaded.' });
+    }
 
-		try {
-			const tokens = await jwt.verify(token, SECRET_KEY);
-			console.log(`${tokens.username} just uploaded game ${name}`);
+    const { name, desc, author, category, price, multiplayer, token } = req.body;
 
-			const channel = await client.channels.fetch(
-				process.env.DISCORD_CHANNEL_ID
-			);
-			if (!channel) {
-				return res
-					.status(500)
-					.json({ error: "Discord channel not found." });
-			}
+    try {
+        const tokens = await jwt.verify(token, SECRET_KEY);
+        console.log(`${tokens.username} just uploaded game ${name}`);
 
-			const imageUrls = [];
+        const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
+        if (!channel) {
+            return res.status(500).json({ error: 'Discord channel not found.' });
+        }
 
-			for (const file of req.files.images) {
-				const filePath = path.join(__dirname, file.path);
+        const imageUrls = [];
+        for (const file of req.files.images) {
+            const filePath = path.join(__dirname, file.path);
 
-				try {
-					const sentMessage = await channel.send({
-						content: `Heh uusi kuva :D: ${file.originalname}`,
-						files: [
-							{
-								attachment: filePath,
-								name: file.originalname,
-							},
-						],
-					});
+            try {
+                const sentMessage = await channel.send({
+                    content: `New image uploaded: ${file.originalname}`,
+                    files: [{
+                        attachment: filePath,
+                        name: file.originalname,
+                    }]
+                });
+                const imageUrl = sentMessage.attachments.first().url;
+                imageUrls.push(imageUrl);
 
-					const imageUrl = sentMessage.attachments.first().url;
-					imageUrls.push(imageUrl);
+                fs.unlinkSync(filePath);
+            } catch (error) {
+                console.error(`Failed to upload image: ${file.originalname}`, error);
+                fs.unlinkSync(filePath);
+            }
+        }
 
-					fs.unlinkSync(filePath);
-				} catch (error) {
-					console.error(
-						`Failed to upload image: ${file.originalname}`,
-						error
-					);
-					fs.unlinkSync(filePath);
-				}
-			}
+        const gameFilePath = req.files.gamefile[0].path;
 
-			const gameFilePath = req.files.gamefile[0].path;
+        const newGame = new Games({
+            name,
+            desc,
+            author,
+            category: category.split(','),
+            price: parseFloat(price),
+            multiplayer: multiplayer === 'true',
+            gamefileloc: gameFilePath,
+            Picturefileloc: imageUrls,
+        });
 
-			const newGame = new Games({
-				name,
-				desc,
-				author,
-				category: category.split(","),
-				price: parseFloat(price),
-				multiplayer: multiplayer === "true",
-				gamefileloc: gameFilePath,
-				Picturefileloc: imageUrls,
-			});
+        await newGame.save();
 
-			await newGame.save();
+        if (imageUrls.length === 0) {
+            return res.status(500).json({ error: 'Failed to upload any images.' });
+        }
 
-			if (imageUrls.length === 0) {
-				return res
-					.status(500)
-					.json({ error: "Failed to upload any images." });
-			}
+        return res.status(201).json({
+            message: 'Game and images uploaded successfully!',
+            game: newGame,
+            imageUrls: imageUrls,
+        });
 
-			return res.status(201).json({
-				message: "Game and images uploaded successfully!",
-				game: newGame,
-				imageUrls: imageUrls,
-			});
-		} catch (err) {
-			console.error("Error uploading game and images:", err);
-			return res.status(500).json({
-				error: "Internal server error during upload.",
-			});
-		}
-	}
-);
+    } catch (err) {
+        console.error('Error uploading game and images:', err);
+        return res.status(500).json({ error: 'Internal server error during upload.' });
+    }
+});
+
 
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
