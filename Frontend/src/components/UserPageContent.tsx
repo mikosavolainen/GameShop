@@ -1,4 +1,5 @@
 import { useContext, useEffect } from 'react'
+import axios from 'axios'
 import { useParams } from 'wouter'
 import default_pfp from '../assets/default_pfp.jpg'
 import Button from './Button'
@@ -6,17 +7,25 @@ import GameDisplay from './GameDisplay'
 import { AuthContext } from '../wrappers/AuthWrapper'
 import test_image_wrench from '../assets/test_image_wrench.png'
 import test_image_wrench_2 from '../assets/test_image_wrench_2.png'
+import { useLocation } from 'wouter'
 
 export default function UserPageContent() {
+  const [, setLocation] = useLocation()
   const params = useParams()
-  useEffect(() => {
+  useEffect(() => { 
     async function fetch() {
-      // 100% not copy pasted from GamePage.tsx
-      console.log(params.user)
     }
     fetch()
   }, [params.user])
   const { user } = useContext(AuthContext) //this is for checking if user is logged in meaning if not logged in user cannot see the stff to change things.
+  useEffect(() => {
+    function fetch() {
+      const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
+      const data = axios.get(`${apiUrl}/get-user-data`, {params: {username: params.user}}).catch(function (error) {if(error.response){setLocation("../*")}});
+      console.log(data)
+    }
+    fetch()
+  }, [])
   function Profile() {
     return (
       <>
