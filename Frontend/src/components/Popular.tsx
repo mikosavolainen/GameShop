@@ -9,7 +9,7 @@ export default function Popular() {
   useEffect(() => {
     const fetch = async () => {
       const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
-      const { data } = await axios.get(`${apiUrl}/get-all-games`); // idk why post is used on server side instead of get but ok
+      const { data } = await axios.get(`${apiUrl}/get-all-games`, { params: { limit: 8, page: 1 } }); // idk why post is used on server side instead of get but ok
       setRes(data)
     }
 
