@@ -77,11 +77,28 @@ export default function GamePage() {
     }
   }, [setChosenImage, chosenImage])
 
+  const [isInCheckout, setIsInCheckout] = useState(false);
+
+  const updateIsInCheckout = (items: string[]) => {
+    localStorage.setItem("checkout", JSON.stringify(items));
+    setIsInCheckout(items.includes(params.id as string));
+  };
+
+  useEffect(() => {
+    const currentCheckout: string[] = JSON.parse(localStorage.getItem("checkout") as string) || [];
+    updateIsInCheckout(currentCheckout)
+  }, [])
+
   const addGameToCheckout = (newItem: string) => {
-    const prev = (JSON.parse(localStorage.getItem("checkout") as string) || []) as string[]
-    prev.push(newItem)
-    localStorage.setItem("checkout", JSON.stringify(prev))
-  }
+    const prev: string[] = JSON.parse(localStorage.getItem("checkout") as string) || [];
+    updateIsInCheckout([...new Set([...prev, newItem])]);
+  };
+  
+  const removeFromCheckout = (itemRemoved: string) => {
+    const prev: string[] = JSON.parse(localStorage.getItem("checkout") as string) || [];
+    const updatedItems = prev.filter(item => item !== itemRemoved);
+    updateIsInCheckout(updatedItems);
+  };
 
   return(
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 overflow-hidden">
@@ -104,7 +121,10 @@ export default function GamePage() {
             {res?.category.map((cat: string) => <Label category={cat} key="cat" />)}
           </div>
           <div className="flex align-middle mb-4"><span className="mt-1 mr-1.5">4.2/5.0</span><RatingStars rating={4.2} /></div>
-          <Button type="button" size="big" style="purple" text="Add to cart" icon="shopping_cart" className="mb-4" onClick={() => addGameToCheckout(params.id as string)} />
+          { isInCheckout
+              ? <Button type="button" size="big" style="neutral" text="Remove from cart" icon="shopping_cart" className="mb-4" onClick={() => removeFromCheckout(params.id as string)} />
+              : <Button type="button" size="big" style="purple" text="Add to cart" icon="shopping_cart" className="mb-4" onClick={() => addGameToCheckout(params.id as string)} />
+          }
           <div className="mb-4 text-lg">
             <span style={{fontFamily: `"Trispace", sans-serif`}} className="line-through text-wrench-neutral-2 mr-4">98.20 &euro;</span>
             <span style={{fontFamily: `"Trispace", sans-serif`}}>{res?.price} &euro;</span>
