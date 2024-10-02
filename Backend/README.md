@@ -1,7 +1,7 @@
 
 # Wrench Platform
 
-Wrench is a multi-featured platform that includes user authentication, game management, reviews, file uploads, and Discord bot integration. This project leverages Node.js, Express, MongoDB, JWT-based authentication, and more to provide a robust platform for game enthusiasts.
+Wrench is game marketplace that includes user authentication, game management, reviews, file uploads, and Discord bot integration. This project leverages Node.js, Express, MongoDB, JWT-based authentication, and more to provide a robust platform for game enthusiasts.
 
 ## Features
 
@@ -43,6 +43,7 @@ Wrench is a multi-featured platform that includes user authentication, game mana
 
    ```env
    DISCORD_TOKEN=your_discord_bot_token
+   DISCORD_CHANNEL_ID=your_image_channel_here
    DISCORD_LOG_CHANNEL=your_discord_log_channel_id
    MONGODB_URI=mongodb://your_mongodb_uri
    SECRET_KEY=your_jwt_secret_key
@@ -69,7 +70,7 @@ Wrench is a multi-featured platform that includes user authentication, game mana
 - **GET** `/reset-password`: Reset password using token
 
 ### Games
-
+- **POST** `/upload`´: Upload a new game pictures (whit file upload)
 - **POST** `/upload-game`: Upload a new game (with file upload)
 - **GET** `/get-all-games`: Fetch all games
 - **GET** `/search-game`: Search for a game with filters (name, author, category, multiplayer, etc.)
@@ -79,6 +80,11 @@ Wrench is a multi-featured platform that includes user authentication, game mana
 
 - **POST** `/add-review`: Add a review to a game
 - **GET** `/get-reviews`: Get all reviews for a specific game
+
+### Secret
+
+- **Get** `/get-user-data`: Gets user data by name
+- **POST** `/subscribe`: Subscribe newsletter
 
 ### Discord Integration
 
@@ -91,14 +97,15 @@ Wrench is a multi-featured platform that includes user authentication, game mana
 3. **Upload Games**: Post your games using the `/upload-game` endpoint.
 4. **Search Games**: Use `/search-game` to filter and browse the game library.
 5. **Discord Logging**: Events are automatically logged to a Discord channel.
+6. **Subscribe Newsletter**: Use /subscribe?email="Here user email" to subscribe automated Newsletter
 
 ## File Structure
 
 ```
 
-├── uploads/        # Uploaded files are stored here
+├── games/          # Uploaded files are stored here
 ├── .env            # Environment configuration
-├── index.js          # Main entry point
+├── index.js        # Main entry point
 ├── package.json    # Project dependencies and scripts
 ```
 

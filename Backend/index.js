@@ -16,6 +16,7 @@ require("dotenv").config();
 
 const { Client, GatewayIntentBits } = require("discord.js");
 
+
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
@@ -26,14 +27,13 @@ client.once("ready", () => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-const SECRET_KEY =
-	"Heh meidän salainen avain :O. ei oo ku meiän! ・:，。★＼(*v*)♪Merry Xmas♪(*v*)/★，。・:・゜ :DD XD XRP ┐( ͡◉ ͜ʖ ͡◉)┌ QSO QRZ ( ͡~ ͜ʖ ͡° ) QRO ( ˘▽˘)っ♨ QRP DLR JKFJ °₊·ˈ∗♡( ˃̶᷇ ‧̫ ˂̶᷆ )♡∗ˈ‧₊°"; // Heh meidän salainen avain :DD
+const SECRET_KEY=(process.env.SECRET_KEY); // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose
-mongoose.connect("mongodb://Kissa:KissaKala2146@37.219.151.14:27018/Wrench");
+mongoose.connect(process.env.MONGODB_URI);
 
 const db = mongoose.connection;
 
@@ -60,7 +60,7 @@ const gamesSchema = new mongoose.Schema({
 	author: { type: String },
 	category: { type: [String] },
 	price: { type: Number },
-	ratings: {type: [Number]},
+	ratings: { type: [Number] },
 	multiplayer: { type: Boolean },
 	Picturefileloc: { type: String },
 });
@@ -77,8 +77,8 @@ const ReviewsSchema = new mongoose.Schema({
 const Reviews = mongoose.model("Reviews", ReviewsSchema);
 
 const LibrarySchema = new mongoose.Schema({
-	owner: { type: String },
-	games: { type: Array },
+	owner: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+	games: [{ type: mongoose.Schema.Types.ObjectId, ref: "games" }],
 });
 const Library = mongoose.model("Library", LibrarySchema);
 
@@ -125,14 +125,22 @@ app.get("/", (req, res) => {
 	log("Someone tried to go to /");
 	return res.redirect("https://lol.tyhjyys.com");
 });
-
+app.post("/subscribe", async (req, res) => {
+	const { email } = req.query;
+	const letter = new NewsLetter({
+		email: email,
+	});
+	letter.save();
+	return res.status(200).send("all good here");
+});
 app.post("/get-all-owned-games", async (req, res) => {
 	try {
 		const token = await jwt.verify(req.body.token, SECRET_KEY);
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-		const games = await Library.find({ owner: token.username });
+		const user = users.findOne({username: token.username})
+		const games = await Library.find({ owner: user._id }).populate("games");
 		return res.json(games);
 	} catch (error) {
 		console.error("Error fetching games:", error);
@@ -149,7 +157,30 @@ app.get("/get-all-games", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
+app.post("/buy-game", async (req, res) => {
+	const { game_id, token } = req.body
+	try {
+		const jwts = await jwt.verify(token, SECRET_KEY)
+		const is = await Library.find({ username: jwts.username })
+		console.log(is) 
+		if (is) {
+			await Library.findOneAndUpdate({ username: jwt.username }, { $push: { games: game_id } })
+			return res.status(200).send("bought")
+		}
+		else {
+			const user = await users.findOne({username: jwts.username})
+			const x = new Library({
+				owner: user._id,
+				games: game_id
+			})
+			x.save()
+			return res.status(201).send("bought")
+		}
 
+	} catch (error) {
+		return res.status(200).send(error)
+	}
+})
 app.get("/search-game", async (req, res) => {
 	const {
 		text,
@@ -199,12 +230,12 @@ app.get("/search-game", async (req, res) => {
 			{ $match: query },
 			{
 				$addFields: {
-					averageRating: { $avg: "$ratings" },
+					averageRating: { $avg: "$ratings" || null },
 				},
 			},
 			{
 				$match: {
-					averageRating: { $gte: parseFloat(minRating) || 0 },
+					averageRating: { $gte: parseFloat(minRating) || null },
 				},
 			},
 		];
@@ -222,32 +253,35 @@ app.get("/search-game", async (req, res) => {
 	}
 });
 app.post("/add-review", async (req, res) => {
-	const { game_id, token , stars, desc } = req.body
+	const { game_id, token, stars, desc } = req.body;
 	if (!game_id || !token || !stars || !desc) {
-		return res.status(400).send("data is missing")
+		return res.status(400).send("data is missing");
 	}
 	if (0 > stars > 5) {
-		return res.status(400).send("malformed data")
+		return res.status(400).send("malformed data");
 	}
 	try {
-		const confirmed = jwt.verify(token, SECRET_KEY)
-		const user = await users.findOne({ username: confirmed.username })
-		const find = await Reviews.findOne({ game: game_id, writer: user._id })
+		const confirmed = jwt.verify(token, SECRET_KEY);
+		const user = await users.findOne({ username: confirmed.username });
+		const find = await Reviews.findOne({ game: game_id, writer: user._id });
 		if (find) {
-			return res.status(444).send("already reviewed")
+			return res.status(444).send("already reviewed");
 		}
-		const game = await Games.findOneAndUpdate({ _id: game_id }, { $push: { ratings: stars } });
+		const game = await Games.findOneAndUpdate(
+			{ _id: game_id },
+			{ $push: { ratings: stars } }
+		);
 		const review = new Reviews({
 			game: game_id,
 			writer: user._id,
 			rating: stars,
-			desc: desc
-		})
-		review.save()
-		return res.status(200).send("thank you for your review")
+			desc: desc,
+		});
+		review.save();
+		return res.status(200).send("thank you for your review");
 	} catch (error) {
-		console.log(error)
-		return res.status(400).send("NOPE")
+		console.log(error);
+		return res.status(400).send("NOPE");
 	}
 });
 app.get("/confirm", async (req, res) => {
@@ -271,7 +305,7 @@ app.get("/confirm", async (req, res) => {
 	}
 });
 app.post("/update-desc", async (req, res) => {
-	const { newDescription, token} = req.body;
+	const { newDescription, token } = req.body;
 
 	// Check if the token and new description are provided
 	if (!token) {
@@ -385,21 +419,21 @@ app.get("/get-game-by-id", async (req, res) => {
 
 app.get("/get-reviews", async (req, res) => {
 	try {
-	const id = req.query.id;
+		const id = req.query.id;
 
-	if (!id) {
-		return res.status(400).send({ error: "Peli id vaaditaan." });
-	}
+		if (!id) {
+			return res.status(400).send({ error: "Peli id vaaditaan." });
+		}
 
-	const reviews = await Reviews.find({ game: id }).populate("writer");
-	return res.json(reviews);
-
+		const reviews = await Reviews.find({ game: id }).populate("writer");
+		return res.json(reviews);
 	} catch (error) {
-	console.error("Virhe haettaessa arvosteluja:", error);
-	return res.status(500).send({ error: "Something does not work on the server." });
-}
+		console.error("Virhe haettaessa arvosteluja:", error);
+		return res
+			.status(500)
+			.send({ error: "Something does not work on the server." });
+	}
 });
-
 
 // Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
@@ -554,6 +588,97 @@ app.get("/reset-password", async (req, res) => {
 		return res.status(400).send("invalid token");
 	}
 });
+setInterval(async () => {
+	newsletter = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset Confirmation</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            position: relative;
+            padding: 12px 35px;
+            margin-top: 20px;
+            font-size: 17px;
+            font-weight: 500;
+            color: #ffffff;
+            background: linear-gradient(145deg, #b0b0b0, #e0e0e0);
+            border: 2px solid #a6a6a6;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+            color: #333;
+            box-shadow: 0 0 15px rgba(128, 128, 128, 0.5);
+        }
+        .footer {
+                margin-top: 30px;
+                font-size: 12px;
+                color: #999;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our New Newsletter</h1>
+        <p>Hello,</p>
+        <p>You received our newsletter.</p>
+        <p>To read our newsletter, click the button below:</p>
+        <a href="https://lol.tyhjyys.com" class="button">Newsletter</a>
+        
+        <div class="footer">
+            <p>Thank you,<br>The Wrench Team</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+`;
+
+	const x = await NewsLetter.find();
+	console.log(x);
+	for (var i = 0; i <= x.length; i++) {
+		console.log(x[i].email);
+
+		await sendMail(newsletter, "You received our newsletter", x[i].email);
+	}
+	console.log("sent");
+}, 1000 * 60 * 60 * 24);
+
+
 
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
