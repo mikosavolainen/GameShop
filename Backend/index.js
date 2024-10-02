@@ -162,7 +162,7 @@ app.post("/buy-game", async (req, res) => {
 	const { game_id, token } = req.body;
 	try {
 		const jwts = await jwt.verify(token, SECRET_KEY);
-		const is = await Library.find({ username: jwts.username });
+		const is = await Library.findOne({ username: jwts.username });
 		console.log(is);
 		if (is) {
 			await Library.findOneAndUpdate(
@@ -170,17 +170,18 @@ app.post("/buy-game", async (req, res) => {
 				{ $push: { games: game_id } }
 			);
 			return res.status(200).send("bought");
-		} else {
-			const user = await users.findOne({ username: jwts.username });
-			const x = new Library({
-				owner: user._id,
-				games: game_id,
-			});
-			x.save();
-			return res.status(201).send("bought");
 		}
+		const user = await users.findOne({ username: jwts.username });
+		const x = new Library({
+			owner: user._id,
+			games: game_id,
+		});
+		x.save();
+		return res.status(201).send("bought");
+		
 	} catch (error) {
-		return res.status(200).send(error);
+		console.log(error)
+		return res.status(400).send(error);
 	}
 });
 app.get("/search-game", async (req, res) => {
@@ -198,7 +199,7 @@ app.get("/search-game", async (req, res) => {
 	const offset = (page - 1) * limit;
 	try {
 		const query = {};
-
+		console.log(limit);
 		if (text) {
 			const regex = new RegExp(text, "i");
 			query.$or = [
@@ -276,6 +277,11 @@ app.post("/add-review", async (req, res) => {
 		if (find) {
 			return res.status(444).send("already reviewed");
 		}
+		console.log(user)
+		const games = await Library.findOne({ owner: user._id , game: game_id});
+		if (!games) {
+			return res.status(400).send("you need to buy game for review");
+		}
 		const game = await Games.findOneAndUpdate(
 			{ _id: game_id },
 			{ $push: { ratings: stars } }
@@ -303,7 +309,7 @@ app.get("/confirm", async (req, res) => {
 				{ username },
 				{ confirmedemail: true }
 			);
-			return res.send("Email confirmed successfully.");
+			return res.redirect("https://lol.tyhjyys.com");
 		} catch (error) {
 			return res
 				.status(400)
