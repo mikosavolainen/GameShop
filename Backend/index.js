@@ -26,12 +26,12 @@ client.once("ready", () => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-const SECRET_KEY = process.env.SECRET_KEY; // Heh meidän salainen avain :DD
+const SECRET_KEY = process.env.SECRET_KEY;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Mongoose
+
 mongoose.connect(process.env.MONGODB_URI);
 
 const db = mongoose.connection;
@@ -40,7 +40,6 @@ db.once("open", () => {
 	console.log("Connected to MongoDB");
 });
 
-// User Schema
 const userSchema = new mongoose.Schema({
 	username: { type: String, required: true, unique: true },
 	description: { type: String, default: "" },
@@ -104,7 +103,6 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-// Sähköpostin lähettäminen
 async function sendMail(Msg, sub, email) {
 	try {
 		const mailOptions = {
@@ -124,6 +122,7 @@ app.get("/", (req, res) => {
 	log("Someone tried to go to /");
 	return res.redirect("https://lol.tyhjyys.com");
 });
+
 app.post("/subscribe", async (req, res) => {
 	const { email } = req.query;
 	const letter = new NewsLetter({
@@ -132,6 +131,7 @@ app.post("/subscribe", async (req, res) => {
 	letter.save();
 	return res.status(200).send("all good here");
 });
+
 app.post("/get-all-owned-games", async (req, res) => {
 	try {
 		const token = await jwt.verify(req.body.token, SECRET_KEY);
@@ -158,6 +158,7 @@ app.get("/get-all-games", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
+
 app.post("/buy-game", async (req, res) => {
 	const { game_id, token } = req.body;
 	try {
@@ -184,6 +185,7 @@ app.post("/buy-game", async (req, res) => {
 		return res.status(400).send(error);
 	}
 });
+
 app.get("/search-game", async (req, res) => {
 	const {
 		text,
@@ -262,6 +264,7 @@ app.get("/search-game", async (req, res) => {
 		return res.status(500).send("Internal Server Error");
 	}
 });
+
 app.post("/add-review", async (req, res) => {
 	const { game_id, token, stars, desc } = req.body;
 	if (!game_id || !token || !stars || !desc) {
@@ -299,6 +302,7 @@ app.post("/add-review", async (req, res) => {
 		return res.status(400).send("NOPE");
 	}
 });
+
 app.get("/confirm", async (req, res) => {
 	const jwts = req.query.confirm;
 	if (jwts) {
@@ -319,10 +323,10 @@ app.get("/confirm", async (req, res) => {
 		return res.status(400).send("Confirmation token is missing.");
 	}
 });
+
 app.post("/update-desc", async (req, res) => {
 	const { newDescription, token } = req.body;
 
-	// Check if the token and new description are provided
 	if (!token) {
 		return res.status(401).send("No token provided.");
 	}
@@ -332,31 +336,28 @@ app.post("/update-desc", async (req, res) => {
 	}
 
 	try {
-		// Verify the token
-		const decoded = jwt.verify(token, secretKey);
-		const username = decoded.username; // Assuming the token contains the username
 
-		// Find the user by username and update the description
+		const decoded = jwt.verify(token, secretKey);
+		const username = decoded.username;
+
 		const updatedUser = await users.findOneAndUpdate(
-			{ username: username.toLowerCase() }, // Match the username from the token
-			{ description: newDescription }, // Update description
-			{ new: true } // Return the updated document
+			{ username: username.toLowerCase() },
+			{ description: newDescription }, 
+			{ new: true }
 		);
 
-		// If no user is found
 		if (!updatedUser) {
 			return res.status(404).send("User not found.");
 		}
 
-		// Respond with the updated user data
 		return res.status(200).send({
 			message: "Description updated successfully!",
 			user: updatedUser,
 		});
+
 	} catch (error) {
 		console.error("Error updating description:", error);
 
-		// Handle token verification errors
 		if (error.name === "JsonWebTokenError") {
 			return res.status(401).send("Invalid token.");
 		}
@@ -404,17 +405,14 @@ app.get("/get-reviews", async (req, res) => {
 	}
 });
 
-// Rekisteröinti
 app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 	const { username, password, email, phonenumber } = req.body;
 
-	// Tarkista onko käyttäjä jo olemassa
 	const existingUser = await users.findOne({ username });
 	if (existingUser) {
 		return res.status(409).send("Email or username already exists");
 	}
 
-	// Salasana hashataan
 	const hashedPassword = await bcrypt.hash(password, 10);
 
 	const newUser = new users({
@@ -427,7 +425,6 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
 
 	await newUser.save();
 
-	// Luo vahvistuslinkki
 	const confirms = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
 	const Confirmation = `
     <!DOCTYPE html>
@@ -502,7 +499,6 @@ app.post("/register", convertUsernameToLowerCase, async (req, res) => {
     </body>
     </html>`;
 
-	// Lähetä vahvistusviesti
 	await sendMail(Confirmation, "Email Confirmation", email);
 	log(`${username} just registered`);
 	res.status(243).send("Done");
@@ -523,40 +519,52 @@ app.get("/get-user-data", async (req, res) => {
 });
 app.post("/login", convertUsernameToLowerCase, async (req, res) => {
 	var { username, password } = req.body;
+
 	const user = await users.findOne({
 		$or: [{ username: username }, { email: username }],
 	});
+
 	if (!user) {
 		return res.status(401).send("no user or email find");
 	}
+
 	if (!user.confirmedemail) {
 		return res.status(403).send("email is not verified");
 	}
+
 	if (!user || !bcrypt.compareSync(password, user.password)) {
 		return res.status(401).send("Invalid credentials");
 	}
+
 	username = user.username;
-	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
+	const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" })
 	log(`${username} just logged in`);
 	return res.json({ token });
 });
 
 app.get("/reset-password", async (req, res) => {
 	const { token, password } = req.query;
+
 	try {
 		const x = jwt.verify(token, SECRET_KEY);
+
 		if (x) {
+
 			const newpass = await bcrypt.hash(password, 10);
+
 			await users.findOneAndUpdate(
 				{ email: x.email },
 				{ password: newpass }
 			);
+
 			return res.status(200).send("RESETED");
 		}
+
 	} catch (error) {
 		return res.status(400).send("invalid token");
 	}
 });
+
 setInterval(async () => {
 	newsletter = `<!DOCTYPE html>
 <html lang="en">
@@ -654,6 +662,7 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	if (!user) {
 		return res.status(400).send("didnt find email");
 	}
+
 	const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
 	confirmation = `<!DOCTYPE html>
 <html lang="en">
