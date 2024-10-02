@@ -196,8 +196,9 @@ app.get("/search-game", async (req, res) => {
 		minRating,
 		author,
 		page,
-		limit,
 	} = req.query;
+
+	const limit = parseInt(req.query.limit)
 	const offset = (page - 1) * limit;
 	try {
 		const query = {};
@@ -243,16 +244,14 @@ app.get("/search-game", async (req, res) => {
 			{
 				$match: {
 					$or: [
-						{ averageRating: { $gte: parseFloat(minRating) || 0 } }, // Games that meet the rating criteria
-						{ averageRating: null }, // Games without a rating
+						{ averageRating: { $gte: parseFloat(minRating) || 0 } },
+						{ averageRating: null },
 					],
 				},
 			},
 		];
-
-		const result = await Games.aggregate(aggregationPipeline)
-			.skip(offset)
-			.limit(limit);
+		console.log(limit)
+		const result = await Games.aggregate(aggregationPipeline).skip(offset).limit(limit);
 
 		if (result.length > 0) {
 			return res.status(200).json(result);
