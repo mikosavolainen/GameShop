@@ -62,7 +62,7 @@ const gamesSchema = new mongoose.Schema({
 	price: { type: Number },
 	ratings: { type: [Number] },
 	multiplayer: { type: Boolean },
-	Picturefileloc: { type: String },
+	Picturefileloc: { type: [String] },
 });
 
 const Games = mongoose.model("games", gamesSchema);
@@ -362,7 +362,7 @@ const storage = multer.diskStorage({
 
 const upload2 = multer({ storage: storage });
 
-app.post("/upload-game", upload2.single("gamefile"), async (req, res) => {
+app.post("/upload", upload2.single("gamefile"), async (req, res) => {
 	const { name, desc, author, category, price, multiplayer, token } =
 		req.body;
 	const tokens = await jwt.verify(token, SECRET_KEY);
@@ -793,64 +793,96 @@ async function log(msg) {
 	}
 }
 
-app.post("/upload", upload.array("images", 10), async (req, res) => {
-	if (!req.files || req.files.length === 0) {
-		return res.status(400).json({ error: "No files uploaded." });
-	}
+app.post("/upload-game", upload.fields([
+    { name: "images", maxCount: 10 }, 
+    { name: "gamefile", maxCount: 1 }
+]), async (req, res) => {
+    // Tarkistetaan, onko pelitiedostoa ladattu
+    if (!req.files || !req.files.gamefile || req.files.gamefile.length === 0) {
+        return res.status(400).json({ error: "Game file is required." });
+    }
 
-	try {
-		const channel = await client.channels.fetch(
-			process.env.DISCORD_CHANNEL_ID
-		);
-		if (!channel) {
-			return res
-				.status(500)
-				.json({ error: "Discord channel not found." });
-		}
+    // Kuvatiedostojen tarkistus
+    if (!req.files.images || req.files.images.length === 0) {
+        return res.status(400).json({ error: "No images uploaded." });
+    }
 
-		const imageUrls = [];
+    const { name, desc, author, category, price, multiplayer, token } = req.body;
 
-		for (const file of req.files) {
-			const filePath = path.join(__dirname, file.path);
+    // JWT tokenin tarkistus
+    try {
+        const tokens = await jwt.verify(token, SECRET_KEY);
+        console.log(`${tokens.username} just uploaded game ${name}`);
 
-			try {
-				const sentMessage = await channel.send({
-					content: `Heh uusi kuva :D: ${file.originalname}`,
-					files: [
-						{
-							attachment: filePath,
-							name: file.originalname,
-						},
-					],
-				});
+        // Ladataan Discordiin kuvatiedostot
+        const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
+        if (!channel) {
+            return res.status(500).json({ error: "Discord channel not found." });
+        }
 
-				const imageUrl = sentMessage.attachments.first().url;
-				imageUrls.push(imageUrl);
+        const imageUrls = [];
 
-				fs.unlinkSync(filePath);
-			} catch (error) {
-				console.error(
-					`Failed to upload image: ${file.originalname}`,
-					error
-				);
-				fs.unlinkSync(filePath);
-			}
-		}
+        for (const file of req.files.images) {
+            const filePath = path.join(__dirname, file.path);
 
-		if (imageUrls.length === 0) {
-			return res
-				.status(500)
-				.json({ error: "Failed to upload any images." });
-		}
+            try {
+                const sentMessage = await channel.send({
+                    content: `Heh uusi kuva :D: ${file.originalname}`,
+                    files: [
+                        {
+                            attachment: filePath,
+                            name: file.originalname,
+                        },
+                    ],
+                });
 
-		return res.json({ urls: imageUrls });
-	} catch (err) {
-		console.error("Error uploading images to Discord:", err);
-		return res.status(500).json({
-			error: "Internal server error during image upload.",
-		});
-	}
+                const imageUrl = sentMessage.attachments.first().url;
+                imageUrls.push(imageUrl);  // Tallennetaan kuvan URL listaan
+
+                fs.unlinkSync(filePath); // Poistetaan tiedosto palvelimelta
+            } catch (error) {
+                console.error(`Failed to upload image: ${file.originalname}`, error);
+                fs.unlinkSync(filePath);
+            }
+        }
+
+        // Pelitiedoston käsittely
+        const gameFilePath = req.files.gamefile[0].path;
+
+        // Luodaan uusi pelitietue tietokantaan
+        const newGame = new Games({
+            name,
+            desc,
+            author,
+            category: category.split(","),  // Jaetaan kategoriastring pilkulla
+            price: parseFloat(price),  // Varmistetaan, että hinta on numero
+            multiplayer: multiplayer === "true",  // Muutetaan merkkijono booleaniksi
+            gamefileloc: gameFilePath,
+            Picturefileloc: imageUrls,  // Tallennetaan kuvalinkit array-muodossa tietokantaan
+        });
+
+        await newGame.save();
+
+        // Jos yhtään kuvaa ei ladattu onnistuneesti
+        if (imageUrls.length === 0) {
+            return res.status(500).json({ error: "Failed to upload any images." });
+        }
+
+        return res.status(201).json({
+            message: "Game and images uploaded successfully!",
+            game: newGame,
+            imageUrls: imageUrls,
+        });
+    } catch (err) {
+        console.error("Error uploading game and images:", err);
+        return res.status(500).json({
+            error: "Internal server error during upload.",
+        });
+    }
 });
+
+
+
 
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
