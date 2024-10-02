@@ -797,24 +797,24 @@ app.post("/upload-game", upload.fields([
     { name: "images", maxCount: 10 }, 
     { name: "gamefile", maxCount: 1 }
 ]), async (req, res) => {
-    // Tarkistetaan, onko pelitiedostoa ladattu
+
     if (!req.files || !req.files.gamefile || req.files.gamefile.length === 0) {
         return res.status(400).json({ error: "Game file is required." });
     }
 
-    // Kuvatiedostojen tarkistus
+   
     if (!req.files.images || req.files.images.length === 0) {
         return res.status(400).json({ error: "No images uploaded." });
     }
 
     const { name, desc, author, category, price, multiplayer, token } = req.body;
 
-    // JWT tokenin tarkistus
+
     try {
         const tokens = await jwt.verify(token, SECRET_KEY);
         console.log(`${tokens.username} just uploaded game ${name}`);
 
-        // Ladataan Discordiin kuvatiedostot
+       
         const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
         if (!channel) {
             return res.status(500).json({ error: "Discord channel not found." });
@@ -837,33 +837,33 @@ app.post("/upload-game", upload.fields([
                 });
 
                 const imageUrl = sentMessage.attachments.first().url;
-                imageUrls.push(imageUrl);  // Tallennetaan kuvan URL listaan
+                imageUrls.push(imageUrl);  
 
-                fs.unlinkSync(filePath); // Poistetaan tiedosto palvelimelta
+                fs.unlinkSync(filePath); 
             } catch (error) {
                 console.error(`Failed to upload image: ${file.originalname}`, error);
                 fs.unlinkSync(filePath);
             }
         }
 
-        // Pelitiedoston käsittely
+        
         const gameFilePath = req.files.gamefile[0].path;
 
-        // Luodaan uusi pelitietue tietokantaan
+        
         const newGame = new Games({
             name,
             desc,
             author,
-            category: category.split(","),  // Jaetaan kategoriastring pilkulla
-            price: parseFloat(price),  // Varmistetaan, että hinta on numero
-            multiplayer: multiplayer === "true",  // Muutetaan merkkijono booleaniksi
+            category: category.split(","),  
+            price: parseFloat(price), 
+            multiplayer: multiplayer === "true", 
             gamefileloc: gameFilePath,
-            Picturefileloc: imageUrls,  // Tallennetaan kuvalinkit array-muodossa tietokantaan
+            Picturefileloc: imageUrls,  
         });
 
         await newGame.save();
 
-        // Jos yhtään kuvaa ei ladattu onnistuneesti
+        
         if (imageUrls.length === 0) {
             return res.status(500).json({ error: "Failed to upload any images." });
         }
