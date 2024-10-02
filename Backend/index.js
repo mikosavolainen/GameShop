@@ -781,6 +781,7 @@ app.post('/upload-game', upload.fields([
     try {
         const tokens = await jwt.verify(token, SECRET_KEY);
         console.log(`${tokens.username} just uploaded game ${name}`);
+		log(`${tokens.username} just uploaded game ${name}`)
 
         const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
         if (!channel) {
