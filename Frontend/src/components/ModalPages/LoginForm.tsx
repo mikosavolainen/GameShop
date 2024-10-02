@@ -39,7 +39,7 @@ export default function LoginForm() {
     onSuccess: (data) => {
       // Handle success (e.g., store user data, redirect)
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      signInHelper(setUser, data.token, formData.username)
+      signInHelper(setUser, data.token)
       setModalLoading(false)
       setModalOpen(false)
     },
