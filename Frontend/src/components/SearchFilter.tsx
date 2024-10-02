@@ -9,6 +9,7 @@ import { useSearch } from "wouter"
 import image1 from "../assets/test_image_wrench.png"
 import image2 from "../assets/test_image_wrench_2.png"
 export default function SearchFilter(){
+    const [allResults, setAllResults] = useState(0)
     const [, setLocation] = useLocation()
     const [searchValue, setSearchValue] = useState("")
     const [end, setEnd] = useState("")
@@ -26,7 +27,7 @@ export default function SearchFilter(){
         const fetch = async () => {
           const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
           const { data } = await axios.get(`${apiUrl}/get-all-games`, {params: {limit: 20000, page:1}}); // idk why post is used on server side instead of get but ok
-          console.log(data)
+          setAllResults(data.length)
           data.map((r: { category: [], author: string }) => {
               developers.push(r.author)
               r.category.map((v: string ) => categories.push(v))
@@ -44,11 +45,20 @@ export default function SearchFilter(){
         const fetch = async () => {
           const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
           const { data } = await axios.get(`${apiUrl}/search-game?${searchString}&limit=10&page=1`); // idk why post is used on server side instead of get but ok
+          setAllResults(data.length)
           setRes(data)
         }
-    
         fetch()
       }, [searchString])
+    useEffect(() => {
+    const fetch = async () => {
+        const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
+        const { data } = await axios.get(`${apiUrl}/search-game?${searchString}&limit=10000000&page=1`); // idk why post is used on server side instead of get but ok
+        setAllResults(data.length)
+    }
+
+    fetch()
+    }, [searchString])
       const handleCheckboxCheck = (id: number, name?: string, dev?: boolean) => {
         const checkbox = checkboxes
         checkbox[id] = !checkbox[id]
@@ -150,8 +160,8 @@ export default function SearchFilter(){
             </div>
             </div>
             <div className="mr-10 ml-10 w-[70%]">
-            {searchString.substring(2) !== "" ? <p className="font-bold text-4xl">{res.length} results</p> : <p className="font-bold text-4xl">Showing all {searchString.substring(2)}</p>}
-            {res.length > 20 && (
+            {searchString.substring(2) !== "" ? <p className="font-bold text-4xl">{allResults} results</p> : <p className="font-bold text-4xl">Showing all {searchString.substring(2)}</p>}
+            {res.length >= 10 && (
                 <div className="flex my-4">
                     <button>&lt;</button>
                     <button className="mx-4">1</button>
@@ -174,7 +184,7 @@ export default function SearchFilter(){
                 />
             )) }
             </div>
-            {res.length > 20 && (
+            {res.length >= 10 && (
                 <div className="flex my-4">
                     <button>&lt;</button>
                     <button className="mx-4">1</button>
