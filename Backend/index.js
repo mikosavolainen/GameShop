@@ -16,6 +16,7 @@ require("dotenv").config();
 
 const { Client, GatewayIntentBits } = require("discord.js");
 
+
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
@@ -26,7 +27,7 @@ client.once("ready", () => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-const SECRET_KEY = process.env.SECRET_KEY; // Heh meidän salainen avain :DD
+const SECRET_KEY=(process.env.SECRET_KEY); // Heh meidän salainen avain :DD
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -138,7 +139,7 @@ app.post("/get-all-owned-games", async (req, res) => {
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-		const user = users.findOne({ username: token.username });
+		const user = users.findOne({username: token.username})
 		const games = await Library.find({ owner: user._id }).populate("games");
 		return res.json(games);
 	} catch (error) {
@@ -148,10 +149,8 @@ app.post("/get-all-owned-games", async (req, res) => {
 });
 
 app.get("/get-all-games", async (req, res) => {
-	const { page, limit } = req.query;
-	const offset = (page - 1) * limit;
 	try {
-		const game = await Games.find().skip(offset).limit(limit);
+		const game = await Games.find();
 		return res.json(game);
 	} catch (error) {
 		console.error("Error fetching games:", error);
@@ -159,30 +158,29 @@ app.get("/get-all-games", async (req, res) => {
 	}
 });
 app.post("/buy-game", async (req, res) => {
-	const { game_id, token } = req.body;
+	const { game_id, token } = req.body
 	try {
-		const jwts = await jwt.verify(token, SECRET_KEY);
-		const is = await Library.find({ username: jwts.username });
-		console.log(is);
+		const jwts = await jwt.verify(token, SECRET_KEY)
+		const is = await Library.find({ username: jwts.username })
+		console.log(is) 
 		if (is) {
-			await Library.findOneAndUpdate(
-				{ username: jwt.username },
-				{ $push: { games: game_id } }
-			);
-			return res.status(200).send("bought");
-		} else {
-			const user = await users.findOne({ username: jwts.username });
+			await Library.findOneAndUpdate({ username: jwt.username }, { $push: { games: game_id } })
+			return res.status(200).send("bought")
+		}
+		else {
+			const user = await users.findOne({username: jwts.username})
 			const x = new Library({
 				owner: user._id,
-				games: game_id,
-			});
-			x.save();
-			return res.status(201).send("bought");
+				games: game_id
+			})
+			x.save()
+			return res.status(201).send("bought")
 		}
+
 	} catch (error) {
-		return res.status(200).send(error);
+		return res.status(200).send(error)
 	}
-});
+})
 app.get("/search-game", async (req, res) => {
 	const {
 		text,
@@ -192,10 +190,8 @@ app.get("/search-game", async (req, res) => {
 		maxPrice,
 		minRating,
 		author,
-		page,
-		limit,
 	} = req.query;
-	const offset = (page - 1) * limit;
+
 	try {
 		const query = {};
 
@@ -239,17 +235,12 @@ app.get("/search-game", async (req, res) => {
 			},
 			{
 				$match: {
-					$or: [
-						{ averageRating: { $gte: parseFloat(minRating) || 0 } }, // Games that meet the rating criteria
-						{ averageRating: null }, // Games without a rating
-					],
+					averageRating: { $gte: parseFloat(minRating) || null },
 				},
 			},
 		];
 
-		const result = await Games.aggregate(aggregationPipeline)
-			.skip(offset)
-			.limit(limit);
+		const result = await Games.aggregate(aggregationPipeline);
 
 		if (result.length > 0) {
 			return res.status(200).json(result);
@@ -356,52 +347,6 @@ app.post("/update-desc", async (req, res) => {
 		}
 
 		return res.status(500).send("Internal Server Error");
-	}
-});
-
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "games/");
-	},
-	filename: function (req, file, cb) {
-		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-		cb(null, uniqueSuffix + "-" + file.originalname);
-	},
-});
-
-const upload2 = multer({ storage: storage });
-
-app.post("/upload", upload2.single("gamefile"), async (req, res) => {
-	const { name, desc, author, category, price, multiplayer, token } =
-		req.body;
-	const tokens = await jwt.verify(token, SECRET_KEY);
-	log(`${tokens.username} just uploaded game ${name}`);
-	if (!req.file) {
-		return res.status(400).json({ error: "Game file is required." });
-	}
-
-	const gameFilePath = req.file.path;
-
-	try {
-		const newGame = new Games({
-			name,
-			desc,
-			author,
-			category: category.split(","),
-			price,
-			multiplayer: multiplayer === "true",
-			gamefileloc: gameFilePath,
-			Picturefileloc: "",
-		});
-
-		await newGame.save();
-		return res.status(201).json({
-			message: "Game uploaded successfully!",
-			game: newGame,
-		});
-	} catch (error) {
-		console.error("Error uploading game:", error);
-		return res.status(500).json({ error: "Failed to upload the game." });
 	}
 });
 
@@ -687,6 +632,8 @@ setInterval(async () => {
 	console.log("sent");
 }, 1000 * 60 * 60 * 24);
 
+
+
 app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 	const { email } = req.body;
 	const user = await users.findOne({ email: email });
@@ -783,121 +730,103 @@ app.post("/forgot-password", convertUsernameToLowerCase, async (req, res) => {
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 
-const upload = multer({
-	dest: "uploads/",
-	limits: { fileSize: 8 * 1024 * 1024 },
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        if (file.fieldname === 'gamefile') {
+            cb(null, 'games/');  
+        } else if (file.fieldname === 'images') {
+            cb(null, 'uploads/');  
+        } else {
+            cb(new Error('Unknown file type'), false);
+        }
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    }
 });
-async function log(msg) {
-	const channel = await client.channels.fetch(
-		process.env.DISCORD_LOG_CHANNEL
-	);
-	try {
-		const sentMessage = await channel.send({
-			content: `${msg}`,
-		});
-	} catch (error) {
-		console.error(`Failed to send msg`, error);
-	}
-}
 
-app.post(
-	"/upload-game",
-	upload.fields([
-		{ name: "images", maxCount: 10 },
-		{ name: "gamefile", maxCount: 1 },
-	]),
-	async (req, res) => {
-		if (
-			!req.files ||
-			!req.files.gamefile ||
-			req.files.gamefile.length === 0
-		) {
-			return res.status(400).json({ error: "Game file is required." });
-		}
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 8 * 1024 * 1024 },  
+});
 
-		if (!req.files.images || req.files.images.length === 0) {
-			return res.status(400).json({ error: "No images uploaded." });
-		}
+app.post('/upload-game', upload.fields([
+    { name: 'images', maxCount: 10 },  
+    { name: 'gamefile', maxCount: 1 }   
+]), async (req, res) => {
 
-		const { name, desc, author, category, price, multiplayer, token } =
-			req.body;
+    if (!req.files || !req.files.gamefile || req.files.gamefile.length === 0) {
+        return res.status(400).json({ error: 'Game file is required.' });
+    }
+    if (!req.files.images || req.files.images.length === 0) {
+        return res.status(400).json({ error: 'No images uploaded.' });
+    }
 
-		try {
-			const tokens = await jwt.verify(token, SECRET_KEY);
-			console.log(`${tokens.username} just uploaded game ${name}`);
+    const { name, desc, author, category, price, multiplayer, token } = req.body;
 
-			const channel = await client.channels.fetch(
-				process.env.DISCORD_CHANNEL_ID
-			);
-			if (!channel) {
-				return res
-					.status(500)
-					.json({ error: "Discord channel not found." });
-			}
+    try {
+        const tokens = await jwt.verify(token, SECRET_KEY);
+        console.log(`${tokens.username} just uploaded game ${name}`);
 
-			const imageUrls = [];
+        const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL_ID);
+        if (!channel) {
+            return res.status(500).json({ error: 'Discord channel not found.' });
+        }
 
-			for (const file of req.files.images) {
-				const filePath = path.join(__dirname, file.path);
+        const imageUrls = [];
+        for (const file of req.files.images) {
+            const filePath = path.join(__dirname, file.path);
 
-				try {
-					const sentMessage = await channel.send({
-						content: `Heh uusi kuva :D: ${file.originalname}`,
-						files: [
-							{
-								attachment: filePath,
-								name: file.originalname,
-							},
-						],
-					});
+            try {
+                const sentMessage = await channel.send({
+                    content: `New image uploaded: ${file.originalname}`,
+                    files: [{
+                        attachment: filePath,
+                        name: file.originalname,
+                    }]
+                });
+                const imageUrl = sentMessage.attachments.first().url;
+                imageUrls.push(imageUrl);
 
-					const imageUrl = sentMessage.attachments.first().url;
-					imageUrls.push(imageUrl);
+                fs.unlinkSync(filePath);
+            } catch (error) {
+                console.error(`Failed to upload image: ${file.originalname}`, error);
+                fs.unlinkSync(filePath);
+            }
+        }
 
-					fs.unlinkSync(filePath);
-				} catch (error) {
-					console.error(
-						`Failed to upload image: ${file.originalname}`,
-						error
-					);
-					fs.unlinkSync(filePath);
-				}
-			}
+        const gameFilePath = req.files.gamefile[0].path;
 
-			const gameFilePath = req.files.gamefile[0].path;
+        const newGame = new Games({
+            name,
+            desc,
+            author,
+            category: category.split(','),
+            price: parseFloat(price),
+            multiplayer: multiplayer === 'true',
+            gamefileloc: gameFilePath,
+            Picturefileloc: imageUrls,
+        });
 
-			const newGame = new Games({
-				name,
-				desc,
-				author,
-				category: category.split(","),
-				price: parseFloat(price),
-				multiplayer: multiplayer === "true",
-				gamefileloc: gameFilePath,
-				Picturefileloc: imageUrls,
-			});
+        await newGame.save();
 
-			await newGame.save();
+        if (imageUrls.length === 0) {
+            return res.status(500).json({ error: 'Failed to upload any images.' });
+        }
 
-			if (imageUrls.length === 0) {
-				return res
-					.status(500)
-					.json({ error: "Failed to upload any images." });
-			}
+        return res.status(201).json({
+            message: 'Game and images uploaded successfully!',
+            game: newGame,
+            imageUrls: imageUrls,
+        });
 
-			return res.status(201).json({
-				message: "Game and images uploaded successfully!",
-				game: newGame,
-				imageUrls: imageUrls,
-			});
-		} catch (err) {
-			console.error("Error uploading game and images:", err);
-			return res.status(500).json({
-				error: "Internal server error during upload.",
-			});
-		}
-	}
-);
+    } catch (err) {
+        console.error('Error uploading game and images:', err);
+        return res.status(500).json({ error: 'Internal server error during upload.' });
+    }
+});
+
 
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
 ////////////////////////////////////////BOTTI//////////////////////////////////////////
