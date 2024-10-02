@@ -10,6 +10,7 @@ import { signOutHelper } from "../../lib/AuthFunctions";
 import default_pfp from "../../assets/default_pfp.jpg"
 import { AnimatePresence, motion } from "framer-motion"
 import { useDetectClickOutside } from "react-detect-click-outside";
+import Notification from "./Notification";
 
 export default function Header() {
   const [, setLocation] = useLocation()
@@ -64,8 +65,15 @@ export default function Header() {
                     exit={{ opacity: 0, y: -10 }}     // Fades and slides back up when exiting
                     transition={{ duration: 0.3, ease: "easeInOut" }} // Smooth transition
                     onClick={() => setDropdown(false)}
-                    className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden py-1">
-                      <h4 className="text-lg">Notifications</h4>
+                    className="bg-wrench-neutral-dark border border-wrench-neutral-3 rounded-2xl absolute top-12 right-0 text-right overflow-hidden p-6">
+                      <h2>Notifications</h2>
+                      <div className="flex flex-col gap-4">
+                        <Notification />
+                        <Notification />
+                        <Notification />
+                        <Notification />
+                        <Notification />
+                      </div>
                     </motion.div>
                   ) }
                 </AnimatePresence>

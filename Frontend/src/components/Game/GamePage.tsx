@@ -30,7 +30,7 @@ export default function GamePage() {
   const imageScrollInnerRef = useRef<HTMLDivElement | null>(null);
   const [imageScrollLeftOffset, setImageScrollLeftOffset] = useState(0)
   const imageListItem = useRef<HTMLButtonElement | null>(null)
-  const [res, setRes] = useState<{ name: string, category: string[], price: number, desc: string } | null>(null)
+  const [res, setRes] = useState<{ id: string, name: string, category: string[], price: number, desc: string } | null>(null)
   useEffect(() => {
     const handleResize = () => {
       if(imageScrollRef.current && imageListItem.current && imageScrollInnerRef.current){
@@ -77,6 +77,12 @@ export default function GamePage() {
     }
   }, [setChosenImage, chosenImage])
 
+  const addGameToCheckout = (newItem: string) => {
+    const prev = (JSON.parse(localStorage.getItem("checkout") as string) || []) as string[]
+    prev.push(newItem)
+    localStorage.setItem("checkout", JSON.stringify(prev))
+  }
+
   return(
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 overflow-hidden">
       <div className="flex flex-col xl:flex-row gap-8 mt-16">
@@ -98,7 +104,7 @@ export default function GamePage() {
             {res?.category.map((cat: string) => <Label category={cat} key="cat" />)}
           </div>
           <div className="flex align-middle mb-4"><span className="mt-1 mr-1.5">4.2/5.0</span><RatingStars rating={4.2} /></div>
-          <Button type="button" size="big" style="purple" text="Add to cart" icon="shopping_cart" className="mb-4" />
+          <Button type="button" size="big" style="purple" text="Add to cart" icon="shopping_cart" className="mb-4" onClick={() => addGameToCheckout(params.id as string)} />
           <div className="mb-4 text-lg">
             <span style={{fontFamily: `"Trispace", sans-serif`}} className="line-through text-wrench-neutral-2 mr-4">98.20 &euro;</span>
             <span style={{fontFamily: `"Trispace", sans-serif`}}>{res?.price} &euro;</span>

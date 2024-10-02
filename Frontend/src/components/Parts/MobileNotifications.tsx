@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion"
+import Notification from "./Notification";
 
 export default function MobileNotifications({opened}: {opened: boolean}) {
 /*   const { setModalOpen, setModalPage } = useContext(ModalContext)
@@ -48,23 +49,12 @@ export default function MobileNotifications({opened}: {opened: boolean}) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}>
             <div className="h-[calc(100vh-64px)]">
-              <h2 className="mx-8 mt-8 mb-8 text-xl font-semibold">Notifications</h2>
-              <div className="mx-8 flex flex-col gap-8">
-                <div>
-                  Notification 1
-                </div>
-                <div>
-                  Notification 2
-                </div>
-                <div>
-                  Notification 3
-                </div>
-                <div>
-                  Notification 4
-                </div>
-                <div>
-                  Notification 5
-                </div>
+              <h2 className="mx-8 mt-8 mb-8 text-xl">Notifications</h2>
+              <div className="mx-8 flex flex-col gap-4">
+                <Notification />
+                <Notification />
+                <Notification />
+                <Notification />
               </div>
             </div>
           </motion.div>
