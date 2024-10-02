@@ -278,7 +278,7 @@ app.post("/add-review", async (req, res) => {
 			return res.status(444).send("already reviewed");
 		}
 		console.log(user)
-		const games = await Library.findOne({ owner: user._id , game: game_id});
+		const games = await Library.findOne({ owner: user._id , games: game_id});
 		if (!games) {
 			return res.status(400).send("you need to buy game for review");
 		}
