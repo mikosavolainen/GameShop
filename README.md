@@ -6,5 +6,5 @@
   - Genre
   - Name
   - Price
-- Adding games to cart
+- Adding and removing games from cart
 - Publishing games
