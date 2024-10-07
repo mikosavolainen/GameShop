@@ -1,0 +1,71 @@
+﻿<Page x:Class="WrenchApp.Pages.ShoppingCart"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WrenchApp.Pages"
+      mc:Ignorable="d" 
+      Title="ShoppingCart">
+
+    <Page.Resources>
+        <Style x:Key="RowTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Margin" Value="10 5 0 5"/>
+        </Style>
+
+        <Style x:Key="RowDesc" TargetType="TextBlock">
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="FontSize" Value="16.666"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowPrice" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+        </Style>
+
+        <Style x:Key="RowImg" TargetType="Image">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+            <Setter Property="Source" Value="/WrenchApp;component/Images/placeholder.png"/>
+        </Style>
+
+        <Style x:Key="RowHolder" TargetType="StackPanel">
+            <Setter Property="Background" Value="#303030"/>
+            <Setter Property="Margin" Value="0 0 0 5"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Height" Value="150"/>
+        </Style>
+
+        <Style x:Key="RowTextHolder" TargetType="StackPanel">
+            <Setter Property="Width" Value="750"/>
+        </Style>
+
+        <Style x:Key="DeleteGame" TargetType="Grid">
+            <Setter Property="Width" Value="140"/>
+        </Style>
+
+        <Style x:Key="DeleteButton" TargetType="TextBlock">
+            <Setter Property="Text" Value="X"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <Grid Width="1200" Margin="0 150 0 0">
+            <StackPanel Name="MainHolder">
+                
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

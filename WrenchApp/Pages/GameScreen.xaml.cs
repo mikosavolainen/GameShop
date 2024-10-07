@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CredentialManagement;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -47,12 +48,32 @@ namespace WrenchApp.Pages
         private void DisplayData(JObject gameData)
         {
             GameTitle.Text = gameData["name"].ToString();
-
             ShortDesc.Text = gameData["desc"].ToString();
-
             Publisher.Text = gameData["author"].ToString();
-
             LongDesc.Text = gameData["desc"].ToString();
+
+            BuyGame.Text = $"Add To Cart ({gameData["price"].ToString()}€)";
+            BuyGame.MouseDown += (s, e) => AddToCart(gameData["_id"].ToString());
+        }
+
+        private void AddToCart(string id)
+        {
+            List<string> collection = ConfigurationManager.AppSettings["shoppingcart"].Split('/').ToList();
+
+            if (collection.Contains(id))
+            {
+                MessageBoxResult anwser = MessageBox.Show("Game already in shopping cart!\nDo you wish to remove game from shopping cart?", "", MessageBoxButton.YesNo);
+                if (anwser == MessageBoxResult.Yes)
+                {
+                    collection.Remove(id);
+                    ConfigurationManager.AppSettings["shoppingcart"] = String.Join("/", collection);
+                    MessageBox.Show("Game removed from shopping cart!");
+                }
+            } else
+            {
+                ConfigurationManager.AppSettings["shoppingcart"] += id + "/";
+                MessageBox.Show("Game added to shopping cart!");
+            }
         }
 
         private void Review_Score(object sender, EventArgs e)
@@ -79,20 +100,11 @@ namespace WrenchApp.Pages
                     break;
             }
         }
-        private void AddToCart(object sender, EventArgs e)
-        {
-
-        }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
-        }
-
-        private void Hyperlink_RequestNavigate_1(object sender, RequestNavigateEventArgs e)
-        {
-
         }
     }
 }

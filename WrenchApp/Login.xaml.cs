@@ -18,6 +18,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace WrenchApp
 {
@@ -121,9 +124,16 @@ namespace WrenchApp
                             response.EnsureSuccessStatusCode();
                             string responseBody = await response.Content.ReadAsStringAsync();
 
-                            // WRITE CODE ON SAVING JWT AUTH AND USERNAME
+                            using (JsonDocument doc = JsonDocument.Parse(responseBody))
+                            {
+                                // Navigate to the token property
+                                if (doc.RootElement.TryGetProperty("token", out JsonElement tokenElement))
+                                {
+                                    ConfigurationManager.AppSettings["JWT"] = tokenElement.GetString();
+                                }
+                            }
+
                             ConfigurationManager.AppSettings["username"] = username;
-                            ConfigurationManager.AppSettings["JWT"] = responseBody;
 
                             if (!autologin)
                             {
@@ -150,7 +160,7 @@ namespace WrenchApp
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.ToString());
+                        MessageBox.Show("There was an error while logging in.", "Error");
                     }
                 }                                                   
             }

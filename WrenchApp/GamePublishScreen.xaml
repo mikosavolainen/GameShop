@@ -96,10 +96,18 @@
                 <TextBox Name="gametitle" TextChanged="ChangePreviewTitle"/>
 
                 <TextBlock Text="Shortform description"/>
-                <RichTextBox Height="75"/>
+                <RichTextBox Name="gamedesc" Height="75"/>
 
-                <TextBlock Text="Longform description"/>
-                <RichTextBox/>
+                <TextBlock Text="Tags (tag1,tag2,tag3)"/>
+                <TextBox Name="tags" TextChanged="ChangePreviewTitle"/>
+
+                <TextBlock Text="Price (no € or $ sign)"/>
+                <TextBox Name="price" TextChanged="ChangePreviewTitle"/>
+
+                <TextBlock Text="Multiplayer"/>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Name="ismultiplayer" Content="Yes" Foreground="White" FontSize="20" Margin="0 0 15 0"/>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Margin="15" Grid.Column="1">
@@ -118,7 +126,7 @@
             
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Button Name="CancelButton" Background="#505050" Content="Cancel" Click="CancelButton_Click"/>
-                <Button Name="ConfirmButton" Background="#0075FF"  Content="Confirm"/>
+                <Button Name="ConfirmButton" Background="#0075FF"  Content="Confirm" Click="ConfirmButton_Click"/>
             </StackPanel>
         </Grid>
     </Border>
