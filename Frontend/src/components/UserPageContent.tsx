@@ -68,54 +68,13 @@ export default function UserPageContent() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8">
           <GameDisplay
             classname="pb-5"
-            id="test"
+            id="66f26c48d28e38792f7f3894"
             gameName="gameName"
             price={40}
             description="Test"
             size="small"
             categories={['Cool']}
             review={`${user?.username == params.user ? `send` : `none`}`}
-            images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
-          />
-          <GameDisplay
-            classname="pb-5"
-            id="test"
-            gameName="gameName"
-            price={40}
-            description="Test"
-            size="small"
-            categories={['Cool']}
-            review={`${user?.username == params.user ? `edit` : `none`}`}
-            images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
-          />
-          <GameDisplay
-            classname="pb-5"
-            id="test"
-            gameName="gameName"
-            price={40}
-            description="Test"
-            size="small"
-            categories={['Cool']}
-            images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
-          />
-          <GameDisplay
-            classname="pb-5"
-            id="test"
-            gameName="gameName"
-            price={40}
-            description="Test"
-            size="small"
-            categories={['Cool']}
-            images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
-          />
-          <GameDisplay
-            classname="pb-5"
-            id="test"
-            gameName="gameName"
-            price={40}
-            description="Test"
-            size="small"
-            categories={['Cool']}
             images={[test_image_wrench, test_image_wrench_2, test_image_wrench, test_image_wrench, test_image_wrench]}
           />
         </div>

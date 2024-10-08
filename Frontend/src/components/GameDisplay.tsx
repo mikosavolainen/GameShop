@@ -80,10 +80,10 @@ export default function GameDisplay({classname, discount, price, size, gameName,
                 <div className="mt-4" onClick={(e) => e.preventDefault()}>
                   <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
                   {review == "send" && (
-                    <Button onClick={() => {setModalOpen(true); setModalPage("review")}}type="button" style="coral" icon="send" text="Leave a review"></Button>
+                    <Button onClick={() => {setModalOpen(true); setModalPage("review/"+id)}}type="button" style="coral" icon="send" text="Leave a review"></Button>
                   )}
                   {review == "edit" && (
-                    <Button onClick={() => {setModalOpen(true); setModalPage("review")}} type="button" icon="edit" text="Edit review"></Button>
+                    <Button onClick={() => {setModalOpen(true); setModalPage("review/"+id)}} type="button" icon="edit" text="Edit review"></Button>
                   )}
                   <div className="inline-block ml-3">
                     <span className="mr-3">Price:</span>

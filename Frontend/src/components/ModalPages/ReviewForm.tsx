@@ -7,7 +7,7 @@ import axios from 'axios'
 import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 export default function ReviewForm() {
-  const { setModalLoading, setModalOpen } =
+  const { setModalLoading, setModalOpen, modalPage } =
     useContext(ModalContext)
 
   // API request function
@@ -17,7 +17,7 @@ export default function ReviewForm() {
   }) => {
     setModalLoading(true)
     const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL // Ensure this environment variable is correctly set
-    const { data } = await axios.post(`${apiUrl}/add-review`, formData)
+    const { data } = await axios.post(`${apiUrl}/add-review`, {game_id: modalPage.split("/")[1], token: localStorage.getItem("token"), stars: rating, desc: formData.content})
     return data
   }
 
@@ -29,14 +29,13 @@ export default function ReviewForm() {
         message: 'Content should be at least 50 characters long',
       }),
     rating: z
-      .number()
-      .min(3, { message: 'Rating should be at least 3 characters long' }),
+      .number(),
   })
 
   const queryClient = useQueryClient()
   const [errors, setErrors] = useState<{
     content?: string
-    rating?: number
+    rating?: string
     global?: string
   }>({})
   const [formData, setFormData] = useState({
@@ -68,7 +67,7 @@ export default function ReviewForm() {
     // Validate the form data using Zod
     const result = signInSchema.safeParse({
       content: formData.content,
-      rating: formData.rating,
+      rating: rating,
     })
 
     // Handle validation errors
@@ -76,7 +75,7 @@ export default function ReviewForm() {
       const formattedErrors = result.error.flatten().fieldErrors
       setErrors({
         content: formattedErrors.content?.[0],
-        rating: Number(formattedErrors.rating?.[0]),
+        rating: formattedErrors.rating?.[0],
       })
       return
     }
@@ -130,7 +129,9 @@ export default function ReviewForm() {
           rows={5}
           placeholder={'Write your review'}
           name="content"
-        ></textarea>
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormData((old) => ({ ...old, content: e.target.value }))}
+          value={formData.content}
+        />
         {errors.content && <p className="text-wrench-accent-gold mt-1">{errors.content}</p>}
         <div className="flex">
           <StarsButton rating={rating} />

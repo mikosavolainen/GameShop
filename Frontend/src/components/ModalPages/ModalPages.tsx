@@ -23,9 +23,10 @@ export default function ModalPages() {
       return <ResetPassword />
     case "resetPasswordSuccess":
       return <ResetPasswordSuccess />
-    case "review":
-      return <ReviewForm />
     default:
-      return <></>
+      if(modalPage.includes("review"))
+        return <ReviewForm />
+      else
+        return <></>
   }
 }
