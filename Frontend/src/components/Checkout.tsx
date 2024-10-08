@@ -1,8 +1,8 @@
-import { useState } from "react"
 import Footer from "./Parts/Footer"
 
 const Checkout = () => {
-  const [checkout, setCheckout] = useState<string[]>(JSON.parse(localStorage.getItem("checkout") as string) || [])
+  // const [checkout, setCheckout] = useState<string[]>(JSON.parse(localStorage.getItem("checkout") as string) || [])
+  const checkout: string[] = JSON.parse(localStorage.getItem("checkout") as string) || []
   return (
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
       <div>

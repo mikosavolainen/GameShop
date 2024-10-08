@@ -25,7 +25,7 @@ export default function UserPageContent() {
       console.log(data)
     }
     fetch()
-  }, [])
+  }, [params.user, setLocation])
   function Profile() {
     return (
       <>

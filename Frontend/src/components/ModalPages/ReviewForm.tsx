@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import star_icon from '../../assets/Star icon.svg'
 import star_icon_golden from '../../assets/Star icon golden.svg'
 import Button from '../Button'
@@ -86,17 +86,13 @@ export default function ReviewForm() {
   }
 
   // Handle form input change
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
   }
   const [rating, setRating] = useState(0) //0 is default you need to get thing from database
-
-  useEffect(() => {
-    handleChange
-  }, [rating, handleChange])
 
   function StarsButton({ rating }: { rating: number }) {
     return (
@@ -129,7 +125,7 @@ export default function ReviewForm() {
           rows={5}
           placeholder={'Write your review'}
           name="content"
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormData((old) => ({ ...old, content: e.target.value }))}
+          onChange={handleChange}
           value={formData.content}
         />
         {errors.content && <p className="text-wrench-accent-gold mt-1">{errors.content}</p>}

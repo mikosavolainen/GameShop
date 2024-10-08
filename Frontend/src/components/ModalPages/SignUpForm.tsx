@@ -15,7 +15,7 @@ export default function SignUpForm() {
     setModalLoading(true)
     const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
     const { data } = await axios.post(`${apiUrl}/register`, formData);
-    formData.newsletter && await axios.post(`${apiUrl}/subscribe`, formData);
+    if(formData.newsletter) await axios.post(`${apiUrl}/subscribe`, formData);
     return data;
   };
 

@@ -77,17 +77,12 @@ export default function GamePage() {
     }
   }, [setChosenImage, chosenImage])
 
-  const [isInCheckout, setIsInCheckout] = useState(false);
+  const [isInCheckout, setIsInCheckout] = useState((JSON.parse(localStorage.getItem("checkout") as string) || []).includes(params.id as string));
 
   const updateIsInCheckout = (items: string[]) => {
     localStorage.setItem("checkout", JSON.stringify(items));
     setIsInCheckout(items.includes(params.id as string));
   };
-
-  useEffect(() => {
-    const currentCheckout: string[] = JSON.parse(localStorage.getItem("checkout") as string) || [];
-    updateIsInCheckout(currentCheckout)
-  }, [])
 
   const addGameToCheckout = (newItem: string) => {
     const prev: string[] = JSON.parse(localStorage.getItem("checkout") as string) || [];

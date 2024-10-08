@@ -23,7 +23,7 @@ export default function MobileNavigationBar({setMobileMenu, setMobileNotificatio
     return () => mediaQuery.removeEventListener('change', handleResize);
   }, []);
 
-  useEffect(() => {setMobileMenu(false);setMobileNotifications(false)}, [isMobileBreakpoint, setMobileMenu])
+  useEffect(() => {setMobileMenu(false);setMobileNotifications(false)}, [isMobileBreakpoint, setMobileMenu, setMobileNotifications])
   
   return(
     <div className="md:hidden flex items-center justify-around w-full h-16 z-20 fixed left-0 right-0 bottom-0 bg-wrench-neutral-dark/85 backdrop-blur-3xl content-layout-padding">
