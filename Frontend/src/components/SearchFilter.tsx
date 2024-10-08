@@ -165,7 +165,7 @@ export default function SearchFilter(){
                     <button onClick={function thing(){setPage(page - 1)}}>&lt;</button>
                     <button onClick={function thing(){setPage(1)}} className="mx-4">1</button>
                     <button className="underline">{page}</button>
-                    <button onClick={function thing(){setPage((allResults / 10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
+                    <button onClick={function thing(){setPage(Math.round(allResults / 10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
                     <button onClick={function thing(){setPage(page + 1)}}>&gt;</button>
                 </div>
             )}
@@ -188,7 +188,7 @@ export default function SearchFilter(){
                     <button onClick={function thing(){setPage(page - 1)}}>&lt;</button>
                     <button onClick={function thing(){setPage(1)}} className="mx-4">1</button>
                     <button className="underline">{page}</button>
-                    <button onClick={function thing(){setPage((allResults / 10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
+                    <button onClick={function thing(){setPage(Math.round(allResults/10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
                     <button onClick={function thing(){setPage(page + 1)}}>&gt;</button>
                 </div>
             )}
