@@ -20,6 +20,7 @@ export default function SearchFilter(){
     const [cat, setCat] = useState<string[]>([])
     const [dev, setDev] = useState<string[]>([])
     const [res, setRes] = useState([])
+    const [page, setPage] = useState(1)
 
         useEffect(() => {
         const categories: string[] = []
@@ -27,7 +28,6 @@ export default function SearchFilter(){
         const fetch = async () => {
           const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
           const { data } = await axios.get(`${apiUrl}/get-all-games`, {params: {limit: 20000, page:1}}); // idk why post is used on server side instead of get but ok
-          setAllResults(data.length)
           data.map((r: { category: [], author: string }) => {
               developers.push(r.author)
               r.category.map((v: string ) => categories.push(v))
@@ -44,12 +44,11 @@ export default function SearchFilter(){
     useEffect(() => {
         const fetch = async () => {
           const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
-          const { data } = await axios.get(`${apiUrl}/search-game?${searchString}&limit=10&page=1`); // idk why post is used on server side instead of get but ok
-          setAllResults(data.length)
+          const { data } = await axios.get(`${apiUrl}/search-game?${searchString}&limit=10&page=${page}`); // idk why post is used on server side instead of get but ok
           setRes(data)
         }
         fetch()
-      }, [searchString])
+      }, [searchString, page])
     useEffect(() => {
     const fetch = async () => {
         const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
@@ -58,7 +57,7 @@ export default function SearchFilter(){
     }
 
     fetch()
-    }, [searchString])
+    }, [searchString, page])
       const handleCheckboxCheck = (id: number, name?: string, dev?: boolean) => {
         const checkbox = checkboxes
         checkbox[id] = !checkbox[id]
@@ -161,13 +160,13 @@ export default function SearchFilter(){
             </div>
             <div className="mr-10 ml-10 w-[70%]">
             {searchString.substring(2) !== "" ? <p className="font-bold text-4xl">{allResults} results</p> : <p className="font-bold text-4xl">Showing all {searchString.substring(2)}</p>}
-            {res.length >= 10 && (
+            {allResults > 10 && (
                 <div className="flex my-4">
-                    <button>&lt;</button>
-                    <button className="mx-4">1</button>
-                    <button className="underline">200</button>
-                    <button className="mx-4">312</button>
-                    <button>&gt;</button>
+                    <button onClick={function thing(){setPage(page - 1)}}>&lt;</button>
+                    <button onClick={function thing(){setPage(1)}} className="mx-4">1</button>
+                    <button className="underline">{page}</button>
+                    <button onClick={function thing(){setPage((allResults / 10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
+                    <button onClick={function thing(){setPage(page + 1)}}>&gt;</button>
                 </div>
             )}
             <div className={`${selectedSorting == "wide" ? `` : `grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8`}`}>
@@ -184,13 +183,13 @@ export default function SearchFilter(){
                 />
             )) }
             </div>
-            {res.length >= 10 && (
+            {allResults > 10 && (
                 <div className="flex my-4">
-                    <button>&lt;</button>
-                    <button className="mx-4">1</button>
-                    <button className="underline">200</button>
-                    <button className="mx-4">312</button>
-                    <button>&gt;</button>
+                    <button onClick={function thing(){setPage(page - 1)}}>&lt;</button>
+                    <button onClick={function thing(){setPage(1)}} className="mx-4">1</button>
+                    <button className="underline">{page}</button>
+                    <button onClick={function thing(){setPage((allResults / 10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
+                    <button onClick={function thing(){setPage(page + 1)}}>&gt;</button>
                 </div>
             )}
             </div>
