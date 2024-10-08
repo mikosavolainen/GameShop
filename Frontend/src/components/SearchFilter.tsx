@@ -185,11 +185,11 @@ export default function SearchFilter(){
             </div>
             {allResults > 10 && (
                 <div className="flex my-4">
-                    <button onClick={function thing(){setPage(page - 1)}}>&lt;</button>
-                    <button onClick={function thing(){setPage(1)}} className="mx-4">1</button>
+                    <button onClick={() => {setPage(page - 1)}}>&lt;</button>
+                    <button onClick={() => {setPage(1)}} className="mx-4">1</button>
                     <button className="underline">{page}</button>
-                    <button onClick={function thing(){setPage(Math.round(allResults/10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
-                    <button onClick={function thing(){setPage(page + 1)}}>&gt;</button>
+                    <button onClick={() => {setPage(Math.round(allResults/10))}} className="mx-4">{(allResults / 10).toFixed()}</button>
+                    <button onClick={() => {setPage(page + 1)}}>&gt;</button>
                 </div>
             )}
             </div>
