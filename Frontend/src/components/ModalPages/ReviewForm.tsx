@@ -13,7 +13,7 @@ export default function ReviewForm() {
   // API request function
   const loginRequest = async (formData: {
     content: string
-    rating: string
+    rating: number
   }) => {
     setModalLoading(true)
     const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL // Ensure this environment variable is correctly set
@@ -36,12 +36,12 @@ export default function ReviewForm() {
   const queryClient = useQueryClient()
   const [errors, setErrors] = useState<{
     content?: string
-    rating?: string
+    rating?: number
     global?: string
   }>({})
   const [formData, setFormData] = useState({
     content: '',
-    rating: '',
+    rating: 0,
   })
 
   // React Query mutation for POST request with proper types
@@ -76,7 +76,7 @@ export default function ReviewForm() {
       const formattedErrors = result.error.flatten().fieldErrors
       setErrors({
         content: formattedErrors.content?.[0],
-        rating: formattedErrors.rating?.[0],
+        rating: Number(formattedErrors.rating?.[0]),
       })
       return
     }
@@ -122,7 +122,6 @@ export default function ReviewForm() {
   }
   return (
     <>
-    {errors}
       <h2 className="text-2xl mb-4">Review</h2>
       <form onSubmit={handleSubmit}>
         <textarea
@@ -132,8 +131,10 @@ export default function ReviewForm() {
           placeholder={'Write your review'}
           name="content"
         ></textarea>
+        {errors.content && <p className="text-wrench-accent-gold mt-1">{errors.content}</p>}
         <div className="flex">
           <StarsButton rating={rating} />
+          {errors.rating && <p className="text-wrench-accent-gold mt-1">{errors.rating}</p>}
         </div>
         <div className="flex">
           <Button
@@ -145,6 +146,7 @@ export default function ReviewForm() {
             icon="send"
           />
         </div>
+        {errors.global && <p className="text-wrench-accent-gold mt-1">{errors.global}</p>}
       </form>
     </>
   )
