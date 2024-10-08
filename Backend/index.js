@@ -646,7 +646,7 @@ setInterval(async () => {
 
 	const x = await NewsLetter.find();
 	console.log(x);
-	for (var i = 0; i <= x.length; i++) {
+	for (var i = 0; i < x.length; i++) {
 		console.log(x[i].email);
 
 		await sendMail(newsletter, "You received our newsletter", x[i].email);
