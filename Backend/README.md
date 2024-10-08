@@ -128,5 +128,6 @@ We welcome contributions! Feel free to fork the repository and submit a pull req
 
 This project is licensed under the MIT License. You are free to use, modify, and distribute the software, but please give credit to the original authors.
 
-<sub><sub> ChatGPT <sup><sup>
-ChatGPT has helped us to write backend readme and solve hard errors in backend
+<sub><sub> ChatGPT 
+<br>
+<sub><sub>ChatGPT has helped us to write backend readme and solve hard errors in backend
