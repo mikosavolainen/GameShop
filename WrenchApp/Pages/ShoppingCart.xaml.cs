@@ -130,6 +130,7 @@ namespace WrenchApp.Pages
         private async void PurchaseGames(object sender, RoutedEventArgs e)
         {
             List<string> collection = ConfigurationManager.AppSettings["shoppingcart"].Split('/').ToList();
+            HttpClient httpClient = new HttpClient();
 
             foreach (var item in collection)
             {
@@ -141,7 +142,6 @@ namespace WrenchApp.Pages
                     { "game_id", item }
                 });
 
-                HttpClient httpClient = new HttpClient();
                 HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/buy-game", formData);
             
                 if (response.IsSuccessStatusCode)
@@ -149,7 +149,7 @@ namespace WrenchApp.Pages
                     MessageBox.Show("Successfully purchased games!");
                 } else
                 {
-                    MessageBox.Show("Error purhcasing games :(");
+                    MessageBox.Show("Error purchasing games :(");
                 }
             }
         }

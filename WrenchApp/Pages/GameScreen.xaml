@@ -73,7 +73,7 @@
 
             <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
                 <TextBlock Text="Leave a Review" Foreground="White" FontSize="40" Margin="00 10 0 10"/>
-                <RichTextBox Height="200" BorderBrush="Gray" BorderThickness="2" IsReadOnly="False" FontSize="20" Foreground="White"/>
+                <RichTextBox x:Name="ReviewBox" Height="200" BorderBrush="Gray" BorderThickness="2" IsReadOnly="False" FontSize="20" Foreground="White"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Rating:" Foreground="White" FontSize="25" Margin="0 0 5 0" VerticalAlignment="Center"/>
                     <TextBlock Name="star1" MouseLeftButtonDown="Review_Score" Tag="1" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
@@ -82,7 +82,7 @@
                     <TextBlock Name="star4" MouseLeftButtonDown="Review_Score" Tag="4" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
                     <TextBlock Name="star5" MouseLeftButtonDown="Review_Score" Tag="5" Text="☆" Foreground="White" FontSize="30" Cursor="Hand"/>
                 </StackPanel>
-                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1" Cursor="Hand" Margin="0 10 0 0">
+                <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1" Cursor="Hand" MouseDown="PublishReview" Margin="0 10 0 0">
                     <TextBlock Foreground="White" FontSize="20" Padding="30 20" Text="Publish Review" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
             </StackPanel>
@@ -95,89 +95,10 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Name="ReviewColumn1" Grid.Column="0">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" Width="440">
-                                    <Border CornerRadius="100" Height="50" Width="50" Margin="0 0 15 5">
-                                        <Border.Background>
-                                            <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
-                                        </Border.Background>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Username" Foreground="White" FontSize="20"/>
-                                        <TextBlock Text="20th December 2024" Foreground="Gray" FontSize="15"/>
-                                    </StackPanel>
-                                </StackPanel>
-                                <Label Content="★★★☆☆ (3/5)" Width="150" Height="55" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="White" FontSize="20"/>
-                            </StackPanel>
-                            <RichTextBox Foreground="LightGray" FontSize="15">
-                                <FlowDocument>
-                                    <Paragraph>
-                                        This is a review of the game that I just played. I think that this game has alot of potential, but sadly falls flat due to it's completely and utterly unhinged story. There were moments in the game where I somehow felt genuienly scared for my own life, as there were multiple pictures of my own home and detailed descriptions of what the developer would do to me if I didn't rate it 5/5.
-                                    </Paragraph>
-                                    <Paragraph>
-                                        Putting aside the death threats, and the attempted break in, the gameplay itself was quite fun. I enjoyed how when I moved left it would sometimes move right. I believe this was made to make the player immersed in the world of a drunk person in the middle of the NY city.
-                                    </Paragraph>
-                                </FlowDocument>
-                            </RichTextBox>
-                        </StackPanel>
-
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" Width="440">
-                                    <Border CornerRadius="100" Height="50" Width="50" Margin="0 0 15 5">
-                                        <Border.Background>
-                                            <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
-                                        </Border.Background>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Username" Foreground="White" FontSize="20"/>
-                                        <TextBlock Text="20th December 2024" Foreground="Gray" FontSize="15"/>
-                                    </StackPanel>
-                                </StackPanel>
-                                <Label Content="★★★☆☆ (3/5)" Width="150" Height="55" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="White" FontSize="20"/>
-                            </StackPanel>
-                            <RichTextBox Foreground="LightGray" FontSize="15">
-                                <FlowDocument>
-                                    <Paragraph>
-                                        This is a review of the game that I just played. I think that this game has alot of potential, but sadly falls flat due to it's completely and utterly unhinged story. There were moments in the game where I somehow felt genuienly scared for my own life, as there were multiple pictures of my own home and detailed descriptions of what the developer would do to me if I didn't rate it 5/5.
-                                    </Paragraph>
-                                    <Paragraph>
-                                        Putting aside the death threats, and the attempted break in, the gameplay itself was quite fun. I enjoyed how when I moved left it would sometimes move right. I believe this was made to make the player immersed in the world of a drunk person in the middle of the NY city.
-                                    </Paragraph>
-                                </FlowDocument>
-                            </RichTextBox>
-                        </StackPanel>
+                    <StackPanel Name="ReviewColumn" Grid.Column="0">
                     </StackPanel>
 
                     <StackPanel Name="ReviewColumn2" Grid.Column="1">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" Width="440">
-                                    <Border CornerRadius="100" Height="50" Width="50" Margin="0 0 15 5">
-                                        <Border.Background>
-                                            <ImageBrush ImageSource="/WrenchApp;component/Images/placeholderpfp.png"/>
-                                        </Border.Background>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Username" Foreground="White" FontSize="20"/>
-                                        <TextBlock Text="20th December 2024" Foreground="Gray" FontSize="15"/>
-                                    </StackPanel>
-                                </StackPanel>
-                                <Label Content="★★★☆☆ (3/5)" Width="150" Height="55" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Foreground="White" FontSize="20"/>
-                            </StackPanel>
-                            <RichTextBox Foreground="LightGray" FontSize="15">
-                                <FlowDocument>
-                                    <Paragraph>
-                                        This is a review of the game that I just played. I think that this game has alot of potential, but sadly falls flat due to it's completely and utterly unhinged story. There were moments in the game where I somehow felt genuienly scared for my own life, as there were multiple pictures of my own home and detailed descriptions of what the developer would do to me if I didn't rate it 5/5.
-                                    </Paragraph>
-                                    <Paragraph>
-                                        Putting aside the death threats, and the attempted break in, the gameplay itself was quite fun. I enjoyed how when I moved left it would sometimes move right. I believe this was made to make the player immersed in the world of a drunk person in the middle of the NY city.
-                                    </Paragraph>
-                                </FlowDocument>
-                            </RichTextBox>
-                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </StackPanel>

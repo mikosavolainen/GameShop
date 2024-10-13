@@ -67,8 +67,8 @@
                 <StackPanel Name="MainHolder">
 
                 </StackPanel>
-                <Border Name="Purchase" CornerRadius="25" Background="#6A0DAD" BorderBrush="#5E1493" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <TextBlock Text="Purchase" Foreground="White" FontSize="20" Margin="20" Cursor="Hand" MouseDown="PurchaseGames"/>
+                <Border Name="Purchase" CornerRadius="30" Background="#6A0DAD" BorderBrush="#5E1493" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="Hand" MouseDown="PurchaseGames">
+                    <TextBlock Text="Purchase" Foreground="White" FontSize="20" Margin="20"/>
                 </Border>
             </StackPanel>
         </Grid>
