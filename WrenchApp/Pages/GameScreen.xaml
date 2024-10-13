@@ -62,7 +62,7 @@
                 <TextBlock Name="Publisher" Text="Publisher: Unknown" Foreground="White" FontSize="20" Margin="0 0 0 20"/>
 
                 <Border HorizontalAlignment="Left" Background="#6A0DAD" BorderBrush="#5E1493" CornerRadius="35" BorderThickness="1">
-                    <TextBlock Name="BuyGame" Foreground="White" FontSize="20" Padding="30 20" Text="Add to Cart" VerticalAlignment="Center" HorizontalAlignment="Center" Cursor="Hand"/>
+                    <TextBlock Name="BuyGame" Foreground="White" FontSize="20" Padding="30 20" Text="Add to Cart" VerticalAlignment="Center" HorizontalAlignment="Center" MouseDown="AddToCart" Cursor="Hand"/>
                 </Border>
             </StackPanel>
 

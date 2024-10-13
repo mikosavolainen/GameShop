@@ -45,6 +45,7 @@ namespace WrenchApp.Pages
                     Text = "No games in shopping cart"
                 };
                 MainHolder.Children.Add(alert);
+                Purchase.Visibility = Visibility.Hidden;
             }
 
             foreach (string item in collection)
@@ -124,6 +125,33 @@ namespace WrenchApp.Pages
 
             ConfigurationManager.AppSettings["shoppingcart"] = String.Join("/", collection);
             DisplayCart();
+        }
+
+        private async void PurchaseGames(object sender, RoutedEventArgs e)
+        {
+            List<string> collection = ConfigurationManager.AppSettings["shoppingcart"].Split('/').ToList();
+
+            foreach (var item in collection)
+            {
+                if (item == null || item == "") continue;
+
+                var formData = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "token", ConfigurationManager.AppSettings["JWT"] },
+                    { "game_id", item }
+                });
+
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/buy-game", formData);
+            
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Successfully purchased games!");
+                } else
+                {
+                    MessageBox.Show("Error purhcasing games :(");
+                }
+            }
         }
 
         private void ShowGame(string id)

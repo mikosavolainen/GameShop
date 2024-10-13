@@ -158,7 +158,7 @@ namespace WrenchApp
                         }
 
                     }
-                    catch (Exception e)
+                    catch
                     {
                         MessageBox.Show("There was an error while logging in.", "Error");
                     }

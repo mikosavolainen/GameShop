@@ -28,10 +28,12 @@ namespace WrenchApp.Pages
     {
 
         private JObject gameData;
+        private string id_;
 
         public GameScreen(string id)
         {
             InitializeComponent();
+            id_ = id;
             GetData(id);
         }
         
@@ -139,6 +141,28 @@ namespace WrenchApp.Pages
                 default:
                     star1.Text = "★"; star2.Text = "★"; star3.Text = "★"; star4.Text = "★"; star5.Text = "★";
                     break;
+            }
+        }
+
+        private void AddToCart(object sender, MouseButtonEventArgs e)
+        {
+            List<string> collection = ConfigurationManager.AppSettings["shoppingcart"].Split('/').ToList();
+
+            if (collection.Contains(id_))
+            {
+                MessageBoxResult result = MessageBox.Show("Game already in shopping cart!\nRemove game from shopping cart?", "", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    collection.Remove(id_);
+                    ConfigurationManager.AppSettings["shoppingcart"] = string.Join("/", collection);
+                }
+            } else
+            {
+                collection.Add(id_);
+                ConfigurationManager.AppSettings["shoppingcart"] = string.Join("/", collection);
+
+                MessageBox.Show("Game added to shopping cart!", "");
             }
         }
 

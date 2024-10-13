@@ -63,8 +63,13 @@
 
     <ScrollViewer>
         <Grid Width="1200" Margin="0 150 0 0">
-            <StackPanel Name="MainHolder">
-                
+            <StackPanel>
+                <StackPanel Name="MainHolder">
+
+                </StackPanel>
+                <Border Name="Purchase" CornerRadius="25" Background="#6A0DAD" BorderBrush="#5E1493" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <TextBlock Text="Purchase" Foreground="White" FontSize="20" Margin="20" Cursor="Hand" MouseDown="PurchaseGames"/>
+                </Border>
             </StackPanel>
         </Grid>
     </ScrollViewer>
