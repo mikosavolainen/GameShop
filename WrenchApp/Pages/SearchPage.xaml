@@ -427,7 +427,6 @@
             <Setter Property="Height" Value="150"/>
             <Setter Property="Width" Value="300"/>
             <Setter Property="Stretch" Value="UniformToFill"/>
-            <Setter Property="Source" Value="/WrenchApp;component/Images/placeholder.png"/>
         </Style>
 
         <Style x:Key="RowHolder" TargetType="StackPanel">
@@ -439,7 +438,7 @@
         </Style>
     </Page.Resources>
 
-    <ScrollViewer>
+    <ScrollViewer Name="ScrollViewer">
         <Grid Width="1200" Margin="0 150 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -454,7 +453,7 @@
             <StackPanel Grid.Column="0" Margin="15">
                 <TextBlock Text="Search" Foreground="white" FontSize="20" Margin="0 0 0 5"/>
                 <Border CornerRadius="20" Background="White">
-                    <TextBox Name="Searchbox" Height="40" FontSize="20" Background="Transparent" BorderBrush="Transparent" VerticalContentAlignment="Center" Margin="10 0 0 0" LostFocus="FilterUpdate"/>
+                    <TextBox Name="Searchbox" Height="40" FontSize="20" Background="Transparent" BorderBrush="Transparent" VerticalContentAlignment="Center" Margin="10 0 0 0"/>
                 </Border>
 
                 <Border Background="#303030" BorderBrush="#404040" BorderThickness="2" Margin="0 10 0 0" CornerRadius="20">
@@ -486,19 +485,27 @@
 
                         <TextBlock Text="Price" Foreground="White" FontSize="20" Margin="0 15 0 10"/>
                         <TextBlock Text="min" Foreground="White" FontSize="17"/>
-                        <Slider Name="minPrice" AutoToolTipPlacement="BottomRight" Width="300" HorizontalAlignment="Left" Minimum="0" Maximum="200" PreviewMouseLeftButtonUp="priceChange"/>
+                        <Slider Name="minPrice" AutoToolTipPlacement="BottomRight" Width="300" HorizontalAlignment="Left" Minimum="0" Maximum="200"/>
                         <TextBlock Text="max" Foreground="White" FontSize="17"/>
-                        <Slider Name="maxPrice" AutoToolTipPlacement="BottomRight" Width="300" HorizontalAlignment="Left" Minimum="0" Maximum="200" PreviewMouseLeftButtonUp="priceChange"/>
+                        <Slider Name="maxPrice" AutoToolTipPlacement="BottomRight" Width="300" HorizontalAlignment="Left" Minimum="0" Maximum="200"/>
                         <CheckBox Content="On Sale" FontSize="17" Foreground="White" Margin="0 10"/>
                     </StackPanel>
                 </Border>
+
+                <Button Content="Search for games" FontSize="20" Width="300" Height="75" Foreground="White" Background="#6A0DAD" BorderBrush="Transparent" Click="SearchForGames" Margin="10"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.Column="1" Margin="0 0 0 150" >
                 <TextBlock Name="FoundResults" Text="0 Results" Foreground="White" FontSize="30"/>
 
-                <StackPanel Margin="0 0 0 150" Name="GameHolder">
+                <StackPanel Name="GameHolder">
                     
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                    <TextBlock Margin="0 0 5 0" Text="Page:" Foreground="white" FontSize="20"/>
+                    <TextBlock Margin="2 0" Text="0" Foreground="White" FontSize="20" Cursor="Hand" Name="LastPage"/>
+                    <TextBlock Margin="2 0" Text="1" Foreground="White" FontSize="20" Cursor="Hand" Name="CurrentPage"/>
+                    <TextBlock Margin="2 0" Text="2" Foreground="White" FontSize="20" Cursor="Hand" Name="NextPage"/>
                 </StackPanel>
             </StackPanel>
 

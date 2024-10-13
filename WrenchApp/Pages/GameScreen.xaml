@@ -40,37 +40,20 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Column="0" Grid.Row="0">
-                <Image Source="/WrenchApp;component/Images/placeholder.png" Width="600" Height="350" Stretch="UniformToFill"/>
+                <Image Name="image" Width="600" Height="350" Stretch="UniformToFill"/>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
-                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
-                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
-                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
-                        <Image Source="/WrenchApp;component/Images/placeholder.png" Width="150" Height="85" Stretch="UniformToFill"/>
+                    <StackPanel Orientation="Horizontal" Name="SmallImages">
                     </StackPanel>
                 </ScrollViewer>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="15 0 0 0">
                 <TextBlock Name="GameTitle" Text="Game Name" Foreground="White" FontSize="40"/>
-                
-                <StackPanel Orientation="Horizontal" Margin="5 5">
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="6" Margin="0 0 10 0"> 
-                        <Label Foreground="White" Content="Tag1"/> 
-                    </Border>
-                    
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="6" Margin="0 0 10 0">
-                        <Label Foreground="White" Content="Tag2"/>
-                    </Border>
-                    
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="6" Margin="0 0 10 0">
-                        <Label Foreground="White" Content="Tag3"/>
-                    </Border>
-                    
+
+                <StackPanel Orientation="Horizontal" Margin="5 5" Name="Tags">
                 </StackPanel>
 
-                <TextBlock Text="★★★☆☆ (3/5)" FontSize="20" Foreground="White" Margin="0 5"/>
+                <TextBlock Name="Rating" Text="★★★☆☆ (3/5)" FontSize="20" Foreground="White" Margin="0 5"/>
 
                 <TextBlock Name="ShortDesc" Foreground="LightGray" FontSize="20" TextWrapping="WrapWithOverflow" Height="200"
                            Text="This is a shortform description, so a shorter version that more accurately explains what the app does in a smaller format.

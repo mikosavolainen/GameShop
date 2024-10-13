@@ -40,15 +40,6 @@ namespace WrenchApp.Pages
             // Newest
         }
 
-        private void Search_Tag(object sender, RoutedEventArgs e)
-        {
-            Border clickedBorder = sender as Border;
-
-            string tagToSearch = clickedBorder.Tag as String;
-
-            this.NavigationService.Navigate(new SearchPage(tag: tagToSearch));
-        }
-
         private void Game_Screen(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new GameScreen("1"));

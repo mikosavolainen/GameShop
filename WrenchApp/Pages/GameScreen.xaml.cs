@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WrenchApp.Pages
 {
@@ -46,13 +47,73 @@ namespace WrenchApp.Pages
 
         private void DisplayData(JObject gameData)
         {
+            // Add basic information
             GameTitle.Text = gameData["name"].ToString();
-
             ShortDesc.Text = gameData["desc"].ToString();
-
             Publisher.Text = gameData["author"].ToString();
-
             LongDesc.Text = gameData["desc"].ToString();
+
+            // Add tags
+            foreach (var tag in gameData["category"])
+            {
+                Border border = new Border
+                {
+                    BorderBrush = Brushes.Gray,
+                    BorderThickness = new Thickness(1),
+                    CornerRadius = new CornerRadius(6),
+                    Margin = new Thickness(0, 0, 10, 0)
+                };
+
+                Label label = new Label
+                {
+                    Foreground = Brushes.White,
+                    Content = tag
+                };
+
+                border.Child = label;
+                Tags.Children.Add(border);
+            }
+
+            // Add rating
+            int a = 0;
+            int b = 0;
+
+            foreach (var rating in gameData["ratings"])
+            {
+                a++;
+                b += Convert.ToInt32(rating);
+            }
+
+            try
+            {
+                Rating.Text = $"{b / a}/5";
+            } catch
+            {
+                Rating.Text = "No reviews yet!";
+            }
+
+            // Add image
+            image.Source = new BitmapImage(new Uri("https://noimgfuncyet.jpg", UriKind.Absolute));
+            image.ImageFailed += (s, e) =>
+            {
+                image.Source = new BitmapImage(new Uri("pack://application:,,,/WrenchApp;component/Images/placeholder.png", UriKind.Absolute));
+            };
+
+            // Add small images
+            for (int i = 0; i < 5; i++)
+            {
+                var tinyimg = new System.Windows.Controls.Image
+                {
+                    Width = 150,
+                    Height = 80,
+                    Stretch = Stretch.UniformToFill
+                };
+
+                // Change image
+                tinyimg.Source = new BitmapImage(new Uri("pack://application:,,,/WrenchApp;component/Images/placeholder.png", UriKind.Absolute));
+
+                SmallImages.Children.Add(tinyimg);
+            }
         }
 
         private void Review_Score(object sender, EventArgs e)
