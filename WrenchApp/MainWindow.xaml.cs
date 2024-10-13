@@ -97,7 +97,7 @@ namespace WrenchApp
 
         private void CartOpen(object sender, EventArgs e)
         {
-            MessageBox.Show("Not worky");
+            Mainframe.Source = new Uri("Pages/ShoppingCart.xaml", UriKind.Relative);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CredentialManagement;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -140,20 +141,11 @@ namespace WrenchApp.Pages
                     break;
             }
         }
-        private void AddToCart(object sender, EventArgs e)
-        {
-
-        }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
-        }
-
-        private void Hyperlink_RequestNavigate_1(object sender, RequestNavigateEventArgs e)
-        {
-
         }
     }
 }
