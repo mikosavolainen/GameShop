@@ -193,35 +193,35 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="#303030" Cursor="Hand">
                         <Image Name="HighlightedImg1" Style="{StaticResource BigGridImg}"/>
                         <Label Name="HighlightedTitle1" Style="{StaticResource BigGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc1" Style="{StaticResource BigGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice1" Style="{StaticResource BigGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
+                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Cursor="Hand">
                         <Image Name="HighlightedImg2" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle2" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc2" Style="{StaticResource SmallGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice2" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="2" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
+                    <StackPanel Grid.Row="0" Grid.Column="2" Background="#303030" Cursor="Hand">
                         <Image Name="HighlightedImg3" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle3" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc3" Style="{StaticResource SmallGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice3" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
                     
-                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
+                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Cursor="Hand">
                         <Image Name="HighlightedImg4" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle4" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc4" Style="{StaticResource SmallGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice4" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="1" Grid.Column="2" Background="#303030" Cursor="Hand" MouseDown="Game_Screen">
+                    <StackPanel Grid.Row="1" Grid.Column="2" Background="#303030" Cursor="Hand">
                         <Image Name="HighlightedImg5" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle5" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc5" Style="{StaticResource SmallGridDesc}" Text="Description"/>
@@ -235,51 +235,7 @@
                     FontSize="20" 
                     HorizontalAlignment="Left" 
                 />
-                <StackPanel Margin="0 0 0 150">
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PopularImg1" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PopularTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PopularDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PopularPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PopularImg2" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PopularTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PopularDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PopularPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PopularImg3" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PopularTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PopularDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PopularPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PopularImg4" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PopularTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PopularDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PopularPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PopularImg5" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PopularTitle5" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PopularDesc5" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PopularPrice5" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
+                <StackPanel Name="Popular" Margin="0 0 0 150">
                 </StackPanel>
 
                 <TextBlock 
@@ -288,52 +244,9 @@
                     FontSize="20" 
                     HorizontalAlignment="Left" 
                 />
-                <StackPanel Margin="0 0 0 150">
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="NewestImg1" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="NewestTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="NewestDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="NewestPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="NewestImg2" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="NewestTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="NewestDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="NewestPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="NewestImg3" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="NewestTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="NewestDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="NewestPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="NewestImg4" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="NewestTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="NewestDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="NewestPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="NewestImg5" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="NewestTitle5" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="NewestDesc5" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="NewestPrice5" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
+                <StackPanel Name="Newest" Margin="0 0 0 150">
                 </StackPanel>
+                   
             </StackPanel>
 
             <Grid Grid.Row="2" Margin="50 50 50 75">
