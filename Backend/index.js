@@ -138,7 +138,8 @@ app.post("/get-all-owned-games", async (req, res) => {
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-		const user = users.findOne({ username: token.username });
+		const user = await users.findOne({ username: token.username });
+		console.log(user)
 		const games = await Library.find({ owner: user._id }).populate("games");
 		return res.json(games);
 	} catch (error) {
