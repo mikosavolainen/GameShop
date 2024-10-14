@@ -43,7 +43,7 @@ function MainContent() {
   const [mobileMenu, setMobileMenu] = useState(false)
   const [mobileNotifications, setMobileNotifications] = useState(false)
 
-  const  pathname = useLocation();
+  const pathname = useLocation();
 
   useEffect(() => { // fix to scroll to top on page change
     window.scrollTo(0, 0);
