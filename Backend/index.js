@@ -344,7 +344,7 @@ app.post("/update-desc", async (req, res) => {
 
 	try {
 
-		const decoded = jwt.verify(token, secretKey);
+		const decoded = jwt.verify(token, SECRET_KEY);
 		const username = decoded.username;
 
 		const updatedUser = await users.findOneAndUpdate(
