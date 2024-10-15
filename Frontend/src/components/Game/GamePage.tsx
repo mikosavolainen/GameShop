@@ -50,7 +50,7 @@ export default function GamePage() {
   useEffect(() => {
     async function fetch() { // function to fetch game information
       const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
-      const { data } = await axios.get(`${apiUrl}/get-game-by-id`, { params: { id: params.id } }); // idk why post is used on server side instead of get but ok
+      const { data } = await axios.get(`${apiUrl}/get-game-by-id`, { params: { id: params.id } });
       setRes(data)
     }
     fetch()
