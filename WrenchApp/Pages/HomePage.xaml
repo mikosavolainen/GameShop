@@ -193,35 +193,35 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="#303030" Cursor="Hand">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Background="#303030" Cursor="Hand" Name="Hl1">
                         <Image Name="HighlightedImg1" Style="{StaticResource BigGridImg}"/>
                         <Label Name="HighlightedTitle1" Style="{StaticResource BigGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc1" Style="{StaticResource BigGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice1" Style="{StaticResource BigGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Cursor="Hand">
+                    <StackPanel Grid.Row="0" Grid.Column="1" Background="#303030" Cursor="Hand" Name="Hl2">
                         <Image Name="HighlightedImg2" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle2" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc2" Style="{StaticResource SmallGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice2" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="2" Background="#303030" Cursor="Hand">
+                    <StackPanel Grid.Row="0" Grid.Column="2" Background="#303030" Cursor="Hand" Name="Hl3">
                         <Image Name="HighlightedImg3" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle3" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc3" Style="{StaticResource SmallGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice3" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
                     
-                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Cursor="Hand">
+                    <StackPanel Grid.Row="1" Grid.Column="1" Background="#303030" Cursor="Hand" Name="Hl4">
                         <Image Name="HighlightedImg4" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle4" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc4" Style="{StaticResource SmallGridDesc}" Text="Description"/>
                         <TextBlock Name="HighlightedPrice4" Style="{StaticResource SmallGridPrice}" Text="00.00€"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="1" Grid.Column="2" Background="#303030" Cursor="Hand">
+                    <StackPanel Grid.Row="1" Grid.Column="2" Background="#303030" Cursor="Hand" Name="Hl5">
                         <Image Name="HighlightedImg5" Style="{StaticResource RowImg}"/>
                         <Label Name="HighlightedTitle5" Style="{StaticResource SmallGridTitle}" Content="Title"/>
                         <TextBlock Name="HighlightedDesc5" Style="{StaticResource SmallGridDesc}" Text="Description"/>

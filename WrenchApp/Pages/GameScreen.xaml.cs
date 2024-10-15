@@ -124,6 +124,8 @@ namespace WrenchApp.Pages
 
         private async void DisplayReviews()
         {
+            ReviewColumn.Children.Clear();
+            ReviewColumn2.Children.Clear();
             HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/get-reviews?id={id_}");
             string responseBody = await response.Content.ReadAsStringAsync();
             var reviewData = JArray.Parse(responseBody);
@@ -293,13 +295,20 @@ namespace WrenchApp.Pages
 
             HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/add-review", formData);
 
-            if (response.IsSuccessStatusCode)
+            switch ((int)response.StatusCode)
             {
-                MessageBox.Show("Successfully submitted review!");
-                DisplayReviews();
-            } else
-            {
-                MessageBox.Show("Error submitting review!");
+                case 200:
+                    MessageBox.Show("Successfully submitted review!");
+                    break;
+                case 400:
+                    MessageBox.Show("You need to own the game to sumbit a review!");
+                    break;
+                case 444:
+                    MessageBox.Show("You have already submitted a review");
+                    break;
+                default:
+                    MessageBox.Show("An error has occurred");
+                    break;
             }
         }
 

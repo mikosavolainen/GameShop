@@ -98,35 +98,46 @@ namespace WrenchApp
             formContent.Add(new StringContent(ConfigurationManager.AppSettings["JWT"]), "token");
 
             string filePath = selectedfolder.Text;
+            string imagePath = selectedimg.Text;
 
-            if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+            bool IsValidFilePath(string path) => !string.IsNullOrWhiteSpace(path) && File.Exists(path);
+            bool IsValidTextBox(TextBox textBox) => !string.IsNullOrWhiteSpace(textBox.Text);
+            bool IsValidDescription(RichTextBox descriptionBox) => !string.IsNullOrWhiteSpace(new TextRange(descriptionBox.Document.ContentStart, descriptionBox.Document.ContentEnd).Text);
+
+            if (IsValidFilePath(filePath) && IsValidFilePath(imagePath) &&
+                IsValidTextBox(gametitle) && IsValidDescription(gamedesc) &&
+                IsValidTextBox(tags) && IsValidTextBox(price))
             {
-                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                // Get file data
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                var fileContent = new StreamContent(fileStream);
+                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                formContent.Add(fileContent, "gamefile", System.IO.Path.GetFileName(filePath));
+
+                // Get image data
+                var imageStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+                var imageContent = new StreamContent(imageStream);
+                imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                formContent.Add(imageContent, "images", System.IO.Path.GetFileName(imagePath));
+
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    var fileContent = new StreamContent(fileStream);
-                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                    HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"]}/upload-game", formContent);
 
-                    formContent.Add(fileContent, "gamefile", System.IO.Path.GetFileName(filePath));
-
-                    using (HttpClient httpClient = new HttpClient())
+                    if (response.IsSuccessStatusCode)
                     {
-                        HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"]}/upload-game", formContent);
-
-                        if (response.IsSuccessStatusCode)
-                        {
-                            MessageBox.Show("Game uploaded successfully!");
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show($"Upload failed: {response.StatusCode}");
-                        }
+                        MessageBox.Show("Game uploaded successfully!");
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Upload failed: {await response.Content.ReadAsStringAsync()}");
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Please select a valid file.");
+                MessageBox.Show("Please fill out all forms");
             }
         }
     }

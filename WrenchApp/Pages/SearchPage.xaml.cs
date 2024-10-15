@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -204,13 +205,8 @@ namespace WrenchApp.Pages
                     Style = (Style)FindResource("RowImg")
                 };
 
-                image.Source = new BitmapImage(new Uri("https://noimgfuncyet.jpg", UriKind.Absolute));
-
-                // Event handler for loading a placeholder if the image fails to load
-                image.ImageFailed += (s, e) =>
-                {
-                    image.Source = new BitmapImage(new Uri("pack://application:,,,/WrenchApp;component/Images/placeholder.png", UriKind.Absolute));
-                };
+                // Set image
+                image.Source = new BitmapImage(new Uri("pack://application:,,,/WrenchApp;component/Images/placeholder.png", UriKind.Absolute));
 
                 // Create inner StackPanel
                 var innerStackPanel = new StackPanel();

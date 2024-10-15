@@ -40,18 +40,47 @@ namespace WrenchApp.Pages
             var games = JArray.Parse(responseBody);
             int i = 0;
 
+            // Set up highlighted games
+
+
             // Featured
             while (i < 5)
             {
 ;               var game = games[i];
-
-                if (i == 0)
+                switch (i)
                 {
-                    // Big
-                } else
-                {
-                    // Small
+                    case 0:
+                        Hl1.MouseDown += (s, e) => Game_Screen(game["_id"].ToString());
+                        HighlightedTitle1.Content = game["name"].ToString();
+                        HighlightedDesc1.Text = game["desc"].ToString();
+                        HighlightedPrice1.Text = game["price"].ToString() + "€";
+                        break;
+                    case 1:
+                        Hl2.MouseDown += (s, e) => Game_Screen(game["_id"].ToString());
+                        HighlightedTitle2.Content = game["name"].ToString();
+                        HighlightedDesc2.Text = game["desc"].ToString();
+                        HighlightedPrice2.Text = game["price"].ToString() + "€";
+                        break;
+                    case 2:
+                        Hl3.MouseDown += (s, e) => Game_Screen(game["_id"].ToString());
+                        HighlightedTitle3.Content = game["name"].ToString();
+                        HighlightedDesc3.Text = game["desc"].ToString();
+                        HighlightedPrice3.Text = game["price"].ToString() + "€";
+                        break;
+                    case 3:
+                        Hl4.MouseDown += (s, e) => Game_Screen(game["_id"].ToString());
+                        HighlightedTitle4.Content = game["name"].ToString();
+                        HighlightedDesc4.Text = game["desc"].ToString();
+                        HighlightedPrice4.Text = game["price"].ToString() + "€";
+                        break;
+                    default:
+                        Hl5.MouseDown += (s, e) => Game_Screen(game["_id"].ToString());
+                        HighlightedTitle5.Content = game["name"].ToString();
+                        HighlightedDesc5.Text = game["desc"].ToString();
+                        HighlightedPrice5.Text = game["price"].ToString() + "€";
+                        break;
                 }
+
 
                 i++;
             }
@@ -97,7 +126,7 @@ namespace WrenchApp.Pages
                 TextBlock priceTextBlock = new TextBlock
                 {
                     Style = (Style)FindResource("RowDesc"),
-                    Text = game["price"].ToString()
+                    Text = game["price"].ToString() + "€"
                 };
 
                 // Add the TextBlocks to the inner StackPanel

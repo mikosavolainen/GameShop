@@ -147,7 +147,7 @@ namespace WrenchApp.Pages
                     continue;
                 } else
                 {
-                    MessageBox.Show("Error purchasing games :(");
+                    MessageBox.Show("You already own atleast one of these games");
                     success = false;
                     break;
                 }
