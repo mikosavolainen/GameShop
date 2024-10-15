@@ -507,6 +507,9 @@ app.get("/get-user-data", async (req, res) => {
 	if (username) {
 		try {
 			const user = await users.findOne({ username: username });
+			if (!user){
+				return res.status(432).send("no user found")
+			}
 			user.password = "SHHH 🤫";
 			return res.status(200).send(user);
 		} catch (error) {
