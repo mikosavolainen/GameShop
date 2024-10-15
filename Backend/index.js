@@ -138,7 +138,8 @@ app.post("/get-all-owned-games", async (req, res) => {
 		if (!token) {
 			return res.status(400).send("Owner ID is required");
 		}
-		const user = users.findOne({ username: token.username });
+		const user = await users.findOne({ username: token.username });
+		console.log(user)
 		const games = await Library.find({ owner: user._id }).populate("games");
 		return res.json(games);
 	} catch (error) {
@@ -163,28 +164,35 @@ app.post("/buy-game", async (req, res) => {
 	const { game_id, token } = req.body;
 	try {
 		const jwts = await jwt.verify(token, SECRET_KEY);
-		const is = await Library.findOne({ username: jwts.username });
-		console.log(is);
-		if (is) {
+		const user = await users.findOne({ username: jwts.username });
+
+		const library = await Library.findOne({ owner: user._id });
+		const hasGame = await Library.findOne({ owner: user._id, games: game_id });
+
+		if (hasGame) {
+			return res.status(400).send("You already bought this game.");
+		}
+
+		if (library) {
 			await Library.findOneAndUpdate(
-				{ username: jwt.username },
+				{ owner: user._id },
 				{ $push: { games: game_id } }
 			);
-			return res.status(200).send("bought");
+			return res.status(200).send("Game bought successfully.");
 		}
-		const user = await users.findOne({ username: jwts.username });
-		const x = new Library({
+
+		const newLibrary = new Library({
 			owner: user._id,
-			games: game_id,
+			games: [game_id],
 		});
-		x.save();
-		return res.status(201).send("bought");
-		
+		await newLibrary.save();
+		return res.status(201).send("Game bought successfully.");
 	} catch (error) {
-		console.log(error)
-		return res.status(400).send(error);
+		console.error(error);
+		return res.status(400).send("An error occurred.");
 	}
 });
+
 
 app.get("/search-game", async (req, res) => {
 	const {
@@ -336,7 +344,7 @@ app.post("/update-desc", async (req, res) => {
 
 	try {
 
-		const decoded = jwt.verify(token, secretKey);
+		const decoded = jwt.verify(token, SECRET_KEY);
 		const username = decoded.username;
 
 		const updatedUser = await users.findOneAndUpdate(
