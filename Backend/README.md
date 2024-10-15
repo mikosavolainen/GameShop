@@ -39,8 +39,8 @@ To run this project locally, ensure you have the following installed:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-repository/wrench-platform.git
-   cd wrench-platform
+   git clone https://github.com/mikosavolainen/GameShop.git
+   cd backend
    ```
 
 2. **Install project dependencies**:
