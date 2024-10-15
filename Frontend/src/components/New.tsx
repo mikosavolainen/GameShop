@@ -4,14 +4,14 @@ import test_image_wrench_2 from "../assets/test_image_wrench_2.png"
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-export default function Popular() {  const [res, setRes] = useState([])
+export default function Popular() {
+  const [res, setRes] = useState([])
   useEffect(() => {
     const fetch = async () => {
       const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
       const { data } = await axios.get(`${apiUrl}/get-all-games`, { params: { limit: 8, page: 1 } }); // idk why post is used on server side instead of get but ok
       setRes(data)
     }
-
     fetch()
   }, [])
   return (

@@ -92,7 +92,7 @@ function DownloadPage() {
       <div className="content-layout-margin">
         <h1 className='text-5xl text-wrench-neutral-white pt-40 font-bold'>Download Wrench Client for Windows</h1>
         <h2 className="mt-4 text-xl">Fast and easy downloads & instant access</h2>
-        <Button text="Download" type="link" style="purple" size="big" icon="download" className="mt-4" href="/hi.txt" download />
+        <Button text="Download" type="link" style="purple" size="big" icon="download" className="mt-4" href="/WrenchApp.rar" download />
         <Footer />
       </div>
     </>
@@ -119,7 +119,7 @@ const NotFound = () => {
   return (
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
       <h1 className='text-5xl text-wrench-neutral-white pt-40 font-bold'>404 Not Found</h1>
-      <h2 className="mt-4 text-xl mb-64">Fast and easy downloads & instant access</h2>
+      <h2 className="mt-4 text-xl mb-64">Fast and easy downloads & instant access, does anyone actually read this</h2>
       <Footer />
     </div>
   )

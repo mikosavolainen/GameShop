@@ -12,25 +12,21 @@ import { useLocation } from 'wouter'
 export default function UserPageContent() {
   const [, setLocation] = useLocation()
   const params = useParams()
-  useEffect(() => { 
-    async function fetch() {
-    }
-    fetch()
-  }, [params.user])
   const { user } = useContext(AuthContext) //this is for checking if user is logged in meaning if not logged in user cannot see the stff to change things.
   const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL; // Ensure this environment variable is correctly set
   useEffect(() => {
     function fetch() {
-      const data = axios.get(`${apiUrl}/get-user-data`, {params: {username: params.user}}).catch(function (error) {if(error.response){setLocation("../*")}});
+      const data = axios.get(`${apiUrl}/get-user-data`, {params: {username: params.user}}).catch(function (error) {if(error.response){setLocation("../*")}}); // 404 returns both on error, as well as when user doesn't exists (which is not as much of an error). this is bad arrghghh
       console.log(data)
     }
     fetch()
-  }, [params.user, setLocation])
+  }, [params.user, setLocation]) // why dont we fetch the whole user data, including description...
   const [games, setGames] = useState<{ name: string, price: number, desc: string, category: [], _id: string }[]>([])
   useEffect(() => {
     async function fetch() {
       const {data} = await axios.post(`${apiUrl}/get-all-owned-games`, {token: localStorage.getItem("token")})
-      setGames(data)
+      const userData: {data:{_id: string}} = await axios.get(`${apiUrl}/get-user-data`, {params: {username: params.user}}) // to save time before the presentation, i created this line of code so that the page works. i wouldn't otherwise, because this code is hard to understand and is unreadable
+      setGames(data[0].games) // i do not fully understand what the endpoint returns
     }
     fetch()
   }, [params.user, setLocation])
@@ -77,11 +73,11 @@ export default function UserPageContent() {
           <Profile />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8">
-          {games.map(game => 
+          {games.map((game: { name: string, price: number, desc: string, category: [], _id: string }) => 
             <GameDisplay
               classname="pb-5"
               id="66f26c48d28e38792f7f3894"
-              gameName="gameName"
+              gameName={game.name}
               price={40}
               description="Test"
               size="small"
