@@ -20,6 +20,9 @@ namespace WrenchApp.Pages
 {
     public partial class HomePage : Page
     {
+
+        HttpClient httpClient = new HttpClient();
+
         public HomePage()
         {
             InitializeComponent();
@@ -32,7 +35,6 @@ namespace WrenchApp.Pages
 
         async void InitializeItems()
         {
-            HttpClient httpClient = new HttpClient();
             HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/search-game?page=1&limit=15");
             string responseBody = await response.Content.ReadAsStringAsync();
             var games = JArray.Parse(responseBody);

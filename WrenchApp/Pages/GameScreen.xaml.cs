@@ -22,15 +22,14 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace WrenchApp.Pages
 {
-    /// <summary>
-    /// Interaction logic for GameScreen.xaml
-    /// </summary>
     public partial class GameScreen : Page
     {
 
         private int score = 5;
         private JObject gameData;
         private string id_;
+
+        HttpClient httpClient = new HttpClient();
 
         public GameScreen(string id)
         {
@@ -43,7 +42,7 @@ namespace WrenchApp.Pages
         
         private async void GetData()
         {
-            HttpClient httpClient = new HttpClient();
+            
 
             HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/get-game-by-id?id={id_}");
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -125,8 +124,6 @@ namespace WrenchApp.Pages
 
         private async void DisplayReviews()
         {
-            HttpClient httpClient = new HttpClient();
-
             HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/get-reviews?id={id_}");
             string responseBody = await response.Content.ReadAsStringAsync();
             var reviewData = JArray.Parse(responseBody);
@@ -294,12 +291,12 @@ namespace WrenchApp.Pages
                 { "stars", score.ToString() }
             });
 
-            HttpClient httpClient = new HttpClient();
             HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/add-review", formData);
 
             if (response.IsSuccessStatusCode)
             {
                 MessageBox.Show("Successfully submitted review!");
+                DisplayReviews();
             } else
             {
                 MessageBox.Show("Error submitting review!");

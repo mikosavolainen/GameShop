@@ -53,7 +53,10 @@
                         </Border.Background>
                     </Border>
                     <StackPanel>
-                        <TextBlock Name="Username" Text="Username1234" FontSize="40" Foreground="White"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Name="Username" Text="Username1234" FontSize="40" Foreground="White"/>
+                            <Image Source="/WrenchApp;component/Images/Icons/editpencil.png" Width="40" Margin="20 0 0 0" Cursor="Hand" MouseDown="EditDesc"/>
+                        </StackPanel>
                         <TextBlock Name="Description" Text="Description" TextWrapping="WrapWithOverflow" FontSize="25" Foreground="LightGray"/>
                     </StackPanel>
                 </StackPanel>
@@ -66,43 +69,8 @@
                     HorizontalAlignment="Left" 
                     Margin="0 100 0 0"
                 />
-                
-                <StackPanel>
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PlayedImg1" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PlayedTitle1" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PlayedDesc1" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PlayedPrice1" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
 
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PlayedImg2" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PlayedTitle2" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PlayedDesc2" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PlayedPrice2" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PlayedImg3" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PlayedTitle3" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PlayedDesc3" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PlayedPrice3" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel Style="{StaticResource RowHolder}" MouseDown="Game_Screen">
-                        <Image Name="PlayedImg4" Style="{StaticResource RowImg}"/>
-                        <StackPanel>
-                            <TextBlock Name="PlayedTitle4" Style="{StaticResource RowTitle}" Text="Title"/>
-                            <TextBlock Name="PlayedDesc4" Style="{StaticResource RowDesc}" Text="Description"/>
-                            <TextBlock Name="PlayedPrice4" Style="{StaticResource RowDesc}" Text="00.00€"/>
-                        </StackPanel>
-                    </StackPanel>
+                <StackPanel Name="OwnedGames">
                 </StackPanel>
                 
                 <TextBlock 

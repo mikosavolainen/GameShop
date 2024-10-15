@@ -19,11 +19,10 @@ using System.Windows.Shapes;
 
 namespace WrenchApp.Pages
 {
-    /// <summary>
-    /// Interaction logic for ShoppingCart.xaml
-    /// </summary>
     public partial class ShoppingCart : Page
     {
+        HttpClient httpClient = new HttpClient();
+
         public ShoppingCart()
         {
             InitializeComponent();
@@ -50,7 +49,6 @@ namespace WrenchApp.Pages
 
             foreach (string item in collection)
             {
-                HttpClient httpClient = new HttpClient();
                 HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/get-game-by-id?id={item}");
 
                 if (response.IsSuccessStatusCode)
@@ -130,8 +128,8 @@ namespace WrenchApp.Pages
         private async void PurchaseGames(object sender, RoutedEventArgs e)
         {
             List<string> collection = ConfigurationManager.AppSettings["shoppingcart"].Split('/').ToList();
-            HttpClient httpClient = new HttpClient();
 
+            bool success = true;
             foreach (var item in collection)
             {
                 if (item == null || item == "") continue;
@@ -146,11 +144,21 @@ namespace WrenchApp.Pages
             
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Successfully purchased games!");
+                    continue;
                 } else
                 {
                     MessageBox.Show("Error purchasing games :(");
+                    success = false;
+                    break;
                 }
+            }
+
+            if (success)
+            {
+                MessageBox.Show("Successfully bought games!");
+                Purchase.Visibility = Visibility.Hidden;
+                MainHolder.Children.Clear();
+                ConfigurationManager.AppSettings["shoppingcart"] = "";
             }
         }
 

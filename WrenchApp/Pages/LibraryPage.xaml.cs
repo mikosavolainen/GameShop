@@ -24,6 +24,8 @@ namespace WrenchApp.Pages
     /// </summary>
     public partial class LibraryPage : Page
     {
+        HttpClient httpClient = new HttpClient();
+
         public LibraryPage()
         {
             InitializeComponent();
@@ -37,12 +39,11 @@ namespace WrenchApp.Pages
                 { "token", ConfigurationManager.AppSettings["JWT"] }
             });
 
-            HttpClient httpClient = new HttpClient();
             HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"].ToString()}/get-all-owned-games", formData);
             string responseBody = await response.Content.ReadAsStringAsync();
             var games = JArray.Parse(responseBody);
 
-            foreach (var game in games)
+            foreach (var game in games[0]["games"])
             {
                 // Create the StackPanel
                 StackPanel stackPanel = new StackPanel
@@ -65,7 +66,7 @@ namespace WrenchApp.Pages
                 // Create the TextBlock
                 TextBlock textBlock = new TextBlock
                 {
-                    Text = game["games"][0]["name"].ToString(),
+                    Text = game["name"].ToString(),
                     Foreground = Brushes.White,
                     FontSize = 20,
                     Margin = new Thickness(5, 5, 0, 0)

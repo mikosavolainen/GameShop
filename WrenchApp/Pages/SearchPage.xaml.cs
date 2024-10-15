@@ -34,6 +34,8 @@ namespace WrenchApp.Pages
         private JArray games;
         private List<string> selectedtags = new List<string>();
 
+        HttpClient httpClient = new HttpClient();
+
         // Initialization
         public SearchPage(string search = "")
         {
@@ -117,8 +119,6 @@ namespace WrenchApp.Pages
         async private void GetGames()
         {
             // Create httpClient
-            HttpClient httpClient = new HttpClient();
-
             try
             {
                 string filters = FilterCheck();

@@ -20,7 +20,6 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System.Text.Json;
 
 namespace WrenchApp
 {
@@ -29,6 +28,7 @@ namespace WrenchApp
     /// </summary>
     public partial class Login : Window
     {
+        HttpClient httpClient = new HttpClient();
         public Login()
         {
             InitializeComponent();
@@ -100,16 +100,14 @@ namespace WrenchApp
                     mainWindow.Show();                                  
                     this.Close();           
                     
-                }  else
+                }  
+                else
                 {
                     var formContent = new FormUrlEncodedContent(new[]
                     {
                         new KeyValuePair<string, string>("username", username),
                         new KeyValuePair<string, string>("password", password)
                     });
-
-                    // Create a new HttpClient to handle the request
-                    HttpClient httpClient = new HttpClient();
 
                     // Send a Post request to the specified URL
 
@@ -123,16 +121,9 @@ namespace WrenchApp
                             // Ensure response is ok and extract the jwt token
                             response.EnsureSuccessStatusCode();
                             string responseBody = await response.Content.ReadAsStringAsync();
+                            var userData = JObject.Parse(responseBody);
 
-                            using (JsonDocument doc = JsonDocument.Parse(responseBody))
-                            {
-                                // Navigate to the token property
-                                if (doc.RootElement.TryGetProperty("token", out JsonElement tokenElement))
-                                {
-                                    ConfigurationManager.AppSettings["JWT"] = tokenElement.GetString();
-                                }
-                            }
-
+                            ConfigurationManager.AppSettings["JWT"] = userData["token"].ToString();
                             ConfigurationManager.AppSettings["username"] = username;
 
                             if (!autologin)
