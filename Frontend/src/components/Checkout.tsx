@@ -18,6 +18,15 @@ const Checkout = () => {
     }
     checkout.map(item => fetch(item))
   }, [checkout])
+  const buy = () => {
+    const fetch = async (id: string) => {
+      const apiUrl = import.meta.env.VITE_SERVER_BASE_API_URL;
+      await axios.post(`${apiUrl}/buy-game`, {id, token: localStorage.getItem("token")});
+    }
+    checkout.map(item => {console.log(item);fetch(item)})
+    setCheckout([])
+    localStorage.setItem("checkout", "[]")
+  }
   return (
     <div className="content-layout-margin mb-16 md:mb-0 md:mt-16 pt-16">
       <div>
@@ -36,7 +45,7 @@ const Checkout = () => {
           ))}
       </div>
       <div>
-
+        <Button type="button" style="purple" size="big" text="Buy" icon="payments" onClick={buy} />
       </div>
       <Footer />
     </div>

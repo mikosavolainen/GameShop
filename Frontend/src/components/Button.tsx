@@ -23,7 +23,8 @@ export default function Button({
   text,
   disabled,
   className,
-  onClick
+  onClick,
+  download
 }: {
   href?: string,
   type: 'link' | 'button' | 'submit'
@@ -34,6 +35,7 @@ export default function Button({
   disabled?: boolean
   className?: string
   onClick?: () => void
+  download?: boolean
 }) {
   return (
     <div
@@ -61,7 +63,10 @@ export default function Button({
       {(() => {
         switch (type) {
           case 'link':
-            return <Link href={href ?? ""} className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`}>{text}</Link>
+            if(download)
+              return <a href={href ?? ""} className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`} download>{text}</a>
+            else
+              return <Link href={href ?? ""} className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} whitespace-nowrap`}>{text}</Link>
           case 'button':
           case 'submit':
             return <button className={`${size === "big" ? "pl-9 pr-3" : "pl-7 pr-2"} w-full text-left`} onClick={onClick}>{text}</button>
