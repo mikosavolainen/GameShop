@@ -61,7 +61,7 @@ export default function GameDisplay({classname, discount, price, size, gameName,
             <p className="text-wrench-neutral-white text-left mt-4 text-base">{displayedDescription}</p>
             {size == "large" && (
                 <div className="mt-4 lg:mt-auto mb-4">
-                  <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                  <Button href={"/game/"+id} className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
                   {review == "send" && (
                     <Button type="button" style="coral" icon="send" text="Leave a review"></Button>
                   )}
@@ -78,7 +78,7 @@ export default function GameDisplay({classname, discount, price, size, gameName,
             {size !== "large" && (
               <>
                 <div className="mt-4" onClick={(e) => e.preventDefault()}>
-                  <Button href="/game/temporaryid" className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
+                  <Button href={"/game/"+id} className="mr-1" type="link" style="purple" icon="visibility" text="See more"/>
                   {review == "send" && (
                     <Button onClick={() => {setModalOpen(true); setModalPage("review/"+id)}}type="button" style="coral" icon="send" text="Leave a review"></Button>
                   )}
