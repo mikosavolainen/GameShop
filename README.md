@@ -6,5 +6,9 @@
   - Genre
   - Name
   - Price
+- Searching owned games
 - Adding and removing games from cart
+- Adding reviews
+- Seeing reviews
+- Buying games
 - Publishing games
