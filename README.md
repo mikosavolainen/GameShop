@@ -5,6 +5,7 @@
 - NuGet packages
   - CredentialManagement
   - Newtonsoft.json
+    
 ## Functionalities
 - Account management
   - Logging in
@@ -20,3 +21,8 @@
 - Reviewing
   - Adding reviews
   - Seeing reviews
+    
+## Installing
+1) Download WrenchApp.rar
+2) Extract WrenchApp.rar
+3) Run setup.exe
