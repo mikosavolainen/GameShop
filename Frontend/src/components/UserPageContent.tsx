@@ -25,7 +25,7 @@ export default function UserPageContent() {
   useEffect(() => {
     async function fetch() {
       const {data} = await axios.post(`${apiUrl}/get-all-owned-games`, {token: localStorage.getItem("token")})
-      const userData: {data:{_id: string}} = await axios.get(`${apiUrl}/get-user-data`, {params: {username: params.user}}) // to save time before the presentation, i created this line of code so that the page works. i wouldn't otherwise, because this code is hard to understand and is unreadable
+      // const userData: {data:{_id: string}} = await axios.get(`${apiUrl}/get-user-data`, {params: {username: params.user}}) // to save time before the presentation, i created this line of code so that the page works. i wouldn't otherwise, because this code is hard to understand and is unreadable
       setGames(data[0].games) // i do not fully understand what the endpoint returns
     }
     fetch()
