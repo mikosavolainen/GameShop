@@ -320,7 +320,7 @@ app.get("/confirm", async (req, res) => {
 				{ username },
 				{ confirmedemail: true }
 			);
-			return res.redirect("https://lol.tyhjyys.com");
+			return res.redirect("http://localhost:5173/");
 		} catch (error) {
 			return res
 				.status(400)
