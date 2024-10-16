@@ -61,7 +61,7 @@ namespace WrenchApp
             {
                 // Get the selected file path
                 string filePath = dlg.FileName;
-                selectedfolder.Text = filePath; // Assuming you have a TextBox named selectedfolder
+                selectedfolder.Text = filePath;
             }
         }
 
