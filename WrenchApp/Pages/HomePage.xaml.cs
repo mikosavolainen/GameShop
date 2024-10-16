@@ -40,9 +40,6 @@ namespace WrenchApp.Pages
             var games = JArray.Parse(responseBody);
             int i = 0;
 
-            // Set up highlighted games
-
-
             // Featured
             while (i < 5)
             {

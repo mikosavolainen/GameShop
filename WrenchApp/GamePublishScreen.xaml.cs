@@ -97,9 +97,11 @@ namespace WrenchApp
             formContent.Add(new StringContent(ismultiplayer.IsChecked.ToString().ToLower()), "multiplayer");
             formContent.Add(new StringContent(ConfigurationManager.AppSettings["JWT"]), "token");
 
+            // Get game and image file path
             string filePath = selectedfolder.Text;
             string imagePath = selectedimg.Text;
 
+            // Ensure that all data is given
             bool IsValidFilePath(string path) => !string.IsNullOrWhiteSpace(path) && File.Exists(path);
             bool IsValidTextBox(TextBox textBox) => !string.IsNullOrWhiteSpace(textBox.Text);
             bool IsValidDescription(RichTextBox descriptionBox) => !string.IsNullOrWhiteSpace(new TextRange(descriptionBox.Document.ContentStart, descriptionBox.Document.ContentEnd).Text);
@@ -120,6 +122,7 @@ namespace WrenchApp
                 imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
                 formContent.Add(imageContent, "images", System.IO.Path.GetFileName(imagePath));
 
+                // Attempt to publish game
                 using (HttpClient httpClient = new HttpClient())
                 {
                     HttpResponseMessage response = await httpClient.PostAsync($"http://localhost:{ConfigurationManager.AppSettings["port"]}/upload-game", formContent);

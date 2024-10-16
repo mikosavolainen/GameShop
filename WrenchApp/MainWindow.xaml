@@ -118,7 +118,7 @@
                 Click="Home_Screen"/>
 
             <Button
-                Content="Categories"
+                Content="Search"
                 Background="Transparent"
                 BorderBrush="Transparent"
                 Foreground="White"

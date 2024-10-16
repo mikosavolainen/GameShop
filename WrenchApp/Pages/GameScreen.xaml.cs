@@ -299,6 +299,7 @@ namespace WrenchApp.Pages
             {
                 case 200:
                     MessageBox.Show("Successfully submitted review!");
+                    DisplayReviews();
                     break;
                 case 400:
                     MessageBox.Show("You need to own the game to sumbit a review!");

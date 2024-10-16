@@ -40,6 +40,7 @@ namespace WrenchApp
                 }
             }
 
+            ConfigurationManager.AppSettings["shoppingcart"] = "";
             Window login = new Login();
             login.Show();
             this.Close();
