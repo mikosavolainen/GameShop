@@ -10,10 +10,13 @@
   - Logging in
   - Registering
   - Editing user description
+    
 - Game management
   - Searching games
   - Creating games
   - Buying games
+  - Seeing owned games
+    
 - Reviewing
   - Adding reviews
   - Seeing reviews
